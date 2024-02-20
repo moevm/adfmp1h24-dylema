@@ -6,7 +6,7 @@ class UserPhilosophy {
     var utLevel: Int = 50
     var selfLevel: Int = 50
 
-    fun takeSolved(solution: DilemmaSolution) {
+    fun accept(solution: DilemmaSolution) {
         libLevel += solution.lib
         utLevel += solution.ut
         selfLevel += solution.self

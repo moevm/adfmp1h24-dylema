@@ -5,6 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.Button
@@ -41,6 +42,9 @@ class MainActivity : ComponentActivity() {
                     composable("result_screen") {
                         ResultScreen(navController, philosophy)
                     }
+                    composable("total_result_screen") {
+                        TotalResultScreen(navController)
+                    }
                 }
 
             }
@@ -59,8 +63,15 @@ fun Greeting() {
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Button(onClick = { /*TODO*/ }) {
-            Text(text = "Начать")
+        Row {
+            Button(onClick = { }) {
+                Text(text = "Начать")
+            }
+        }
+        Row {
+            Button(onClick = { }) {
+                Text(text = "Результаты")
+            }
         }
     }
 }
@@ -75,8 +86,15 @@ fun MainMenu(navController: NavController) {
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Button(onClick = { navController.navigate("dilemma_screen") }) {
-            Text(text = "Начать")
+        Row {
+            Button(onClick = { navController.navigate("dilemma_screen") }) {
+                Text(text = "Начать")
+            }
+        }
+        Row {
+            Button(onClick = { navController.navigate("total_result_screen") }) {
+                Text(text = "Результаты")
+            }
         }
     }
 }

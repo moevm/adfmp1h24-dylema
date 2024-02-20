@@ -64,7 +64,7 @@ fun DilemmaScreen(navController: NavController, philosophy: MutableState<UserPhi
             Column {
                 Button(onClick = {
                     val solution = currentTask.value.leftSolution
-                    philosophy.value.takeSolved(solution)
+                    philosophy.value.accept(solution)
 
                     if (currentTask.value.isFinal) {
                         navController.navigate("result_screen")
@@ -79,7 +79,7 @@ fun DilemmaScreen(navController: NavController, philosophy: MutableState<UserPhi
             Column {
                 Button(onClick = {
                     val solution = currentTask.value.rightSolution
-                    philosophy.value.takeSolved(solution)
+                    philosophy.value.accept(solution)
 
                     if (currentTask.value.isFinal) {
                         navController.navigate("result_screen")

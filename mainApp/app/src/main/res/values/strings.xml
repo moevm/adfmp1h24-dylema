@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Dylema</string>
+    <string name="title_activity_dylema">DylemaActivity</string>
 </resources>

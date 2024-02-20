@@ -1,6 +1,7 @@
 package ru.etu.dylema
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Arrangement
@@ -15,8 +16,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -31,14 +34,10 @@ class MainActivity : ComponentActivity() {
             DylemaTheme {
                 NavHost(navController = navController, startDestination = "main_screen") {
                     composable("main_screen") {
-                        MainMenu {
-                            navController.navigate("dilemma_screen")
-                        }
+                        MainMenu(navController)
                     }
                     composable("dilemma_screen") {
-                        DilemmaScreen(onClick = {
-                                                navController.navigate("main_screen")
-                        }, img = painterResource(id = R.drawable.img))
+                        DilemmaScreen(navController)
                     }
                 }
 
@@ -46,6 +45,42 @@ class MainActivity : ComponentActivity() {
         }
 
     }
+}
+
+class TaskProvider() {
+
+    private val tasks = arrayListOf<Task>(
+        Task(R.drawable.img),
+        Task(R.drawable.ic_launcher_background),
+        Task(R.drawable.ic_launcher_foreground)
+    );
+
+    private var pointer = 0;
+
+    fun next(): Task {
+        if (pointer == (tasks.size - 1)) {
+            return tasks[pointer]
+        }
+
+        return tasks[++pointer]
+    }
+
+    fun prev(): Task {
+        if (pointer <= 0) {
+            return tasks[pointer]
+        }
+
+        return tasks[--pointer]
+    }
+
+    fun current(): Task {
+        return tasks[pointer]
+    }
+
+}
+
+class Task(var imageId: Int) {
+
 }
 
 @Composable
@@ -65,7 +100,7 @@ fun Greeting() {
 }
 
 @Composable
-fun MainMenu(onClick: () -> Unit) {
+fun MainMenu(navController: NavController) {
 
     Column(
         modifier = Modifier
@@ -74,7 +109,7 @@ fun MainMenu(onClick: () -> Unit) {
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Button(onClick = { onClick() }) {
+        Button(onClick = { navController.navigate("dilemma_screen") }) {
             Text(text = "Начать")
         }
     }

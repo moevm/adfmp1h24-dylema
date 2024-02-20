@@ -1,5 +1,6 @@
 package ru.etu.dylema
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -11,13 +12,25 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import kotlin.math.log
 
 @Composable
-fun DilemmaScreen(onClick: () -> Unit, img: Painter) {
+fun DilemmaScreen(navController: NavController) {
+    val taskProvider = remember {
+        mutableStateOf(TaskProvider())
+    }
+    val currentTask = remember {
+        mutableStateOf(taskProvider.value.current())
+    }
 
     Column(
         modifier = Modifier
@@ -35,7 +48,7 @@ fun DilemmaScreen(onClick: () -> Unit, img: Painter) {
             horizontalArrangement = Arrangement.Center
         ) {
             Image(
-                painter = img,
+                painter = painterResource(id = currentTask.value.imageId),
                 contentDescription = "Andy Rubin",
                 modifier = Modifier
                     .fillMaxSize()
@@ -50,13 +63,19 @@ fun DilemmaScreen(onClick: () -> Unit, img: Painter) {
             horizontalArrangement = Arrangement.SpaceAround
         ) {
             Column {
-                Button(onClick = { onClick() }) {
-                    Text(text = "Первое")
+                Button(onClick = {
+                    val task = taskProvider.value.prev()
+                    currentTask.value = task
+                }) {
+                    Text(text = "Назад")
                 }
             }
             Column {
-                Button(onClick = { onClick() }) {
-                    Text(text = "Второе")
+                Button(onClick = {
+                    val task = taskProvider.value.next()
+                    currentTask.value = task
+                }) {
+                    Text(text = "Вперед")
                 }
             }
         }

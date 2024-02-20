@@ -1,6 +1,5 @@
 package ru.etu.dylema
 
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -12,24 +11,24 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import kotlin.math.log
+import ru.etu.dylema.domain.DilemmaProvider
+import ru.etu.dylema.domain.UserPhilosophy
 
 @Composable
-fun DilemmaScreen(navController: NavController) {
-    val taskProvider = remember {
-        mutableStateOf(TaskProvider())
+fun DilemmaScreen(navController: NavController, philosophy: MutableState<UserPhilosophy>) {
+    val dilemmaProvider = remember {
+        mutableStateOf(DilemmaProvider())
     }
     val currentTask = remember {
-        mutableStateOf(taskProvider.value.current())
+        mutableStateOf(dilemmaProvider.value.current())
     }
 
     Column(
@@ -64,16 +63,30 @@ fun DilemmaScreen(navController: NavController) {
         ) {
             Column {
                 Button(onClick = {
-                    val task = taskProvider.value.prev()
-                    currentTask.value = task
+                    val solution = currentTask.value.leftSolution
+                    philosophy.value.takeSolved(solution)
+
+                    if (currentTask.value.isFinal) {
+                        navController.navigate("result_screen")
+                    } else {
+                        val task = dilemmaProvider.value.next()
+                        currentTask.value = task
+                    }
                 }) {
                     Text(text = "Назад")
                 }
             }
             Column {
                 Button(onClick = {
-                    val task = taskProvider.value.next()
-                    currentTask.value = task
+                    val solution = currentTask.value.rightSolution
+                    philosophy.value.takeSolved(solution)
+
+                    if (currentTask.value.isFinal) {
+                        navController.navigate("result_screen")
+                    } else {
+                        val task = dilemmaProvider.value.next()
+                        currentTask.value = task
+                    }
                 }) {
                     Text(text = "Вперед")
                 }
@@ -82,3 +95,4 @@ fun DilemmaScreen(navController: NavController) {
     }
 
 }
+

@@ -17,4 +17,18 @@ class UserPhilosophy {
         this.utLevel = 50
         this.selfLevel = 50
     }
+
+    fun getEthic(): Ethic {
+        if (libLevel >= utLevel) {
+            if (selfLevel > libLevel) {
+                return Ethic.EGOISM
+            }
+            return Ethic.LIBERTARIANISM
+        } else {
+            if (selfLevel > utLevel) {
+                return Ethic.EGOISM
+            }
+            return Ethic.UTILITARIANISM
+        }
+    }
 }

@@ -1,6 +1,6 @@
 package ru.etu.dylema.domain
 
-class UserPhilosophy {
+class UserPhilosophy(var username: String = "user") {
 
     var libLevel: Int = 50
     var utLevel: Int = 50

@@ -51,6 +51,7 @@ class MainActivity : ComponentActivity() {
             DylemaTheme {
                 NavHost(navController = navController, startDestination = "main_screen") {
                     composable("main_screen") {
+                        philosophy.value.reset()
                         MainMenu(navController)
                     }
                     composable("dilemma_screen") {

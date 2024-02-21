@@ -32,4 +32,12 @@ class DilemmaProvider() {
         return dilemmas[pointer]
     }
 
+    fun currentNumber(): Int {
+        return pointer + 1;
+    }
+
+    fun totalCount(): Int {
+        return dilemmas.size;
+    }
+
 }

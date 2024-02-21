@@ -11,4 +11,10 @@ class UserPhilosophy {
         utLevel += solution.ut
         selfLevel += solution.self
     }
+
+    fun reset() {
+        this.libLevel = 50
+        this.utLevel = 50
+        this.selfLevel = 50
+    }
 }

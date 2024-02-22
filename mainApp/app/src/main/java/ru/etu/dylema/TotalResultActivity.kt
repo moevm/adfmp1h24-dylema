@@ -1,6 +1,5 @@
 package ru.etu.dylema
 
-import android.content.res.AssetManager
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -34,21 +33,24 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import kotlinx.serialization.json.Json
 import ru.etu.dylema.domain.UserPhilosophy
-import java.io.BufferedReader
+import java.io.File
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
 @Composable
-fun TotalResultScreen(navController: NavController, assets : AssetManager) {
+fun TotalResultScreen(navController: NavController, filesDir: File) {
 
-    val philosophy = remember {
-        mutableStateOf(UserPhilosophy())
+    val resultFile = File(filesDir, "user-results.json")
+    if (!resultFile.exists()) {
+        resultFile.writeText("[]")
     }
 
     val results = remember {
-        mutableStateOf(Json.decodeFromString<List<UserPhilosophy>>(
-            BufferedReader(assets.open("user-results.json").reader()).readText())
+        mutableStateOf(
+            Json.decodeFromString<List<UserPhilosophy>>(
+                resultFile.readText()
+            )
         )
     }
 
@@ -107,21 +109,25 @@ fun TotalResultScreen(navController: NavController, assets : AssetManager) {
                 verticalArrangement = Arrangement.SpaceAround,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Image(painter = painterResource(id = R.drawable.spacer), contentDescription = "",
+                Image(
+                    painter = painterResource(id = R.drawable.spacer), contentDescription = "",
                     Modifier
                         .fillMaxWidth()
                         .aspectRatio(ratio = 100f),
-                    contentScale = ContentScale.Fit)
+                    contentScale = ContentScale.Fit
+                )
 
                 for (r in results.value) {
                     Spacer(modifier = Modifier.height(10.dp))
                     ResultLine(result = r)
                     Spacer(modifier = Modifier.height(10.dp))
-                    Image(painter = painterResource(id = R.drawable.spacer), contentDescription = "",
+                    Image(
+                        painter = painterResource(id = R.drawable.spacer), contentDescription = "",
                         Modifier
                             .fillMaxWidth()
                             .aspectRatio(ratio = 100f),
-                        contentScale = ContentScale.Fit)
+                        contentScale = ContentScale.Fit
+                    )
                 }
             }
 
@@ -137,7 +143,8 @@ fun TotalResultScreen(navController: NavController, assets : AssetManager) {
                 Button(
                     colors = ButtonDefaults.buttonColors(Color(0xFFFFEBE3)),
                     onClick = {
-
+                        resultFile.writeText("[]")
+                        navController.navigate("total_result_screen")
                     },
                     modifier = Modifier
                         .border(1.dp, Color(0xFF707070))
@@ -155,8 +162,10 @@ fun TotalResultScreen(navController: NavController, assets : AssetManager) {
 
             }
         }
-        Image(painter = painterResource(id = R.drawable.angel), contentDescription = "",
-            alpha = 0.2f)
+        Image(
+            painter = painterResource(id = R.drawable.angel), contentDescription = "",
+            alpha = 0.2f
+        )
     }
 }
 
@@ -221,21 +230,25 @@ fun TotalResultPreview() {
                 verticalArrangement = Arrangement.SpaceAround,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Image(painter = painterResource(id = R.drawable.spacer), contentDescription = "",
+                Image(
+                    painter = painterResource(id = R.drawable.spacer), contentDescription = "",
                     Modifier
                         .fillMaxWidth()
                         .aspectRatio(ratio = 100f),
-                    contentScale = ContentScale.Fit)
+                    contentScale = ContentScale.Fit
+                )
 
                 for (r in results.value) {
                     Spacer(modifier = Modifier.height(10.dp))
                     ResultLine(result = r)
                     Spacer(modifier = Modifier.height(10.dp))
-                    Image(painter = painterResource(id = R.drawable.spacer), contentDescription = "",
+                    Image(
+                        painter = painterResource(id = R.drawable.spacer), contentDescription = "",
                         Modifier
                             .fillMaxWidth()
                             .aspectRatio(ratio = 100f),
-                        contentScale = ContentScale.Fit)
+                        contentScale = ContentScale.Fit
+                    )
                 }
             }
 
@@ -269,8 +282,10 @@ fun TotalResultPreview() {
 
             }
         }
-        Image(painter = painterResource(id = R.drawable.angel), contentDescription = "",
-            alpha = 0.2f)
+        Image(
+            painter = painterResource(id = R.drawable.angel), contentDescription = "",
+            alpha = 0.2f
+        )
     }
 }
 

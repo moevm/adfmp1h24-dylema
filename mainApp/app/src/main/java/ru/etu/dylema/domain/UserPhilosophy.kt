@@ -4,7 +4,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 class UserPhilosophy(var username: String = "user") {
-    val time = System.currentTimeMillis() / 100;
+    val time = System.currentTimeMillis();
 
     var libLevel: Int = 50
     var utLevel: Int = 50

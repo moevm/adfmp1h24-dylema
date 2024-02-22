@@ -55,13 +55,13 @@ class MainActivity : ComponentActivity() {
                         MainMenu(navController)
                     }
                     composable("dilemma_screen") {
-                        DilemmaScreen(navController, philosophy)
+                        DilemmaScreen(navController, philosophy, filesDir)
                     }
                     composable("result_screen") {
                         ResultScreen(navController, philosophy)
                     }
                     composable("total_result_screen") {
-                        TotalResultScreen(navController, assets)
+                        TotalResultScreen(navController, filesDir)
                     }
                 }
 

@@ -1,5 +1,6 @@
 package ru.etu.dylema
 
+import android.content.res.AssetManager
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -31,11 +32,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 import ru.etu.dylema.domain.DilemmaProvider
 import ru.etu.dylema.domain.UserPhilosophy
+import java.io.File
 
 @Composable
-fun DilemmaScreen(navController: NavController, philosophy: MutableState<UserPhilosophy>) {
+fun DilemmaScreen(navController: NavController, philosophy: MutableState<UserPhilosophy>, filesDir: File) {
     val dilemmaProvider = remember {
         mutableStateOf(DilemmaProvider())
     }
@@ -123,6 +127,7 @@ fun DilemmaScreen(navController: NavController, philosophy: MutableState<UserPhi
                         philosophy.value.accept(solution)
 
                         if (currentTask.value.isFinal) {
+                            saveResults(filesDir, philosophy.value)
                             navController.navigate("result_screen")
                         } else {
                             val task = dilemmaProvider.value.next()
@@ -164,6 +169,7 @@ fun DilemmaScreen(navController: NavController, philosophy: MutableState<UserPhi
                         philosophy.value.accept(solution)
 
                         if (currentTask.value.isFinal) {
+                            saveResults(filesDir, philosophy.value)
                             navController.navigate("result_screen")
                         } else {
                             val task = dilemmaProvider.value.next()
@@ -344,4 +350,16 @@ fun DilemmaScreen() {
         }
     }
 
+}
+
+fun saveResults(filesDir: File, philosophy: UserPhilosophy) {
+    val resultFile = File(filesDir, "user-results.json")
+    if (!resultFile.exists()) {
+        resultFile.writeText("[]")
+    }
+
+    val results = Json.decodeFromString<ArrayList<UserPhilosophy>>(resultFile.readText())
+    results.add(philosophy)
+
+    resultFile.writeText(Json.encodeToString(results))
 }

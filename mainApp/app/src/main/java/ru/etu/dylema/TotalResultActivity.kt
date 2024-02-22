@@ -1,5 +1,6 @@
 package ru.etu.dylema
 
+import android.content.res.AssetManager
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -31,22 +32,24 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import kotlinx.serialization.json.Json
 import ru.etu.dylema.domain.UserPhilosophy
-import ru.etu.dylema.domain.UserResult
+import java.io.BufferedReader
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
 @Composable
-fun TotalResultScreen(navController: NavController) {
+fun TotalResultScreen(navController: NavController, assets : AssetManager) {
 
     val philosophy = remember {
         mutableStateOf(UserPhilosophy())
     }
 
-    //todo read from json
     val results = remember {
-        mutableStateOf(listOf(UserResult(philosophy.value), UserResult(philosophy.value)))
+        mutableStateOf(Json.decodeFromString<List<UserPhilosophy>>(
+            BufferedReader(assets.open("user-results.json").reader()).readText())
+        )
     }
 
     Box(
@@ -163,9 +166,8 @@ fun TotalResultPreview() {
     val philosophy = remember {
         mutableStateOf(UserPhilosophy())
     }
-
     val results = remember {
-        mutableStateOf(listOf(UserResult(philosophy.value), UserResult(philosophy.value)))
+        mutableStateOf(listOf(philosophy.value, philosophy.value))
     }
 
     Box(
@@ -273,7 +275,7 @@ fun TotalResultPreview() {
 }
 
 @Composable
-fun ResultLine(result: UserResult) {
+fun ResultLine(result: UserPhilosophy) {
     Row(
         Modifier
             .fillMaxWidth(),
@@ -291,7 +293,7 @@ fun ResultLine(result: UserResult) {
         )
 
         Text(
-            text = result.philosophy.username,
+            text = result.username,
             color = Color(0xFF707070),
             fontSize = 20.sp,
             fontFamily = FontFamily(Font(resId = R.font.ledger_regular)),

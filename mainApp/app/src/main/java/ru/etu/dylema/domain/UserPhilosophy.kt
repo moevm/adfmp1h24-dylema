@@ -1,6 +1,10 @@
 package ru.etu.dylema.domain
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 class UserPhilosophy(var username: String = "user") {
+    val time = System.currentTimeMillis() / 100;
 
     var libLevel: Int = 50
     var utLevel: Int = 50

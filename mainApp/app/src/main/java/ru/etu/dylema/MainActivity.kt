@@ -61,7 +61,7 @@ class MainActivity : ComponentActivity() {
                         ResultScreen(navController, philosophy)
                     }
                     composable("total_result_screen") {
-                        TotalResultScreen(navController)
+                        TotalResultScreen(navController, assets)
                     }
                 }
 

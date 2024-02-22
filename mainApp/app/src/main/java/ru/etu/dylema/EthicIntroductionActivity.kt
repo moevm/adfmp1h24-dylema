@@ -2,26 +2,24 @@ package ru.etu.dylema
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
@@ -30,14 +28,30 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import kotlinx.serialization.json.Json
 import ru.etu.dylema.domain.Ethic
 import ru.etu.dylema.domain.UserPhilosophy
+import java.io.File
 
 @Composable
-fun ResultScreen(navController: NavController, philosophy: UserPhilosophy) {
+fun EthicIntroduction(time: Long, navController: NavController, filesDir: File) {
+
+    val resultFile = File(filesDir, "user-results.json")
+    if (!resultFile.exists()) {
+        resultFile.writeText("[]")
+    }
+
+    val philosophies =
+        Json.decodeFromString<List<UserPhilosophy>>(
+            resultFile.readText()
+        )
+
+    val philosophy = philosophies.stream().filter{x -> x.time == time}.findAny().get()
+
 
     Box(
-        Modifier.fillMaxSize()
+        Modifier.fillMaxSize(),
+        Alignment.BottomEnd
     ) {
 
         Column(
@@ -54,17 +68,16 @@ fun ResultScreen(navController: NavController, philosophy: UserPhilosophy) {
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.Absolute.SpaceBetween
             ) {
+
                 Button(
                     colors = ButtonDefaults.buttonColors(Color(0xFFFFEBE3)),
-                    onClick = {
-                        navController.navigate("main_screen")
-                    }
+                    onClick = { }
                 ) {
-                    Image(painter = painterResource(id = R.drawable.back), contentDescription = "")
+
                 }
 
                 Text(
-                    text = "Результаты",
+                    text = "Обзор",
                     color = Color(0xFF707070),
                     fontSize = 20.sp,
                     fontFamily = FontFamily(Font(resId = R.font.ledger_regular)),
@@ -74,27 +87,12 @@ fun ResultScreen(navController: NavController, philosophy: UserPhilosophy) {
                 Button(
                     colors = ButtonDefaults.buttonColors(Color(0xFFFFEBE3)),
                     onClick = {
-                        navController.navigate("main_screen")
+                        navController.navigate("total_result_screen")
                     }
                 ) {
                     Image(painter = painterResource(id = R.drawable.close), contentDescription = "")
                 }
 
-            }
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(30.dp, 10.dp),
-                verticalAlignment = Alignment.Top,
-                horizontalArrangement = Arrangement.Center
-            ) {
-                Text(
-                    text = "Ваша философская школа",
-                    color = Color(0xFF707070),
-                    fontSize = 26.sp,
-                    fontFamily = FontFamily(Font(resId = R.font.ledger_regular)),
-                    textAlign = TextAlign.Center
-                )
             }
             Row(
                 modifier = Modifier
@@ -123,83 +121,84 @@ fun ResultScreen(navController: NavController, philosophy: UserPhilosophy) {
                     )
                 }
             }
-            Text(
-                text = philosophy.getEthic().toString(),
-                color = Color(0xFF707070),
-                fontSize = 24.sp,
-                fontFamily = FontFamily(Font(resId = R.font.ledger_regular)),
-                textAlign = TextAlign.Center,
-            )
-            Spacer(modifier = Modifier.height(20.dp))
             Column(
                 modifier = Modifier
-                    .fillMaxWidth(),
+                    .fillMaxWidth()
+                    .padding(20.dp, 0.dp, 0.dp, 0.dp),
                 verticalArrangement = Arrangement.SpaceBetween,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Button(
-                    colors = ButtonDefaults.buttonColors(Color(0xFFFFEBE3)),
-                    onClick = {
-                        navController.navigate("ethic_intro_screen?time=" + philosophy.time)
-                    },
-                    modifier = Modifier
-                        .border(1.dp, Color(0xFF707070))
-                        .size(width = 210.dp, height = 55.dp)
-
-                ) {
-                    Text(
-                        text = "Подробнее", color = Color(0xFF707070),
-                        fontSize = 24.sp,
-                        fontFamily = FontFamily(Font(resId = R.font.ledger_regular)),
-                        textAlign = TextAlign.Center
-                    )
-                }
+                Text(
+                    text = "Результаты " + philosophy.username,
+                    color = Color(0xFF707070),
+                    fontSize = 24.sp,
+                    fontFamily = FontFamily(Font(resId = R.font.ledger_regular)),
+                    textAlign = TextAlign.Center,
+                )
                 Spacer(modifier = Modifier.height(10.dp))
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Image(
-                        painter = painterResource(id = R.drawable.splitline),
-                        contentDescription = ""
-                    )
-
-                    Image(
-                        painter = painterResource(id = R.drawable.splitline),
-                        contentDescription = ""
-                    )
-                }
+                Text(
+                    text = Ethic.LIBERTARIANISM.title + ": " + philosophy.libLevel,
+                    color = Color(0xFF707070),
+                    fontSize = 20.sp,
+                    fontFamily = FontFamily(Font(resId = R.font.ledger_regular)),
+                    textAlign = TextAlign.Start,
+                )
+                Text(
+                    text = Ethic.UTILITARIANISM.title + ": " + philosophy.utLevel,
+                    color = Color(0xFF707070),
+                    fontSize = 20.sp,
+                    fontFamily = FontFamily(Font(resId = R.font.ledger_regular)),
+                    textAlign = TextAlign.Start,
+                )
+                Text(
+                    text = Ethic.EGOISM.title + ": " + philosophy.selfLevel,
+                    color = Color(0xFF707070),
+                    fontSize = 20.sp,
+                    fontFamily = FontFamily(Font(resId = R.font.ledger_regular)),
+                    textAlign = TextAlign.Start,
+                )
                 Spacer(modifier = Modifier.height(10.dp))
-
-                Button(
-                    colors = ButtonDefaults.buttonColors(Color(0xFFFFEBE3)),
-                    onClick = {
-                        navController.navigate("total_result_screen")
-                    },
-                    modifier = Modifier
-                        .border(1.dp, Color(0xFF707070))
-                        .size(width = 210.dp, height = 55.dp)
-
-                ) {
-                    Text(
-                        text = "Все результаты", color = Color(0xFF707070),
-                        fontSize = 20.sp,
-                        fontFamily = FontFamily(Font(resId = R.font.ledger_regular)),
-                        textAlign = TextAlign.Center
-                    )
-                }
-
+                Text(
+                    text = "Этика: " + philosophy.getEthic().toString(),
+                    color = Color(0xFF707070),
+                    fontSize = 24.sp,
+                    fontFamily = FontFamily(Font(resId = R.font.ledger_regular)),
+                    textAlign = TextAlign.Center,
+                )
+                Spacer(modifier = Modifier.height(10.dp))
+                Image(
+                    painter = painterResource(id = R.drawable.spacer), contentDescription = "",
+                    Modifier
+                        .fillMaxWidth()
+                        .aspectRatio(ratio = 100f),
+                    contentScale = ContentScale.Fit
+                )
+                Spacer(modifier = Modifier.height(10.dp))
+                Text(
+                    text = "Описание? Возможно, не нужно",
+                    color = Color(0xFF707070),
+                    fontSize = 20.sp,
+                    fontFamily = FontFamily(Font(resId = R.font.ledger_regular)),
+                    textAlign = TextAlign.Center,
+                )
             }
         }
+        Image(
+            painter = painterResource(id = R.drawable.angel), contentDescription = "",
+            alpha = 0.2f
+        )
     }
+
 }
 
 @Preview(showBackground = true)
 @Composable
-fun ResultPreview() {
-    val philosophy = remember {
-        mutableStateOf(UserPhilosophy(time = 0))
-    }
+fun EthicIntroductionPreview() {
+    val philosophy = UserPhilosophy(time = 0)
 
     Box(
-        Modifier.fillMaxSize()
+        Modifier.fillMaxSize(),
+        Alignment.BottomEnd
     ) {
 
         Column(
@@ -220,11 +219,11 @@ fun ResultPreview() {
                     colors = ButtonDefaults.buttonColors(Color(0xFFFFEBE3)),
                     onClick = { }
                 ) {
-                    Image(painter = painterResource(id = R.drawable.back), contentDescription = "")
+
                 }
 
                 Text(
-                    text = "Результаты",
+                    text = "Обзор",
                     color = Color(0xFF707070),
                     fontSize = 20.sp,
                     fontFamily = FontFamily(Font(resId = R.font.ledger_regular)),
@@ -242,26 +241,11 @@ fun ResultPreview() {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(30.dp, 10.dp),
-                verticalAlignment = Alignment.Top,
-                horizontalArrangement = Arrangement.Center
-            ) {
-                Text(
-                    text = "Ваша философская школа",
-                    color = Color(0xFF707070),
-                    fontSize = 26.sp,
-                    fontFamily = FontFamily(Font(resId = R.font.ledger_regular)),
-                    textAlign = TextAlign.Center
-                )
-            }
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
                     .padding(0.dp, 20.dp),
                 verticalAlignment = Alignment.Top,
                 horizontalArrangement = Arrangement.Center
             ) {
-                when (philosophy.value.getEthic()) {
+                when (philosophy.getEthic()) {
                     Ethic.EGOISM -> Image(
                         painter = painterResource(id = R.drawable.egoism),
                         contentDescription = Ethic.EGOISM.toString(),
@@ -281,71 +265,71 @@ fun ResultPreview() {
                     )
                 }
             }
-            Text(
-                text = philosophy.value.getEthic().toString(),
-                color = Color(0xFF707070),
-                fontSize = 24.sp,
-                fontFamily = FontFamily(Font(resId = R.font.ledger_regular)),
-                textAlign = TextAlign.Center,
-            )
-            Spacer(modifier = Modifier.height(20.dp))
             Column(
                 modifier = Modifier
-                    .fillMaxWidth(),
+                    .fillMaxWidth()
+                    .padding(20.dp, 0.dp, 0.dp, 0.dp),
                 verticalArrangement = Arrangement.SpaceBetween,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Button(
-                    colors = ButtonDefaults.buttonColors(Color(0xFFFFEBE3)),
-                    onClick = {
-
-                    },
-                    modifier = Modifier
-                        .border(1.dp, Color(0xFF707070))
-                        .size(width = 210.dp, height = 55.dp)
-
-                ) {
-                    Text(
-                        text = "Подробнее", color = Color(0xFF707070),
-                        fontSize = 24.sp,
-                        fontFamily = FontFamily(Font(resId = R.font.ledger_regular)),
-                        textAlign = TextAlign.Center
-                    )
-                }
+                Text(
+                    text = "Результаты " + philosophy.username,
+                    color = Color(0xFF707070),
+                    fontSize = 24.sp,
+                    fontFamily = FontFamily(Font(resId = R.font.ledger_regular)),
+                    textAlign = TextAlign.Center,
+                )
                 Spacer(modifier = Modifier.height(10.dp))
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Image(
-                        painter = painterResource(id = R.drawable.splitline),
-                        contentDescription = ""
-                    )
-
-                    Image(
-                        painter = painterResource(id = R.drawable.splitline),
-                        contentDescription = ""
-                    )
-                }
+                Text(
+                    text = Ethic.LIBERTARIANISM.title + ": " + philosophy.libLevel,
+                    color = Color(0xFF707070),
+                    fontSize = 20.sp,
+                    fontFamily = FontFamily(Font(resId = R.font.ledger_regular)),
+                    textAlign = TextAlign.Start,
+                )
+                Text(
+                    text = Ethic.UTILITARIANISM.title + ": " + philosophy.utLevel,
+                    color = Color(0xFF707070),
+                    fontSize = 20.sp,
+                    fontFamily = FontFamily(Font(resId = R.font.ledger_regular)),
+                    textAlign = TextAlign.Start,
+                )
+                Text(
+                    text = Ethic.EGOISM.title + ": " + philosophy.selfLevel,
+                    color = Color(0xFF707070),
+                    fontSize = 20.sp,
+                    fontFamily = FontFamily(Font(resId = R.font.ledger_regular)),
+                    textAlign = TextAlign.Start,
+                )
                 Spacer(modifier = Modifier.height(10.dp))
-
-                Button(
-                    colors = ButtonDefaults.buttonColors(Color(0xFFFFEBE3)),
-                    onClick = {
-
-                    },
-                    modifier = Modifier
-                        .border(1.dp, Color(0xFF707070))
-                        .size(width = 210.dp, height = 55.dp)
-
-                ) {
-                    Text(
-                        text = "Все результаты", color = Color(0xFF707070),
-                        fontSize = 20.sp,
-                        fontFamily = FontFamily(Font(resId = R.font.ledger_regular)),
-                        textAlign = TextAlign.Center
-                    )
-                }
-
+                Text(
+                    text = "Этика: " + philosophy.getEthic().toString(),
+                    color = Color(0xFF707070),
+                    fontSize = 24.sp,
+                    fontFamily = FontFamily(Font(resId = R.font.ledger_regular)),
+                    textAlign = TextAlign.Center,
+                )
+                Spacer(modifier = Modifier.height(10.dp))
+                Image(
+                    painter = painterResource(id = R.drawable.spacer), contentDescription = "",
+                    Modifier
+                        .fillMaxWidth()
+                        .aspectRatio(ratio = 100f),
+                    contentScale = ContentScale.Fit
+                )
+                Spacer(modifier = Modifier.height(10.dp))
+                Text(
+                    text = "Описание? Возможно, не нужно",
+                    color = Color(0xFF707070),
+                    fontSize = 20.sp,
+                    fontFamily = FontFamily(Font(resId = R.font.ledger_regular)),
+                    textAlign = TextAlign.Center,
+                )
             }
         }
+        Image(
+            painter = painterResource(id = R.drawable.angel), contentDescription = "",
+            alpha = 0.2f
+        )
     }
-
 }

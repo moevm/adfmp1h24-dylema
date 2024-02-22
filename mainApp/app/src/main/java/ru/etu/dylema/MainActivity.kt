@@ -34,9 +34,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import ru.etu.dylema.domain.UserPhilosophy
 import ru.etu.dylema.ui.theme.DylemaTheme
 
@@ -46,7 +48,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             val navController = rememberNavController()
             val philosophy = remember {
-                mutableStateOf(UserPhilosophy())
+                mutableStateOf(UserPhilosophy(time = System.currentTimeMillis()))
             }
             DylemaTheme {
                 NavHost(navController = navController, startDestination = "main_screen") {
@@ -55,14 +57,26 @@ class MainActivity : ComponentActivity() {
                         MainMenu(navController)
                     }
                     composable("dilemma_screen") {
-                        DilemmaScreen(navController, philosophy, filesDir)
+                        DilemmaScreen(navController, philosophy.value, filesDir)
                     }
                     composable("result_screen") {
-                        ResultScreen(navController, philosophy)
+                        ResultScreen(navController, philosophy.value)
                     }
                     composable("total_result_screen") {
                         TotalResultScreen(navController, filesDir)
                     }
+                    composable(
+                        "ethic_intro_screen?time={time}",
+                        arguments = listOf(navArgument("time")
+                        { type = NavType.LongType})
+                    ) { entry ->
+                            EthicIntroduction(
+                                entry.arguments?.getLong("time")!!,
+                                navController,
+                                filesDir
+                            )
+                        }
+
                 }
 
             }

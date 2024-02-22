@@ -1,6 +1,5 @@
 package ru.etu.dylema
 
-import android.content.res.AssetManager
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -18,7 +17,6 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -39,7 +37,11 @@ import ru.etu.dylema.domain.UserPhilosophy
 import java.io.File
 
 @Composable
-fun DilemmaScreen(navController: NavController, philosophy: MutableState<UserPhilosophy>, filesDir: File) {
+fun DilemmaScreen(
+    navController: NavController,
+    philosophy: UserPhilosophy,
+    filesDir: File
+) {
     val dilemmaProvider = remember {
         mutableStateOf(DilemmaProvider())
     }
@@ -124,10 +126,10 @@ fun DilemmaScreen(navController: NavController, philosophy: MutableState<UserPhi
                     colors = ButtonDefaults.buttonColors(Color(0xFFFFEBE3)),
                     onClick = {
                         val solution = currentTask.value.leftSolution
-                        philosophy.value.accept(solution)
+                        philosophy.accept(solution)
 
                         if (currentTask.value.isFinal) {
-                            saveResults(filesDir, philosophy.value)
+                            saveResults(filesDir, philosophy)
                             navController.navigate("result_screen")
                         } else {
                             val task = dilemmaProvider.value.next()
@@ -148,7 +150,10 @@ fun DilemmaScreen(navController: NavController, philosophy: MutableState<UserPhi
                 }
                 Spacer(modifier = Modifier.height(10.dp))
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    Image(painter = painterResource(id = R.drawable.splitline), contentDescription = "")
+                    Image(
+                        painter = painterResource(id = R.drawable.splitline),
+                        contentDescription = ""
+                    )
 
                     Text(
                         text = " или ",
@@ -158,7 +163,10 @@ fun DilemmaScreen(navController: NavController, philosophy: MutableState<UserPhi
                         textAlign = TextAlign.Center
                     )
 
-                    Image(painter = painterResource(id = R.drawable.splitline), contentDescription = "")
+                    Image(
+                        painter = painterResource(id = R.drawable.splitline),
+                        contentDescription = ""
+                    )
                 }
                 Spacer(modifier = Modifier.height(10.dp))
 
@@ -166,10 +174,10 @@ fun DilemmaScreen(navController: NavController, philosophy: MutableState<UserPhi
                     colors = ButtonDefaults.buttonColors(Color(0xFFFFEBE3)),
                     onClick = {
                         val solution = currentTask.value.rightSolution
-                        philosophy.value.accept(solution)
+                        philosophy.accept(solution)
 
                         if (currentTask.value.isFinal) {
-                            saveResults(filesDir, philosophy.value)
+                            saveResults(filesDir, philosophy)
                             navController.navigate("result_screen")
                         } else {
                             val task = dilemmaProvider.value.next()
@@ -199,7 +207,7 @@ fun DilemmaScreen(navController: NavController, philosophy: MutableState<UserPhi
 @Composable
 fun DilemmaScreen() {
     val philosophy = remember {
-        mutableStateOf(UserPhilosophy())
+        mutableStateOf(UserPhilosophy(time = 0))
     }
     val dilemmaProvider = remember {
         mutableStateOf(DilemmaProvider())
@@ -307,7 +315,10 @@ fun DilemmaScreen() {
                 }
                 Spacer(modifier = Modifier.height(10.dp))
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    Image(painter = painterResource(id = R.drawable.splitline), contentDescription = "")
+                    Image(
+                        painter = painterResource(id = R.drawable.splitline),
+                        contentDescription = ""
+                    )
 
                     Text(
                         text = " или ",
@@ -317,7 +328,10 @@ fun DilemmaScreen() {
                         textAlign = TextAlign.Center
                     )
 
-                    Image(painter = painterResource(id = R.drawable.splitline), contentDescription = "")
+                    Image(
+                        painter = painterResource(id = R.drawable.splitline),
+                        contentDescription = ""
+                    )
                 }
                 Spacer(modifier = Modifier.height(10.dp))
 

@@ -119,7 +119,7 @@ fun TotalResultScreen(navController: NavController, filesDir: File) {
 
                 for (r in results.value) {
                     Spacer(modifier = Modifier.height(10.dp))
-                    ResultLine(result = r)
+                    ResultLine(result = r, navController)
                     Spacer(modifier = Modifier.height(10.dp))
                     Image(
                         painter = painterResource(id = R.drawable.spacer), contentDescription = "",
@@ -173,7 +173,7 @@ fun TotalResultScreen(navController: NavController, filesDir: File) {
 @Composable
 fun TotalResultPreview() {
     val philosophy = remember {
-        mutableStateOf(UserPhilosophy())
+        mutableStateOf(UserPhilosophy(time = 0))
     }
     val results = remember {
         mutableStateOf(listOf(philosophy.value, philosophy.value))
@@ -240,7 +240,7 @@ fun TotalResultPreview() {
 
                 for (r in results.value) {
                     Spacer(modifier = Modifier.height(10.dp))
-                    ResultLine(result = r)
+                    ResultLine(result = r, null)
                     Spacer(modifier = Modifier.height(10.dp))
                     Image(
                         painter = painterResource(id = R.drawable.spacer), contentDescription = "",
@@ -290,7 +290,7 @@ fun TotalResultPreview() {
 }
 
 @Composable
-fun ResultLine(result: UserPhilosophy) {
+fun ResultLine(result: UserPhilosophy, navController: NavController?) {
     Row(
         Modifier
             .fillMaxWidth(),
@@ -317,7 +317,9 @@ fun ResultLine(result: UserPhilosophy) {
 
         Button(
             colors = ButtonDefaults.buttonColors(Color(0xFFFFEBE3)),
-            onClick = { }
+            onClick = {
+                navController?.navigate("ethic_intro_screen?time=" + result.time)
+            }
         ) {
             Image(painter = painterResource(id = R.drawable.search), contentDescription = "")
         }

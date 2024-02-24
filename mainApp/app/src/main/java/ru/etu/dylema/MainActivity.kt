@@ -57,7 +57,10 @@ class MainActivity : ComponentActivity() {
                         MainMenu(navController)
                     }
                     composable("dilemma_screen") {
-                        DilemmaScreen(navController, philosophy.value, filesDir)
+                        DilemmaScreen(navController = navController, philosophy = philosophy.value, filesDir = filesDir)
+                    }
+                    composable("trolley_screen") {
+                        TrolleyScreen(navController, philosophy.value, filesDir)
                     }
                     composable("result_screen") {
                         ResultScreen(navController, philosophy.value)
@@ -127,7 +130,7 @@ fun MainMenu(navController: NavController) {
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .weight(3f),
+                    .weight(4f),
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
@@ -153,7 +156,7 @@ fun MainMenu(navController: NavController) {
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .weight(3f),
+                    .weight(4f),
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
@@ -162,12 +165,28 @@ fun MainMenu(navController: NavController) {
                     onClick = { navController.navigate("dilemma_screen") },
                     modifier = Modifier
                         .border(1.dp, Color(0xFF707070))
-                        .size(width = 210.dp, height = 55.dp)
+                        .size(width = 210.dp, height = 70.dp)
 
                 ) {
                     Text(
-                        text = "Играть", color = Color(0xFF707070),
-                        fontSize = 26.sp,
+                        text = "Опросник", color = Color(0xFF707070),
+                        fontSize = 24.sp,
+                        fontFamily = FontFamily(Font(resId = R.font.ledger_regular)),
+                        textAlign = TextAlign.Center
+                    )
+                }
+                Spacer(modifier = Modifier.height(30.dp))
+                Button(
+                    colors = ButtonDefaults.buttonColors(Color(0xFFFFEBE3)),
+                    onClick = { navController.navigate("trolley_screen") },
+                    modifier = Modifier
+                        .border(1.dp, Color(0xFF707070))
+                        .size(width = 210.dp, height = 70.dp)
+
+                ) {
+                    Text(
+                        text = "Проблема вагонетки", color = Color(0xFF707070),
+                        fontSize = 20.sp,
                         fontFamily = FontFamily(Font(resId = R.font.ledger_regular)),
                         textAlign = TextAlign.Center
                     )
@@ -178,7 +197,7 @@ fun MainMenu(navController: NavController) {
                     onClick = { navController.navigate("total_result_screen") },
                     modifier = Modifier
                         .border(1.dp, Color(0xFF707070))
-                        .size(width = 210.dp, height = 55.dp)
+                        .size(width = 210.dp, height = 70.dp)
 
                 ) {
                     Text(

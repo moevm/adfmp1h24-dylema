@@ -291,9 +291,11 @@ fun TotalResultPreview() {
 
 @Composable
 fun ResultLine(result: UserPhilosophy, navController: NavController?) {
+    val color =  if (result.testName == "Вагонетка") Color.White else Color.LightGray
+
     Row(
         Modifier
-            .fillMaxWidth(),
+            .fillMaxWidth().background(color = color),
         horizontalArrangement = Arrangement.SpaceAround,
         verticalAlignment = Alignment.CenterVertically
     ) {

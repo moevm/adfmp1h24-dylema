@@ -8,6 +8,7 @@ class UserPhilosophy(var username: String = "user", val time: Long) {
     var libLevel: Int = 50
     var utLevel: Int = 50
     var selfLevel: Int = 50
+    var testName = ""
 
     fun accept(solution: DilemmaSolution) {
         libLevel += solution.lib

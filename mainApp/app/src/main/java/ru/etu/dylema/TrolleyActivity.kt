@@ -30,11 +30,24 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import ru.etu.dylema.domain.Ethic
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
+import ru.etu.dylema.domain.trolley.TrolleyDilemmaProvider
 import ru.etu.dylema.domain.UserPhilosophy
+import java.io.File
 
 @Composable
-fun ResultScreen(navController: NavController, philosophy: UserPhilosophy) {
+fun TrolleyScreen(
+    navController: NavController,
+    philosophy: UserPhilosophy,
+    filesDir: File
+) {
+    val trolleyDilemmaProvider = remember {
+        mutableStateOf(TrolleyDilemmaProvider())
+    }
+    val currentTask = remember {
+        mutableStateOf(trolleyDilemmaProvider.value.current())
+    }
 
     Box(
         Modifier.fillMaxSize()
@@ -43,9 +56,10 @@ fun ResultScreen(navController: NavController, philosophy: UserPhilosophy) {
         Column(
             modifier = Modifier
                 .background(Color(0xFFFFEBE3))
-                .fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally
-
+                .fillMaxSize()
+                .padding(12.dp)
+                .background(Color(0xFFFFEBE3))
+                .border(2.dp, Color(0xFFCCCCCC))
         ) {
             Row(modifier = Modifier.fillMaxWidth()) {
                 Spacer(modifier = Modifier.height(30.dp))
@@ -56,26 +70,23 @@ fun ResultScreen(navController: NavController, philosophy: UserPhilosophy) {
             ) {
                 Button(
                     colors = ButtonDefaults.buttonColors(Color(0xFFFFEBE3)),
-                    onClick = {
-                        navController.navigate("main_screen")
-                    }
+                    onClick = { navController.navigate("main_screen") }
                 ) {
                     Image(painter = painterResource(id = R.drawable.back), contentDescription = "")
                 }
 
                 Text(
-                    text = "Результаты: " + philosophy.testName,
+                    text = "Вопрос " + trolleyDilemmaProvider.value.currentNumber() + "/"
+                            + trolleyDilemmaProvider.value.totalCount(),
                     color = Color(0xFF707070),
-                    fontSize = 20.sp,
+                    fontSize = 26.sp,
                     fontFamily = FontFamily(Font(resId = R.font.ledger_regular)),
                     textAlign = TextAlign.Center
                 )
 
                 Button(
                     colors = ButtonDefaults.buttonColors(Color(0xFFFFEBE3)),
-                    onClick = {
-                        navController.navigate("main_screen")
-                    }
+                    onClick = { navController.navigate("main_screen") }
                 ) {
                     Image(painter = painterResource(id = R.drawable.close), contentDescription = "")
                 }
@@ -84,52 +95,26 @@ fun ResultScreen(navController: NavController, philosophy: UserPhilosophy) {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(30.dp, 10.dp),
-                verticalAlignment = Alignment.Top,
-                horizontalArrangement = Arrangement.Center
-            ) {
-                Text(
-                    text = "Ваша философская школа",
-                    color = Color(0xFF707070),
-                    fontSize = 26.sp,
-                    fontFamily = FontFamily(Font(resId = R.font.ledger_regular)),
-                    textAlign = TextAlign.Center
-                )
-            }
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
                     .padding(0.dp, 20.dp),
                 verticalAlignment = Alignment.Top,
                 horizontalArrangement = Arrangement.Center
             ) {
-                when (philosophy.getEthic()) {
-                    Ethic.EGOISM -> Image(
-                        painter = painterResource(id = R.drawable.egoism),
-                        contentDescription = Ethic.EGOISM.toString(),
-                        alignment = Alignment.TopCenter
-                    )
-
-                    Ethic.UTILITARIANISM -> Image(
-                        painter = painterResource(id = R.drawable.utilitarism),
-                        contentDescription = Ethic.UTILITARIANISM.toString(),
-                        alignment = Alignment.TopCenter
-                    )
-
-                    Ethic.LIBERTARIANISM -> Image(
-                        painter = painterResource(id = R.drawable.libert),
-                        contentDescription = Ethic.LIBERTARIANISM.toString(),
-                        alignment = Alignment.TopCenter
-                    )
-                }
+                Image(
+                    painter = painterResource(id = currentTask.value.imageId),
+                    contentDescription = "Andy Rubin",
+                    alignment = Alignment.TopCenter
+                )
             }
-            Text(
-                text = philosophy.getEthic().toString(),
-                color = Color(0xFF707070),
-                fontSize = 24.sp,
-                fontFamily = FontFamily(Font(resId = R.font.ledger_regular)),
-                textAlign = TextAlign.Center,
-            )
+            Column() {
+                Text(
+                    text = "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab.",
+                    color = Color(0xFF707070),
+                    fontSize = 18.sp,
+                    fontFamily = FontFamily(Font(resId = R.font.ledger_regular)),
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.padding(10.dp)
+                )
+            }
             Spacer(modifier = Modifier.height(20.dp))
             Column(
                 modifier = Modifier
@@ -140,7 +125,16 @@ fun ResultScreen(navController: NavController, philosophy: UserPhilosophy) {
                 Button(
                     colors = ButtonDefaults.buttonColors(Color(0xFFFFEBE3)),
                     onClick = {
-                        navController.navigate("ethic_intro_screen?time=" + philosophy.time)
+                        val solution = currentTask.value.leftSolution
+                        philosophy.accept(solution)
+
+                        if (currentTask.value.isFinal) {
+                            saveResults(filesDir, philosophy)
+                            navController.navigate("result_screen")
+                        } else {
+                            val task = trolleyDilemmaProvider.value.next()
+                            currentTask.value = task
+                        }
                     },
                     modifier = Modifier
                         .border(1.dp, Color(0xFF707070))
@@ -148,7 +142,7 @@ fun ResultScreen(navController: NavController, philosophy: UserPhilosophy) {
 
                 ) {
                     Text(
-                        text = "Подробнее", color = Color(0xFF707070),
+                        text = "Первое", color = Color(0xFF707070),
                         fontSize = 24.sp,
                         fontFamily = FontFamily(Font(resId = R.font.ledger_regular)),
                         textAlign = TextAlign.Center
@@ -161,6 +155,14 @@ fun ResultScreen(navController: NavController, philosophy: UserPhilosophy) {
                         contentDescription = ""
                     )
 
+                    Text(
+                        text = " или ",
+                        color = Color(0xFF707070),
+                        fontSize = 20.sp,
+                        fontFamily = FontFamily(Font(resId = R.font.ledger_regular)),
+                        textAlign = TextAlign.Center
+                    )
+
                     Image(
                         painter = painterResource(id = R.drawable.splitline),
                         contentDescription = ""
@@ -171,7 +173,16 @@ fun ResultScreen(navController: NavController, philosophy: UserPhilosophy) {
                 Button(
                     colors = ButtonDefaults.buttonColors(Color(0xFFFFEBE3)),
                     onClick = {
-                        navController.navigate("total_result_screen")
+                        val solution = currentTask.value.rightSolution
+                        philosophy.accept(solution)
+
+                        if (currentTask.value.isFinal) {
+                            saveResults(filesDir, philosophy)
+                            navController.navigate("result_screen")
+                        } else {
+                            val task = trolleyDilemmaProvider.value.next()
+                            currentTask.value = task
+                        }
                     },
                     modifier = Modifier
                         .border(1.dp, Color(0xFF707070))
@@ -179,8 +190,8 @@ fun ResultScreen(navController: NavController, philosophy: UserPhilosophy) {
 
                 ) {
                     Text(
-                        text = "Все результаты", color = Color(0xFF707070),
-                        fontSize = 20.sp,
+                        text = "Второе", color = Color(0xFF707070),
+                        fontSize = 24.sp,
                         fontFamily = FontFamily(Font(resId = R.font.ledger_regular)),
                         textAlign = TextAlign.Center
                     )
@@ -189,13 +200,20 @@ fun ResultScreen(navController: NavController, philosophy: UserPhilosophy) {
             }
         }
     }
+
 }
 
 @Preview(showBackground = true)
 @Composable
-fun ResultPreview() {
+fun TrolleyScreen() {
     val philosophy = remember {
         mutableStateOf(UserPhilosophy(time = 0))
+    }
+    val trolleyDilemmaProvider = remember {
+        mutableStateOf(TrolleyDilemmaProvider())
+    }
+    val currentTask = remember {
+        mutableStateOf(trolleyDilemmaProvider.value.current())
     }
 
     Box(
@@ -205,9 +223,10 @@ fun ResultPreview() {
         Column(
             modifier = Modifier
                 .background(Color(0xFFFFEBE3))
-                .fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally
-
+                .fillMaxSize()
+                .padding(12.dp)
+                .background(Color(0xFFFFEBE3))
+                .border(2.dp, Color(0xFFCCCCCC))
         ) {
             Row(modifier = Modifier.fillMaxWidth()) {
                 Spacer(modifier = Modifier.height(30.dp))
@@ -224,9 +243,10 @@ fun ResultPreview() {
                 }
 
                 Text(
-                    text = "Результаты",
+                    text = "Вопрос " + trolleyDilemmaProvider.value.currentNumber() + "/"
+                            + trolleyDilemmaProvider.value.totalCount(),
                     color = Color(0xFF707070),
-                    fontSize = 20.sp,
+                    fontSize = 26.sp,
                     fontFamily = FontFamily(Font(resId = R.font.ledger_regular)),
                     textAlign = TextAlign.Center
                 )
@@ -242,52 +262,26 @@ fun ResultPreview() {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(30.dp, 10.dp),
-                verticalAlignment = Alignment.Top,
-                horizontalArrangement = Arrangement.Center
-            ) {
-                Text(
-                    text = "Ваша философская школа",
-                    color = Color(0xFF707070),
-                    fontSize = 26.sp,
-                    fontFamily = FontFamily(Font(resId = R.font.ledger_regular)),
-                    textAlign = TextAlign.Center
-                )
-            }
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
                     .padding(0.dp, 20.dp),
                 verticalAlignment = Alignment.Top,
                 horizontalArrangement = Arrangement.Center
             ) {
-                when (philosophy.value.getEthic()) {
-                    Ethic.EGOISM -> Image(
-                        painter = painterResource(id = R.drawable.egoism),
-                        contentDescription = Ethic.EGOISM.toString(),
-                        alignment = Alignment.TopCenter
-                    )
-
-                    Ethic.UTILITARIANISM -> Image(
-                        painter = painterResource(id = R.drawable.utilitarism),
-                        contentDescription = Ethic.UTILITARIANISM.toString(),
-                        alignment = Alignment.TopCenter
-                    )
-
-                    Ethic.LIBERTARIANISM -> Image(
-                        painter = painterResource(id = R.drawable.libert),
-                        contentDescription = Ethic.LIBERTARIANISM.toString(),
-                        alignment = Alignment.TopCenter
-                    )
-                }
+                Image(
+                    painter = painterResource(id = currentTask.value.imageId),
+                    contentDescription = "Andy Rubin",
+                    alignment = Alignment.TopCenter
+                )
             }
-            Text(
-                text = philosophy.value.getEthic().toString(),
-                color = Color(0xFF707070),
-                fontSize = 24.sp,
-                fontFamily = FontFamily(Font(resId = R.font.ledger_regular)),
-                textAlign = TextAlign.Center,
-            )
+            Column() {
+                Text(
+                    text = "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab.",
+                    color = Color(0xFF707070),
+                    fontSize = 18.sp,
+                    fontFamily = FontFamily(Font(resId = R.font.ledger_regular)),
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.padding(10.dp)
+                )
+            }
             Spacer(modifier = Modifier.height(20.dp))
             Column(
                 modifier = Modifier
@@ -298,7 +292,14 @@ fun ResultPreview() {
                 Button(
                     colors = ButtonDefaults.buttonColors(Color(0xFFFFEBE3)),
                     onClick = {
+                        val solution = currentTask.value.leftSolution
+                        philosophy.value.accept(solution)
 
+                        if (currentTask.value.isFinal) {
+                        } else {
+                            val task = trolleyDilemmaProvider.value.next()
+                            currentTask.value = task
+                        }
                     },
                     modifier = Modifier
                         .border(1.dp, Color(0xFF707070))
@@ -306,7 +307,7 @@ fun ResultPreview() {
 
                 ) {
                     Text(
-                        text = "Подробнее", color = Color(0xFF707070),
+                        text = "Первое", color = Color(0xFF707070),
                         fontSize = 24.sp,
                         fontFamily = FontFamily(Font(resId = R.font.ledger_regular)),
                         textAlign = TextAlign.Center
@@ -319,6 +320,14 @@ fun ResultPreview() {
                         contentDescription = ""
                     )
 
+                    Text(
+                        text = " или ",
+                        color = Color(0xFF707070),
+                        fontSize = 20.sp,
+                        fontFamily = FontFamily(Font(resId = R.font.ledger_regular)),
+                        textAlign = TextAlign.Center
+                    )
+
                     Image(
                         painter = painterResource(id = R.drawable.splitline),
                         contentDescription = ""
@@ -329,7 +338,14 @@ fun ResultPreview() {
                 Button(
                     colors = ButtonDefaults.buttonColors(Color(0xFFFFEBE3)),
                     onClick = {
+                        val solution = currentTask.value.rightSolution
+                        philosophy.value.accept(solution)
 
+                        if (currentTask.value.isFinal) {
+                        } else {
+                            val task = trolleyDilemmaProvider.value.next()
+                            currentTask.value = task
+                        }
                     },
                     modifier = Modifier
                         .border(1.dp, Color(0xFF707070))
@@ -337,8 +353,8 @@ fun ResultPreview() {
 
                 ) {
                     Text(
-                        text = "Все результаты", color = Color(0xFF707070),
-                        fontSize = 20.sp,
+                        text = "Второе", color = Color(0xFF707070),
+                        fontSize = 24.sp,
                         fontFamily = FontFamily(Font(resId = R.font.ledger_regular)),
                         textAlign = TextAlign.Center
                     )
@@ -348,4 +364,18 @@ fun ResultPreview() {
         }
     }
 
+}
+
+private fun saveResults(filesDir: File, philosophy: UserPhilosophy) {
+    val resultFile = File(filesDir, "user-results.json")
+    philosophy.testName = "Вагонетка"
+
+    if (!resultFile.exists()) {
+        resultFile.writeText("[]")
+    }
+
+    val results = Json.decodeFromString<ArrayList<UserPhilosophy>>(resultFile.readText())
+    results.add(philosophy)
+
+    resultFile.writeText(Json.encodeToString(results))
 }

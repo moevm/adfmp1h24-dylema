@@ -1,13 +1,13 @@
-package ru.etu.dylema.domain
+package ru.etu.dylema.domain.dilemma
 
-import ru.etu.dylema.R
+import ru.etu.dylema.domain.DilemmaSolution
 
-class DilemmaProvider() {
+class TextDilemmaProvider() {
 
     private val dilemmas = arrayListOf<Dilemma>(
-        Dilemma(R.drawable.img, DilemmaSolution(lib = 25), DilemmaSolution(ut = 25)),
-        Dilemma(R.drawable.ic_launcher_background, DilemmaSolution(lib = 25), DilemmaSolution(ut = 25)),
-        Dilemma(R.drawable.ic_launcher_foreground, DilemmaSolution(ut = 25), DilemmaSolution(self = 25), true)
+        Dilemma("Lod umn perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab.", DilemmaSolution(lib = 25), DilemmaSolution(ut = 25)),
+        Dilemma("Кто...", DilemmaSolution(lib = 25), DilemmaSolution(ut = 25)),
+        Dilemma("Никто. Lorem 8", DilemmaSolution(ut = 25), DilemmaSolution(self = 105), true)
     );
 
     private var pointer = 0;

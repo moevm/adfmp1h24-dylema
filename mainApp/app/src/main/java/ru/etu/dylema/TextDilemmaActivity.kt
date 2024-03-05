@@ -98,6 +98,7 @@ fun DilemmaScreen(
                 verticalAlignment = Alignment.Top,
                 horizontalArrangement = Arrangement.Center
             ) {
+                // TODO: in figma this image is in the bottom.
                 Image(
                     painter = painterResource(id = R.drawable.man_sculpture),
                     contentDescription = "Andy Rubin",
@@ -121,6 +122,7 @@ fun DilemmaScreen(
                 verticalArrangement = Arrangement.SpaceBetween,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
+                // TODO: buttons should stay in one place on each question
                 Button(
                     colors = ButtonDefaults.buttonColors(Color(0xFFFFEBE3)),
                     onClick = {

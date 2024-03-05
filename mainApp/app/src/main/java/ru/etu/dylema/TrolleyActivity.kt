@@ -122,6 +122,7 @@ fun TrolleyScreen(
                 verticalArrangement = Arrangement.SpaceBetween,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
+                // TODO: buttons should stay in one place on each question
                 Button(
                     colors = ButtonDefaults.buttonColors(Color(0xFFFFEBE3)),
                     onClick = {

@@ -66,6 +66,7 @@ fun ResultScreen(navController: NavController, philosophy: UserPhilosophy) {
                 Text(
                     text = "Результаты: " + philosophy.testName,
                     color = Color(0xFF707070),
+                    // TODO: Maybe bigger fontSize?
                     fontSize = 20.sp,
                     fontFamily = FontFamily(Font(resId = R.font.ledger_regular)),
                     textAlign = TextAlign.Center
@@ -137,6 +138,8 @@ fun ResultScreen(navController: NavController, philosophy: UserPhilosophy) {
                 verticalArrangement = Arrangement.SpaceBetween,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
+                // TODO: add "Поделиться" button which will open small window
+
                 Button(
                     colors = ButtonDefaults.buttonColors(Color(0xFFFFEBE3)),
                     onClick = {
@@ -154,6 +157,9 @@ fun ResultScreen(navController: NavController, philosophy: UserPhilosophy) {
                         textAlign = TextAlign.Center
                     )
                 }
+
+                // TODO: There should not be any lines between buttons
+                // TODO: Why spacers are needed?
                 Spacer(modifier = Modifier.height(10.dp))
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Image(
@@ -180,6 +186,7 @@ fun ResultScreen(navController: NavController, philosophy: UserPhilosophy) {
                 ) {
                     Text(
                         text = "Все результаты", color = Color(0xFF707070),
+                        // TODO: Font size for all buttons must be the same
                         fontSize = 20.sp,
                         fontFamily = FontFamily(Font(resId = R.font.ledger_regular)),
                         textAlign = TextAlign.Center
@@ -194,6 +201,7 @@ fun ResultScreen(navController: NavController, philosophy: UserPhilosophy) {
 @Preview(showBackground = true)
 @Composable
 fun ResultPreview() {
+    // TODO: all previews must use composable developed and not copy of its code
     val philosophy = remember {
         mutableStateOf(UserPhilosophy(time = 0))
     }

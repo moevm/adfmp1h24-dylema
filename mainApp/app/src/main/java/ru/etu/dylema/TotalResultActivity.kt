@@ -261,6 +261,9 @@ fun TotalResultPreview() {
                 verticalArrangement = Arrangement.Bottom,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
+                // TODO: Remove all button should:
+                //  1. Show confirmation screen
+                //  2. After deleting - return to main screen
                 Button(
                     colors = ButtonDefaults.buttonColors(Color(0xFFFFEBE3)),
                     onClick = {
@@ -291,6 +294,7 @@ fun TotalResultPreview() {
 
 @Composable
 fun ResultLine(result: UserPhilosophy, navController: NavController?) {
+    // TODO: remove color. Different dilemmas results should be outlined differently
     val color =  if (result.testName == "Вагонетка") Color.White else Color.LightGray
 
     Row(
@@ -317,6 +321,8 @@ fun ResultLine(result: UserPhilosophy, navController: NavController?) {
             textAlign = TextAlign.Center
         )
 
+        // TODO: Add share button
+        // TODO: Change button style to icon only?
         Button(
             colors = ButtonDefaults.buttonColors(Color(0xFFFFEBE3)),
             onClick = {

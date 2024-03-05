@@ -44,6 +44,11 @@ import ru.etu.dylema.ui.theme.DylemaTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
+
+        // TODO: result are not saved in the device!
+        // TODO: check all fontSizes
+        // TODO: all buttons should have background - see figma
+
         super.onCreate(savedInstanceState)
         setContent {
             val navController = rememberNavController()
@@ -57,7 +62,11 @@ class MainActivity : ComponentActivity() {
                         MainMenu(navController)
                     }
                     composable("dilemma_screen") {
-                        DilemmaScreen(navController = navController, philosophy = philosophy.value, filesDir = filesDir)
+                        DilemmaScreen(
+                            navController = navController,
+                            philosophy = philosophy.value,
+                            filesDir = filesDir
+                        )
                     }
                     composable("trolley_screen") {
                         TrolleyScreen(navController, philosophy.value, filesDir)
@@ -71,14 +80,14 @@ class MainActivity : ComponentActivity() {
                     composable(
                         "ethic_intro_screen?time={time}",
                         arguments = listOf(navArgument("time")
-                        { type = NavType.LongType})
+                        { type = NavType.LongType })
                     ) { entry ->
-                            EthicIntroduction(
-                                entry.arguments?.getLong("time")!!,
-                                navController,
-                                filesDir
-                            )
-                        }
+                        EthicIntroduction(
+                            entry.arguments?.getLong("time")!!,
+                            navController,
+                            filesDir
+                        )
+                    }
 
                 }
 
@@ -119,6 +128,7 @@ fun MainMenu(navController: NavController) {
         contentAlignment = Alignment.BottomStart
     ) {
 
+        // TODO: border should be 3 dp everywhere!
         Column(
             modifier = Modifier
                 .background(Color(0xFFFFEBE3))
@@ -160,6 +170,7 @@ fun MainMenu(navController: NavController) {
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
+                // TODO: make button for dilemmas list screen instead of next 2 buttons
                 Button(
                     colors = ButtonDefaults.buttonColors(Color(0xFFFFEBE3)),
                     onClick = { navController.navigate("dilemma_screen") },
@@ -207,11 +218,13 @@ fun MainMenu(navController: NavController) {
                         textAlign = TextAlign.Center
                     )
                 }
+                // TODO [MUST!]: create "Справка" button and screen
             }
             Column(modifier = Modifier.weight(2f)) {
 
             }
         }
+        // TODO: This image should be much bigger
         Image(
             painter = painterResource(id = R.drawable.man_sculpture), contentDescription = "",
         )
@@ -283,6 +296,8 @@ fun GreetingPreview() {
                     )
                 }
                 Spacer(modifier = Modifier.height(30.dp))
+
+                // TODO: This button should block if there isn't any results stored!
                 Button(
                     colors = ButtonDefaults.buttonColors(Color(0xFFFFEBE3)),
                     onClick = { },

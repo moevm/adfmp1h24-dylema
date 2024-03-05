@@ -36,6 +36,8 @@ import java.io.File
 @Composable
 fun EthicIntroduction(time: Long, navController: NavController, filesDir: File) {
 
+    // TODO: try with bigger description for scrolling testing
+
     val resultFile = File(filesDir, "user-results.json")
     if (!resultFile.exists()) {
         resultFile.writeText("[]")
@@ -84,6 +86,7 @@ fun EthicIntroduction(time: Long, navController: NavController, filesDir: File) 
                     textAlign = TextAlign.Center
                 )
 
+                // TODO: add knowledge of previous screen! Must not always return to results list
                 Button(
                     colors = ButtonDefaults.buttonColors(Color(0xFFFFEBE3)),
                     onClick = {

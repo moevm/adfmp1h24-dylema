@@ -1,4 +1,4 @@
-package ru.etu.dylema
+package ru.etu.dylema.page
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -30,6 +30,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import ru.etu.dylema.R
 import ru.etu.dylema.domain.Ethic
 import ru.etu.dylema.domain.UserPhilosophy
 

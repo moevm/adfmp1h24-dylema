@@ -1,4 +1,4 @@
-package ru.etu.dylema
+package ru.etu.dylema.page
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -32,6 +32,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import kotlinx.serialization.json.Json
+import ru.etu.dylema.R
 import ru.etu.dylema.domain.UserPhilosophy
 import java.io.File
 import java.text.SimpleDateFormat

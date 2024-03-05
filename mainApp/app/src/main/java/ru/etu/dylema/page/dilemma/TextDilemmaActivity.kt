@@ -71,6 +71,7 @@ fun DilemmaScreen(
                 .size(width = 40.dp, height = 40.dp),
             shape = RectangleShape,
             contentPadding = PaddingValues(),
+            // TODO: Add confirmation window
             onClick = { navController.navigate("main_screen") }
         ) {
             Image(

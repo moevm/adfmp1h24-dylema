@@ -226,95 +226,16 @@ fun MainMenu(navController: NavController) {
     }
 }
 
-@Preview(showBackground = true)
+@Preview(
+    showBackground = true,
+    widthDp = 390,
+    heightDp = 844
+
+)
 @Composable
 fun GreetingPreview() {
-    Box(
-        Modifier.fillMaxSize(),
-        contentAlignment = Alignment.BottomStart
-    ) {
-
-        Column(
-            modifier = Modifier
-                .background(Color(0xFFFFEBE3))
-                .fillMaxSize()
-                .padding(12.dp)
-                .background(Color(0xFFFFEBE3))
-                .border(2.dp, Color(0xFFCCCCCC))
-        ) {
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .weight(3f),
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Image(
-                    painter = painterResource(id = R.drawable.column),
-                    "",
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(top = 80.dp),
-                    alignment = Alignment.Center
-                )
-                Text(
-                    text = "Дилемма",
-                    color = Color(0xFF707070),
-                    fontSize = 44.sp,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(top = 30.dp, bottom = 40.dp),
-                    fontFamily = FontFamily(Font(resId = R.font.ledger_regular)),
-                    textAlign = TextAlign.Center
-                )
-            }
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .weight(3f),
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Button(
-                    colors = ButtonDefaults.buttonColors(Color(0xFFFFEBE3)),
-                    onClick = { },
-                    modifier = Modifier
-                        .border(1.dp, Color(0xFF707070))
-                        .size(width = 210.dp, height = 55.dp)
-
-                ) {
-                    Text(
-                        text = "Играть", color = Color(0xFF707070),
-                        fontSize = 26.sp,
-                        fontFamily = FontFamily(Font(resId = R.font.ledger_regular)),
-                        textAlign = TextAlign.Center
-                    )
-                }
-                Spacer(modifier = Modifier.height(30.dp))
-
-                // TODO: This button should block if there isn't any results stored!
-                Button(
-                    colors = ButtonDefaults.buttonColors(Color(0xFFFFEBE3)),
-                    onClick = { },
-                    modifier = Modifier
-                        .border(1.dp, Color(0xFF707070))
-                        .size(width = 210.dp, height = 55.dp)
-
-                ) {
-                    Text(
-                        text = "Результаты", color = Color(0xFF707070),
-                        fontSize = 26.sp,
-                        fontFamily = FontFamily(Font(resId = R.font.ledger_regular)),
-                        textAlign = TextAlign.Center
-                    )
-                }
-            }
-            Column(modifier = Modifier.weight(2f)) {
-
-            }
-        }
-        Image(
-            painter = painterResource(id = R.drawable.man_sculpture), contentDescription = "",
-        )
-    }
+    val navController = rememberNavController()
+    MainMenu(
+        navController
+    )
 }

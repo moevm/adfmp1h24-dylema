@@ -67,7 +67,7 @@ fun DilemmaScreen(
         TextButton(
             modifier = Modifier
                 .align(Alignment.TopEnd)
-                .offset(-30.dp, 40.dp)
+                .offset((-30).dp, 40.dp)
                 .size(width = 40.dp, height = 40.dp),
             shape = RectangleShape,
             contentPadding = PaddingValues(),
@@ -89,32 +89,32 @@ fun DilemmaScreen(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.SpaceBetween
         ) {
+            Text(
+                modifier = Modifier
+                    .padding(0.dp, 50.dp, 0.dp, 0.dp),
+                text = "Вопрос " + textDilemmaProvider.value.currentNumber() + "/"
+                        + textDilemmaProvider.value.totalCount(),
+                color = Color(0xFF707070),
+                fontSize = 24.sp,
+                fontFamily = FontFamily(Font(resId = R.font.ledger_regular))
+            )
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
                     .weight(2f),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Text(
-                    modifier = Modifier
-                        .padding(0.dp, 50.dp, 0.dp, 0.dp),
-                    text = "Вопрос " + textDilemmaProvider.value.currentNumber() + "/"
-                            + textDilemmaProvider.value.totalCount(),
-                    color = Color(0xFF707070),
-                    fontSize = 24.sp,
-                    fontFamily = FontFamily(Font(resId = R.font.ledger_regular))
-                )
                 // TODO: Add progress bar (https://developer.android.com/jetpack/compose/components/progress)
                 Spacer(modifier = Modifier.height(30.dp))
                 Text(
                     text = currentTask.value.text,
                     color = Color(0xFF707070),
-                    fontSize = 24.sp,
+                    fontSize = 18.sp,
                     fontFamily = FontFamily(Font(resId = R.font.ledger_regular)),
                     textAlign = TextAlign.Center,
                     modifier = Modifier.padding(10.dp)
                 )
-                Spacer(modifier = Modifier.height(20.dp))
+                Spacer(modifier = Modifier.height(30.dp))
                 Column(
                     modifier = Modifier
                         .fillMaxWidth(),

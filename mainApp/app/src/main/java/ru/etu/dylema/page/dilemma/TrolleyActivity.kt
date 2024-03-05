@@ -1,4 +1,4 @@
-package ru.etu.dylema.page
+package ru.etu.dylema.page.dilemma
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background

@@ -163,7 +163,7 @@ fun MainMenu(navController: NavController) {
 
 )
 @Composable
-fun GreetingPreview() {
+fun MainMenuPreview() {
     val navController = rememberNavController()
     MainMenu(
         navController

@@ -145,6 +145,26 @@ fun MainMenu(navController: NavController) {
                     )
                 }
                 // TODO [MUST!]: create "Справка" button and screen
+                Spacer(modifier = Modifier.height(30.dp))
+                // TODO: This button should block if there isn't any results stored!
+                Button(
+                    modifier = Modifier
+                        .width(210.dp),
+                    colors = ButtonDefaults.buttonColors(Color(0xFFF4E0D9)),
+                    shape = RectangleShape,
+                    border = BorderStroke(1.dp, Color(0xFF707070)),
+                    contentPadding = PaddingValues(0.dp, 0.dp, 0.dp, 8.dp),
+                    onClick = { navController.navigate("about") },
+                ) {
+                    Text(
+                        text = "Справка",
+                        color = Color(0xFF707070),
+                        fontSize = 32.sp,
+                        lineHeight = 32.sp,
+                        fontFamily = FontFamily(Font(resId = R.font.ledger_regular)),
+                        textAlign = TextAlign.Center
+                    )
+                }
             }
         }
         Image(

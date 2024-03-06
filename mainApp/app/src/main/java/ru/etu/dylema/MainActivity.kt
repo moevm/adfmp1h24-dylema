@@ -11,6 +11,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import ru.etu.dylema.domain.UserPhilosophy
+import ru.etu.dylema.page.About
 import ru.etu.dylema.page.dilemma.DilemmaScreen
 import ru.etu.dylema.page.ResultDescription
 import ru.etu.dylema.page.MainMenu
@@ -23,8 +24,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
 
         // TODO: result are not saved in the device!
-        // TODO: check all fontSizes
-        // TODO: all buttons should have background - see figma
+        // TODO: check that all pages have consistent title sizes and positions. Same with close/return buttons
 
         super.onCreate(savedInstanceState)
         setContent {
@@ -37,6 +37,9 @@ class MainActivity : ComponentActivity() {
                     composable("main_screen") {
                         philosophy.value.reset()
                         MainMenu(navController)
+                    }
+                    composable("about") {
+                        About(navController)
                     }
                     composable("dilemma_screen") {
                         DilemmaScreen(

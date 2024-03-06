@@ -77,7 +77,6 @@ fun ResultScreen(navController: NavController, philosophy: UserPhilosophy) {
             Text(
                 text = "Результаты: " + philosophy.testName,
                 color = Color(0xFF707070),
-                // TODO: Maybe bigger fontSize?
                 fontSize = 23.sp,
                 fontFamily = FontFamily(Font(resId = R.font.ledger_regular)),
                 textAlign = TextAlign.Center

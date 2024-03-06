@@ -3,7 +3,6 @@ package ru.etu.dylema.page
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -16,7 +15,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.ArrowBack
 import androidx.compose.material3.Button
@@ -43,8 +41,6 @@ import androidx.navigation.compose.rememberNavController
 import ru.etu.dylema.R
 import ru.etu.dylema.domain.Ethic
 import ru.etu.dylema.domain.UserPhilosophy
-import ru.etu.dylema.page.dilemma.TrolleyScreen
-import java.io.File
 
 @Composable
 fun ResultScreen(navController: NavController, philosophy: UserPhilosophy) {
@@ -56,6 +52,7 @@ fun ResultScreen(navController: NavController, philosophy: UserPhilosophy) {
     ) {
         TextButton(
             modifier = Modifier
+
                 .align(Alignment.TopStart)
                 .offset((20).dp, 20.dp)
                 .size(width = 35.dp, height = 35.dp),
@@ -89,6 +86,7 @@ fun ResultScreen(navController: NavController, philosophy: UserPhilosophy) {
                 text = "Ваша \nфилософская школа",
                 color = Color(0xFF707070),
                 fontSize = 32.sp,
+                lineHeight = 35.sp,
                 fontFamily = FontFamily(Font(resId = R.font.ledger_regular)),
                 textAlign = TextAlign.Center
             )

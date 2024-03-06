@@ -12,7 +12,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import ru.etu.dylema.domain.UserPhilosophy
 import ru.etu.dylema.page.dilemma.DilemmaScreen
-import ru.etu.dylema.page.EthicIntroduction
+import ru.etu.dylema.page.ResultDescription
 import ru.etu.dylema.page.MainMenu
 import ru.etu.dylema.page.ResultScreen
 import ru.etu.dylema.page.TotalResultScreen
@@ -59,7 +59,7 @@ class MainActivity : ComponentActivity() {
                         arguments = listOf(navArgument("time")
                         { type = NavType.LongType })
                     ) { entry ->
-                        EthicIntroduction(
+                        ResultDescription(
                             entry.arguments?.getLong("time")!!,
                             navController,
                             filesDir

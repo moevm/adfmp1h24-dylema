@@ -16,9 +16,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.ArrowBack
 import androidx.compose.material.icons.outlined.Close
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -93,7 +91,7 @@ fun TrolleyScreen(
         ) {
             Text(
                 modifier = Modifier
-                    .padding(0.dp, 50.dp, 0.dp, 20.dp),
+                    .padding(0.dp, 30.dp, 0.dp, 20.dp),
                 text = "Вопрос " + trolleyDilemmaProvider.value.currentNumber() + "/"
                         + trolleyDilemmaProvider.value.totalCount(),
                 color = Color(0xFF707070),

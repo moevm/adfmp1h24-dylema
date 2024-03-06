@@ -1,5 +1,6 @@
 package ru.etu.dylema.page.dilemma
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -44,8 +45,8 @@ import androidx.navigation.compose.rememberNavController
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import ru.etu.dylema.R
-import ru.etu.dylema.domain.UserPhilosophy
 import ru.etu.dylema.domain.trolley.TrolleyDilemmaProvider
+import ru.etu.dylema.domain.UserPhilosophy
 import java.io.File
 
 @Composable
@@ -171,6 +172,11 @@ fun TrolleyScreen(
                 }
             }
         }
+
+        BackHandler {
+            openStopConfirmationDialog.value = true
+        }
+
         TextButton(
             modifier = Modifier
                 .align(Alignment.TopEnd)

@@ -17,8 +17,11 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.ArrowBack
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -55,17 +58,16 @@ fun ResultScreen(navController: NavController, philosophy: UserPhilosophy) {
             modifier = Modifier
                 .align(Alignment.TopStart)
                 .offset((20).dp, 20.dp)
-                .size(width = 25.dp, height = 25.dp),
+                .size(width = 35.dp, height = 35.dp),
             shape = RectangleShape,
             contentPadding = PaddingValues(),
             onClick = { navController.navigate("main_screen") }
         ) {
-            Image(
-                modifier = Modifier
-                    .width(25.dp)
-                    .height(25.dp),
-                painter = painterResource(id = R.drawable.back),
-                contentDescription = ""
+            Icon(
+                modifier = Modifier.size(35.dp),
+                imageVector = Icons.Outlined.ArrowBack,
+                contentDescription = "Back button",
+                tint = Color(0xFF000000)
             )
         }
         Column(

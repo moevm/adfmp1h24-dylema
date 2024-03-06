@@ -1,27 +1,40 @@
 package ru.etu.dylema.page
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.ArrowBack
+import androidx.compose.material.icons.outlined.Search
+import androidx.compose.material.icons.outlined.Share
+import androidx.compose.material.icons.rounded.Share
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.Font
@@ -31,16 +44,22 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import androidx.navigation.NavDirections
+import androidx.navigation.compose.rememberNavController
+import kotlinx.coroutines.yield
 import kotlinx.serialization.json.Json
 import ru.etu.dylema.R
 import ru.etu.dylema.domain.UserPhilosophy
+import ru.etu.dylema.page.dilemma.DilemmaScreen
 import java.io.File
 import java.text.SimpleDateFormat
+import java.util.Collections
 import java.util.Date
 import java.util.Locale
 
 @Composable
 fun TotalResultScreen(navController: NavController, filesDir: File) {
+
 
     val resultFile = File(filesDir, "user-results.json")
     if (!resultFile.exists()) {
@@ -55,81 +74,74 @@ fun TotalResultScreen(navController: NavController, filesDir: File) {
         )
     }
 
+    /*val philosophy = remember {
+        mutableStateOf(UserPhilosophy(time = 0))
+    }
+
+    philosophy.value.testName = "Вагонетка"
+
+    val philosophy1 = remember {
+        mutableStateOf(UserPhilosophy(time = 234553L))
+    }
+
+    philosophy1.value.testName = "Дилемма"
+
+
+    val results = remember {
+        mutableStateOf(listOf(philosophy.value, philosophy1.value, philosophy.value, philosophy1.value))
+    }*/
+
     Box(
-        Modifier.fillMaxSize(),
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color(0xFFFFEBE3)),
         contentAlignment = Alignment.BottomEnd
     ) {
 
+        // TODO: should return to prev. page
+        TextButton(
+            modifier = Modifier
+                .align(Alignment.TopStart)
+                .offset((20).dp, 30.dp)
+                .size(width = 35.dp, height = 35.dp),
+            shape = RectangleShape,
+            contentPadding = PaddingValues(),
+            onClick = {
+                navController.popBackStack()
+            }
+        ) {
+            Icon(
+                modifier = Modifier.size(35.dp),
+                imageVector = Icons.Outlined.ArrowBack,
+                contentDescription = "Back button",
+                tint = Color(0xFF000000)
+            )
+        }
         Column(
             modifier = Modifier
-                .background(Color(0xFFFFEBE3))
                 .fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally
 
         ) {
-            Row(modifier = Modifier.fillMaxWidth()) {
-                Spacer(modifier = Modifier.height(30.dp))
-            }
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.Absolute.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Button(
-                    colors = ButtonDefaults.buttonColors(Color(0xFFFFEBE3)),
-                    onClick = {
-                        navController.navigate("main_screen")
-                    }
-                ) {
-                    Image(painter = painterResource(id = R.drawable.back), contentDescription = "")
+            Text(
+                modifier = Modifier.padding(0.dp, 30.dp, 0.dp, 20.dp),
+                text = "Все результаты",
+                color = Color(0xFF707070),
+                fontSize = 22.sp,
+                fontFamily = FontFamily(Font(resId = R.font.ledger_regular)),
+                textAlign = TextAlign.Center
+            )
+
+            val uniqueTasks: MutableMap<String, MutableList<UserPhilosophy>> = HashMap()
+            for (r in results.value) {
+                if (r.testName !in uniqueTasks.keys) {
+                    uniqueTasks[r.testName] = ArrayList()
                 }
-
-                Text(
-                    text = "Все результаты",
-                    color = Color(0xFF707070),
-                    fontSize = 22.sp,
-                    fontFamily = FontFamily(Font(resId = R.font.ledger_regular)),
-                    textAlign = TextAlign.Center
-                )
-
-                Button(
-                    colors = ButtonDefaults.buttonColors(Color(0xFFFFEBE3)),
-                    onClick = {
-                        navController.navigate("main_screen")
-                    }
-                ) {
-                    Image(painter = painterResource(id = R.drawable.close), contentDescription = "")
-                }
-
+                uniqueTasks[r.testName]!!.add(r)
             }
 
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(15.dp, 0.dp, 15.dp, 0.dp),
-                verticalArrangement = Arrangement.SpaceAround,
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Image(
-                    painter = painterResource(id = R.drawable.spacer), contentDescription = "",
-                    Modifier
-                        .fillMaxWidth()
-                        .aspectRatio(ratio = 100f),
-                    contentScale = ContentScale.Fit
-                )
-
-                for (r in results.value) {
-                    Spacer(modifier = Modifier.height(10.dp))
-                    ResultLine(result = r, navController)
-                    Spacer(modifier = Modifier.height(10.dp))
-                    Image(
-                        painter = painterResource(id = R.drawable.spacer), contentDescription = "",
-                        Modifier
-                            .fillMaxWidth()
-                            .aspectRatio(ratio = 100f),
-                        contentScale = ContentScale.Fit
-                    )
-                }
+            for (test in uniqueTasks.entries) {
+                ResultBlock(test.key, test.value, navController)
             }
 
             Spacer(modifier = Modifier.height(20.dp))
@@ -141,6 +153,9 @@ fun TotalResultScreen(navController: NavController, filesDir: File) {
                 verticalArrangement = Arrangement.Bottom,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
+                // TODO: Remove all button should:
+                //  1. Show confirmation screen
+                //  2. After deleting - return to main screen
                 Button(
                     colors = ButtonDefaults.buttonColors(Color(0xFFFFEBE3)),
                     onClick = {
@@ -170,138 +185,57 @@ fun TotalResultScreen(navController: NavController, filesDir: File) {
     }
 }
 
-@Preview(showBackground = true)
 @Composable
-fun TotalResultPreview() {
-    val philosophy = remember {
-        mutableStateOf(UserPhilosophy(time = 0))
-    }
-    val results = remember {
-        mutableStateOf(listOf(philosophy.value, philosophy.value))
-    }
+fun ResultBlock(testName: String, results: MutableList<UserPhilosophy>, navController: NavController, modifier: Modifier = Modifier) {
 
-    Box(
-        Modifier.fillMaxSize(),
-        contentAlignment = Alignment.BottomEnd
+    Column(
+        modifier = modifier
+            .padding(10.dp, 10.dp)
+            .border(BorderStroke(3.dp, Color(0xFF707070)))
+
     ) {
-
+        Text(
+            modifier = Modifier
+                .fillMaxWidth(0.9f)
+                .padding(10.dp, 10.dp),
+            text = testName,
+            color = Color(0xFF707070),
+            fontSize = 24.sp,
+            fontFamily = FontFamily(Font(resId = R.font.ledger_regular)),
+            textAlign = TextAlign.Left
+        )
         Column(
             modifier = Modifier
-                .background(Color(0xFFFFEBE3))
-                .fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally
+                .fillMaxWidth()
+                .height(3.dp)
+                .border(BorderStroke(3.dp, Color(0xFF707070)))
+        ){}
 
-        ) {
-            Row(modifier = Modifier.fillMaxWidth()) {
-                Spacer(modifier = Modifier.height(30.dp))
-            }
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.Absolute.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Button(
-                    colors = ButtonDefaults.buttonColors(Color(0xFFFFEBE3)),
-                    onClick = { }
-                ) {
-                    Image(painter = painterResource(id = R.drawable.back), contentDescription = "")
-                }
+        val sortedResults = results.sortedByDescending { it.time }
+        for (i in 1..sortedResults.size) {
+            ResultLine(result = sortedResults[i - 1], navController)
 
-                Text(
-                    text = "Все результаты",
-                    color = Color(0xFF707070),
-                    fontSize = 22.sp,
-                    fontFamily = FontFamily(Font(resId = R.font.ledger_regular)),
-                    textAlign = TextAlign.Center
-                )
-
-                Button(
-                    colors = ButtonDefaults.buttonColors(Color(0xFFFFEBE3)),
-                    onClick = { }
-                ) {
-                    Image(painter = painterResource(id = R.drawable.close), contentDescription = "")
-                }
-
-            }
-
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(15.dp, 0.dp, 15.dp, 0.dp),
-                verticalArrangement = Arrangement.SpaceAround,
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Image(
-                    painter = painterResource(id = R.drawable.spacer), contentDescription = "",
-                    Modifier
-                        .fillMaxWidth()
-                        .aspectRatio(ratio = 100f),
-                    contentScale = ContentScale.Fit
-                )
-
-                for (r in results.value) {
-                    Spacer(modifier = Modifier.height(10.dp))
-                    ResultLine(result = r, null)
-                    Spacer(modifier = Modifier.height(10.dp))
-                    Image(
-                        painter = painterResource(id = R.drawable.spacer), contentDescription = "",
-                        Modifier
-                            .fillMaxWidth()
-                            .aspectRatio(ratio = 100f),
-                        contentScale = ContentScale.Fit
-                    )
-                }
-            }
-
-            Spacer(modifier = Modifier.height(20.dp))
-
-
-            Column(
-                modifier = Modifier
-                    .fillMaxSize(),
-                verticalArrangement = Arrangement.Bottom,
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                // TODO: Remove all button should:
-                //  1. Show confirmation screen
-                //  2. After deleting - return to main screen
-                Button(
-                    colors = ButtonDefaults.buttonColors(Color(0xFFFFEBE3)),
-                    onClick = {
-
-                    },
+            if (i != sortedResults.size) {
+                Column(
                     modifier = Modifier
-                        .border(1.dp, Color(0xFF707070))
-
-                ) {
-                    Text(
-                        text = "Удалить все результаты", color = Color(0xFF707070),
-                        fontSize = 22.sp,
-                        fontFamily = FontFamily(Font(resId = R.font.ledger_regular)),
-                        textAlign = TextAlign.Center
-                    )
-                }
-
-                Spacer(modifier = Modifier.height(35.dp))
-
+                        .fillMaxWidth()
+                        .height(1.dp)
+                        .border(BorderStroke(1.dp, Color(0xFF707070)))
+                ){}
             }
+
+
         }
-        Image(
-            painter = painterResource(id = R.drawable.angel), contentDescription = "",
-            alpha = 0.2f
-        )
     }
 }
 
 @Composable
 fun ResultLine(result: UserPhilosophy, navController: NavController?) {
-    // TODO: remove color. Different dilemmas results should be outlined differently
-    val color =  if (result.testName == "Вагонетка") Color.White else Color.LightGray
-
     Row(
         Modifier
-            .fillMaxWidth().background(color = color),
-        horizontalArrangement = Arrangement.SpaceAround,
+            .fillMaxWidth()
+            .padding(10.dp, 10.dp),
+        horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
         val date = getDate(result.time)
@@ -322,20 +256,66 @@ fun ResultLine(result: UserPhilosophy, navController: NavController?) {
             textAlign = TextAlign.Center
         )
 
-        // TODO: Add share button
-        // TODO: Change button style to icon only?
-        Button(
+        Row() {
+            Button(
+                modifier = Modifier
+                    .size(width = 30.dp, height = 30.dp),
             colors = ButtonDefaults.buttonColors(Color(0xFFFFEBE3)),
-            onClick = {
-                navController?.navigate("ethic_intro_screen?time=" + result.time)
+                contentPadding = PaddingValues(0.dp, 0.dp, 2.dp, 0.dp),
+                onClick = {
+                    navController?.navigate("ethic_intro_screen?time=" + result.time)
+                }
+            ) {
+                Icon(
+                    modifier = Modifier.size(20.dp),
+                    imageVector = Icons.Outlined.Share,
+                    contentDescription = "Share button",
+                    tint = Color(0xFF000000)
+                )
             }
-        ) {
-            Image(painter = painterResource(id = R.drawable.search), contentDescription = "")
+
+            Spacer(modifier = Modifier.width(5.dp))
+
+            Button(
+                modifier = Modifier
+                    .size(width = 30.dp, height = 30.dp),
+            colors = ButtonDefaults.buttonColors(Color(0xFFFFEBE3)),
+                contentPadding = PaddingValues(),
+                onClick = {
+                    navController?.navigate("ethic_intro_screen?time=" + result.time)
+                }
+            ) {
+                Icon(
+                    modifier = Modifier.size(20.dp),
+                    imageVector = Icons.Outlined.Search,
+                    contentDescription = "Search button",
+                    tint = Color(0xFF000000)
+                )
+//                Image(painter = painterResource(id = R.drawable.search), contentDescription = "")
+            }
+
+
+
         }
+
     }
 }
 
 fun getDate(millis: Long): String {
     val formatter = SimpleDateFormat("dd/MM/yyyy", Locale.UK)
     return formatter.format(Date(millis))
+}
+
+@Preview(
+    showBackground = true,
+    widthDp = 390,
+    heightDp = 844
+)
+@Composable
+fun TotalResultPreview() {
+    val navController = rememberNavController()
+    TotalResultScreen(
+        navController,
+        File("")
+    )
 }

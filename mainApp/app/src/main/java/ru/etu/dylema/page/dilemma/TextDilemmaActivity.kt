@@ -18,8 +18,12 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.ArrowBack
+import androidx.compose.material.icons.outlined.Close
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -68,18 +72,17 @@ fun DilemmaScreen(
             modifier = Modifier
                 .align(Alignment.TopEnd)
                 .offset((-30).dp, 40.dp)
-                .size(width = 40.dp, height = 40.dp),
+                .size(width = 35.dp, height = 35.dp),
             shape = RectangleShape,
             contentPadding = PaddingValues(),
             // TODO: Add confirmation window
             onClick = { navController.navigate("main_screen") }
         ) {
-            Image(
-                modifier = Modifier
-                    .width(40.dp)
-                    .height(40.dp),
-                painter = painterResource(id = R.drawable.close),
-                contentDescription = ""
+            Icon(
+                modifier = Modifier.size(35.dp),
+                imageVector = Icons.Outlined.Close,
+                contentDescription = "Close button",
+                tint = Color(0xFF000000)
             )
         }
         Column(

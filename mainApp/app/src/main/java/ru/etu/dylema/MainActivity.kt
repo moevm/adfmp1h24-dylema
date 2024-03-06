@@ -12,6 +12,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import ru.etu.dylema.domain.UserPhilosophy
 import ru.etu.dylema.page.About
+import ru.etu.dylema.page.ChooseDilemma
 import ru.etu.dylema.page.dilemma.DilemmaScreen
 import ru.etu.dylema.page.ResultDescription
 import ru.etu.dylema.page.MainMenu
@@ -40,6 +41,9 @@ class MainActivity : ComponentActivity() {
                     }
                     composable("about") {
                         About(navController)
+                    }
+                    composable("choose_dilemma_screen") {
+                        ChooseDilemma(navController)
                     }
                     composable("dilemma_screen") {
                         DilemmaScreen(

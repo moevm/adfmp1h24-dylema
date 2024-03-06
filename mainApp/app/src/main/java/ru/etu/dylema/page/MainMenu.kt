@@ -84,7 +84,6 @@ fun MainMenu(navController: NavController) {
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                // TODO: make button for dilemmas list screen instead of next 2 buttons
                 Button(
                     modifier = Modifier
                         .size(width = 210.dp, height = 55.dp),
@@ -92,31 +91,10 @@ fun MainMenu(navController: NavController) {
                     shape = RectangleShape,
                     border = BorderStroke(1.dp, Color(0xFF707070)),
                     contentPadding = PaddingValues(0.dp, 0.dp, 0.dp, 8.dp),
-                    onClick = { navController.navigate("dilemma_screen") }
-
+                    onClick = { navController.navigate("choose_dilemma_screen") }
                 ) {
                     Text(
-                        text = "Опросник",
-                        color = Color(0xFF707070),
-                        fontSize = 32.sp,
-                        lineHeight = 32.sp,
-                        fontFamily = FontFamily(Font(resId = R.font.ledger_regular)),
-                        textAlign = TextAlign.Center
-                    )
-                }
-                Spacer(modifier = Modifier.height(30.dp))
-                Button(
-                    modifier = Modifier
-                        .width(210.dp),
-                    colors = ButtonDefaults.buttonColors(Color(0xFFF4E0D9)),
-                    shape = RectangleShape,
-                    border = BorderStroke(1.dp, Color(0xFF707070)),
-                    contentPadding = PaddingValues(0.dp, 0.dp, 0.dp, 8.dp),
-                    onClick = { navController.navigate("trolley_screen") }
-
-                ) {
-                    Text(
-                        text = "Проблема вагонетки",
+                        text = "Играть",
                         color = Color(0xFF707070),
                         fontSize = 32.sp,
                         lineHeight = 32.sp,

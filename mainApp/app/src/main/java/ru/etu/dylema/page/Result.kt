@@ -3,12 +3,14 @@ package ru.etu.dylema.page
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -36,6 +38,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Dialog
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import ru.etu.dylema.R
@@ -45,11 +48,122 @@ import ru.etu.dylema.domain.UserPhilosophy
 @Composable
 fun ResultScreen(navController: NavController, philosophy: UserPhilosophy) {
 
+    val openConfirmationDialog = remember {
+        mutableStateOf(false)
+    }
+
     Box(
         modifier = Modifier
             .fillMaxSize()
             .background(Color(0xFFFFEBE3)),
     ) {
+        if (openConfirmationDialog.value) {
+            Dialog(onDismissRequest = {
+                openConfirmationDialog.value = false;
+            }) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth(0.9f)
+                        .background(Color(0xFFFFEBE3)),
+                    contentAlignment = Alignment.TopCenter
+                ) {
+                    TextButton(
+                        modifier = Modifier
+                            .align(Alignment.TopStart)
+                            .offset((20).dp, 20.dp)
+                            .size(width = 35.dp, height = 35.dp),
+                        shape = RectangleShape,
+                        contentPadding = PaddingValues(),
+                        onClick = {
+                            openConfirmationDialog.value = false
+                        }
+                    ) {
+                        Icon(
+                            modifier = Modifier.size(35.dp),
+                            imageVector = Icons.Outlined.ArrowBack,
+                            contentDescription = "Back button",
+                            tint = Color(0xFF000000)
+                        )
+                    }
+                    Column(
+                        modifier = Modifier
+                            .padding(0.dp, 20.dp),
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                    ) {
+                        Text(
+                            modifier = Modifier.padding(0.dp, 20.dp),
+                            text = "Поделиться",
+                            color = Color(0xFF707070),
+                            fontSize = 24.sp,
+                            fontFamily = FontFamily(Font(resId = R.font.ledger_regular)),
+                            textAlign = TextAlign.Center
+                        )
+                        Column(
+                            modifier = Modifier
+                                .fillMaxWidth(0.8f)
+                                .height(1.dp)
+                                .border(BorderStroke(1.dp, Color(0xFF707070)))
+                        ){}
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(55.dp, 20.dp),
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                        ){
+                            TextButton(
+                                modifier = Modifier
+                                    .size(40.dp),
+                                shape = RectangleShape,
+                                contentPadding = PaddingValues(),
+                                onClick = {
+                                    // TODO: implement "Share" buttons logic
+                                }
+                            ) {
+                                Image(
+                                    modifier = Modifier
+                                        .size(40.dp),
+                                    painter = painterResource(id = R.drawable.vk_logo),
+                                    contentDescription = "",
+                                )
+                            }
+                            TextButton(
+                                modifier = Modifier
+                                    .size(40.dp),
+                                shape = RectangleShape,
+                                contentPadding = PaddingValues(),
+                                onClick = {
+                                    // TODO: implement "Share" buttons logic
+                                }
+                            ) {
+                                Image(
+                                    modifier = Modifier
+                                        .size(40.dp),
+                                    painter = painterResource(id = R.drawable.telegram_logo),
+                                    contentDescription = "",
+                                )
+                            }
+                            TextButton(
+                                modifier = Modifier
+                                    .size(40.dp),
+                                shape = RectangleShape,
+                                contentPadding = PaddingValues(),
+                                onClick = {
+                                    // TODO: implement "Share" buttons logic
+                                }
+                            ) {
+                                Image(
+                                    modifier = Modifier
+                                        .size(40.dp),
+                                    painter = painterResource(id = R.drawable.whatsapp_logo),
+                                    contentDescription = "",
+                                )
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
         TextButton(
             modifier = Modifier
 
@@ -168,7 +282,7 @@ fun ResultScreen(navController: NavController, philosophy: UserPhilosophy) {
                         contentPadding = PaddingValues(0.dp, 0.dp, 0.dp, 8.dp),
                         onClick = {
                             // TODO: "Поделиться" button should open small window
-//                            navController.navigate("ethic_intro_screen?time=" + philosophy.time)
+                            openConfirmationDialog.value = true
                         }
                     ) {
                         Text(

@@ -48,8 +48,6 @@ import java.io.File
 @Composable
 fun ResultDescription(time: Long, navController: NavController, filesDir: File) {
 
-    // TODO: try with bigger description for scrolling testing
-
     val resultFile = File(filesDir, "user-results.json")
     if (!resultFile.exists()) {
         resultFile.writeText("[]")

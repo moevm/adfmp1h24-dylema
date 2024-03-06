@@ -280,7 +280,6 @@ fun ResultScreen(navController: NavController, philosophy: UserPhilosophy) {
                         border = BorderStroke(1.dp, Color(0xFF707070)),
                         contentPadding = PaddingValues(0.dp, 0.dp, 0.dp, 8.dp),
                         onClick = {
-                            // TODO: "Поделиться" button should open small window
                             openShareDialog.value = true
                         }
                     ) {

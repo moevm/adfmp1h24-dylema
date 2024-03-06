@@ -14,5 +14,4 @@
 .cxx
 local.properties
 
-# TODO: remove .idea folder from next commit and from helloworld
 .idea/

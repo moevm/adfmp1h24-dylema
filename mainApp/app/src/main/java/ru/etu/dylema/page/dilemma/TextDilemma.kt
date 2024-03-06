@@ -17,6 +17,7 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.ArrowBack
 import androidx.compose.material.icons.outlined.Close
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -37,6 +38,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Dialog
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import kotlinx.serialization.encodeToString
@@ -52,6 +54,10 @@ fun DilemmaScreen(
     philosophy: UserPhilosophy,
     filesDir: File
 ) {
+    val openStopConfirmationDialog = remember {
+        mutableStateOf(false)
+    }
+
     val textDilemmaProvider = remember {
         mutableStateOf(TextDilemmaProvider())
     }
@@ -64,6 +70,109 @@ fun DilemmaScreen(
             .fillMaxSize()
             .background(Color(0xFFFFEBE3)),
     ) {
+
+        if (openStopConfirmationDialog.value) {
+            Dialog(onDismissRequest = {
+                openStopConfirmationDialog.value = false;
+            }) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth(0.9f)
+                        .background(Color(0xFFFFEBE3)),
+                    contentAlignment = Alignment.TopCenter
+                ) {
+                    TextButton(
+                        modifier = Modifier
+                            .align(Alignment.TopStart)
+                            .offset((20).dp, 20.dp)
+                            .size(width = 35.dp, height = 35.dp),
+                        shape = RectangleShape,
+                        contentPadding = PaddingValues(),
+                        onClick = {
+                            openStopConfirmationDialog.value = false
+                        }
+                    ) {
+                        Icon(
+                            modifier = Modifier.size(35.dp),
+                            imageVector = Icons.Outlined.ArrowBack,
+                            contentDescription = "Back button",
+                            tint = Color(0xFF000000)
+                        )
+                    }
+                    Column(
+                        modifier = Modifier
+                            .padding(0.dp, 40.dp, 0.dp, 20.dp),
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                    ) {
+                        Text(
+                            modifier = Modifier.padding(0.dp, 20.dp, 0.dp, 0.dp),
+                            text = "Покинуть тест?",
+                            color = Color(0xFF707070),
+                            fontSize = 20.sp,
+                            fontFamily = FontFamily(Font(resId = R.font.ledger_regular)),
+                            textAlign = TextAlign.Center
+                        )
+                        Text(
+                            modifier = Modifier.padding(0.dp, 20.dp),
+                            text = "Весь ваш прогресс не будет сохранен!",
+                            color = Color(0xFF707070),
+                            fontSize = 24.sp,
+                            fontFamily = FontFamily(Font(resId = R.font.ledger_regular)),
+                            textAlign = TextAlign.Center
+                        )
+                        Column(
+                            modifier = Modifier
+                                .fillMaxWidth(0.8f)
+                                .height(1.dp)
+                                .border(BorderStroke(1.dp, Color(0xFF707070)))
+                        ){}
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(55.dp, 20.dp),
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                        ){
+                            Button(
+                                colors = ButtonDefaults.buttonColors(Color(0xFFF4E0D9)),
+                                shape = RectangleShape,
+                                border = BorderStroke(1.dp, Color(0xFF707070)),
+                                contentPadding = PaddingValues(10.dp, 10.dp),
+                                onClick = {
+                                    openStopConfirmationDialog.value = false
+                                    navController.navigate("main_screen")
+                                }
+                            ) {
+                                Text(
+                                    text = "Да",
+                                    color = Color(0xFF707070),
+                                    fontSize = 24.sp,
+                                    lineHeight = 24.sp,
+                                    fontFamily = FontFamily(Font(resId = R.font.ledger_regular)),
+                                    textAlign = TextAlign.Center
+                                )
+                            }
+                            Button(
+                                colors = ButtonDefaults.buttonColors(Color(0xFFF4E0D9)),
+                                shape = RectangleShape,
+                                border = BorderStroke(1.dp, Color(0xFF707070)),
+                                contentPadding = PaddingValues(10.dp, 10.dp),
+                                onClick = { openStopConfirmationDialog.value = false }
+                            ) {
+                                Text(
+                                    text = "Нет",
+                                    color = Color(0xFF707070),
+                                    fontSize = 24.sp,
+                                    lineHeight = 24.sp,
+                                    fontFamily = FontFamily(Font(resId = R.font.ledger_regular)),
+                                    textAlign = TextAlign.Center
+                                )
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
         TextButton(
             modifier = Modifier
                 .align(Alignment.TopEnd)
@@ -71,8 +180,9 @@ fun DilemmaScreen(
                 .size(width = 35.dp, height = 35.dp),
             shape = RectangleShape,
             contentPadding = PaddingValues(),
-            // TODO: Add confirmation window
-            onClick = { navController.navigate("main_screen") }
+            onClick = {
+                openStopConfirmationDialog.value = true
+            }
         ) {
             Icon(
                 modifier = Modifier.size(35.dp),
@@ -241,7 +351,7 @@ private fun saveResults(filesDir: File, philosophy: UserPhilosophy) {
     heightDp = 844
 )
 @Composable
-fun DilemmaScreenPreview() {
+fun TextDilemmaPreview() {
     val navController = rememberNavController()
     val philosophy = remember {
         mutableStateOf(UserPhilosophy(time = System.currentTimeMillis()))

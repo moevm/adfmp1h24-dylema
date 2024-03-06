@@ -122,9 +122,7 @@ fun MainMenu(navController: NavController) {
                         textAlign = TextAlign.Center
                     )
                 }
-                // TODO [MUST!]: create "Справка" button and screen
                 Spacer(modifier = Modifier.height(30.dp))
-                // TODO: This button should block if there isn't any results stored!
                 Button(
                     modifier = Modifier
                         .width(210.dp),

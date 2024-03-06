@@ -56,6 +56,10 @@ import java.util.Locale
 
 @Composable
 fun TotalResultScreen(navController: NavController, filesDir: File) {
+    val openDeleteConfirmationDialog = remember {
+        mutableStateOf(false)
+    }
+
     val openShareDialog = remember {
         mutableStateOf(false)
     }
@@ -207,6 +211,109 @@ fun TotalResultScreen(navController: NavController, filesDir: File) {
             }
         }
 
+        if (openDeleteConfirmationDialog.value) {
+            Dialog(onDismissRequest = {
+                openDeleteConfirmationDialog.value = false;
+            }) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth(1f)
+                        .background(Color(0xFFFFEBE3)),
+                    contentAlignment = Alignment.TopCenter
+                ) {
+                    TextButton(
+                        modifier = Modifier
+                            .align(Alignment.TopStart)
+                            .offset((20).dp, 20.dp)
+                            .size(width = 35.dp, height = 35.dp),
+                        shape = RectangleShape,
+                        contentPadding = PaddingValues(),
+                        onClick = {
+                            openDeleteConfirmationDialog.value = false
+                        }
+                    ) {
+                        Icon(
+                            modifier = Modifier.size(35.dp),
+                            imageVector = Icons.Outlined.ArrowBack,
+                            contentDescription = "Back button",
+                            tint = Color(0xFF000000)
+                        )
+                    }
+                    Column(
+                        modifier = Modifier
+                            .padding(0.dp, 40.dp, 0.dp, 20.dp),
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                    ) {
+                        Text(
+                            modifier = Modifier.padding(0.dp, 20.dp, 0.dp, 0.dp),
+                            text = "Удалить все результаты?",
+                            color = Color(0xFF707070),
+                            fontSize = 20.sp,
+                            fontFamily = FontFamily(Font(resId = R.font.ledger_regular)),
+                            textAlign = TextAlign.Center
+                        )
+                        Text(
+                            modifier = Modifier.padding(0.dp, 20.dp),
+                            text = "Это действие нельзя отменить.",
+                            color = Color(0xFF707070),
+                            fontSize = 24.sp,
+                            fontFamily = FontFamily(Font(resId = R.font.ledger_regular)),
+                            textAlign = TextAlign.Center
+                        )
+                        Column(
+                            modifier = Modifier
+                                .fillMaxWidth(0.8f)
+                                .height(1.dp)
+                                .border(BorderStroke(1.dp, Color(0xFF707070)))
+                        ){}
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(55.dp, 20.dp),
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                        ){
+                            Button(
+                                colors = ButtonDefaults.buttonColors(Color(0xFFF4E0D9)),
+                                shape = RectangleShape,
+                                border = BorderStroke(1.dp, Color(0xFF707070)),
+                                contentPadding = PaddingValues(10.dp, 10.dp),
+                                onClick = {
+                                    openDeleteConfirmationDialog.value = false
+                                    resultFile.writeText("[]")
+                                    navController.navigate("main_screen")
+                                }
+                            ) {
+                                Text(
+                                    text = "Да",
+                                    color = Color(0xFF707070),
+                                    fontSize = 24.sp,
+                                    lineHeight = 24.sp,
+                                    fontFamily = FontFamily(Font(resId = R.font.ledger_regular)),
+                                    textAlign = TextAlign.Center
+                                )
+                            }
+                            Button(
+                                colors = ButtonDefaults.buttonColors(Color(0xFFF4E0D9)),
+                                shape = RectangleShape,
+                                border = BorderStroke(1.dp, Color(0xFF707070)),
+                                contentPadding = PaddingValues(10.dp, 10.dp),
+                                onClick = { openDeleteConfirmationDialog.value = false }
+                            ) {
+                                Text(
+                                    text = "Нет",
+                                    color = Color(0xFF707070),
+                                    fontSize = 24.sp,
+                                    lineHeight = 24.sp,
+                                    fontFamily = FontFamily(Font(resId = R.font.ledger_regular)),
+                                    textAlign = TextAlign.Center
+                                )
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
         TextButton(
             modifier = Modifier
                 .align(Alignment.TopStart)
@@ -265,14 +372,10 @@ fun TotalResultScreen(navController: NavController, filesDir: File) {
                 verticalArrangement = Arrangement.Bottom,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                // TODO: Remove all button should:
-                //  1. Show confirmation screen
-                //  2. After deleting - return to main screen
                 Button(
                     colors = ButtonDefaults.buttonColors(Color(0xFFFFEBE3)),
                     onClick = {
-                        resultFile.writeText("[]")
-                        navController.navigate("total_result_screen")
+                        openDeleteConfirmationDialog.value = true
                     },
                     modifier = Modifier
                         .border(1.dp, Color(0xFF707070))

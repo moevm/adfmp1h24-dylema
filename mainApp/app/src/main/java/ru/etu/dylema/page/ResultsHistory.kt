@@ -29,6 +29,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -42,6 +43,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Dialog
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import kotlinx.serialization.json.Json
@@ -54,7 +56,12 @@ import java.util.Locale
 
 @Composable
 fun TotalResultScreen(navController: NavController, filesDir: File) {
-
+    val openShareDialog = remember {
+        mutableStateOf(false)
+    }
+    val resultToShare = remember {
+        mutableStateOf(UserPhilosophy(time = 0))
+    }
 
     val resultFile = File(filesDir, "user-results.json")
     if (!resultFile.exists()) {
@@ -92,6 +99,113 @@ fun TotalResultScreen(navController: NavController, filesDir: File) {
             .background(Color(0xFFFFEBE3)),
         contentAlignment = Alignment.BottomEnd
     ) {
+
+        if (openShareDialog.value) {
+            Dialog(onDismissRequest = {
+                openShareDialog.value = false;
+            }) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth(0.9f)
+                        .background(Color(0xFFFFEBE3)),
+                    contentAlignment = Alignment.TopCenter
+                ) {
+                    TextButton(
+                        modifier = Modifier
+                            .align(Alignment.TopStart)
+                            .offset((20).dp, 20.dp)
+                            .size(width = 35.dp, height = 35.dp),
+                        shape = RectangleShape,
+                        contentPadding = PaddingValues(),
+                        onClick = {
+                            openShareDialog.value = false
+                        }
+                    ) {
+                        Icon(
+                            modifier = Modifier.size(35.dp),
+                            imageVector = Icons.Outlined.ArrowBack,
+                            contentDescription = "Back button",
+                            tint = Color(0xFF000000)
+                        )
+                    }
+                    Column(
+                        modifier = Modifier
+                            .padding(0.dp, 20.dp),
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                    ) {
+                        Text(
+                            modifier = Modifier.padding(0.dp, 20.dp),
+                            text = "Поделиться",
+                            color = Color(0xFF707070),
+                            fontSize = 24.sp,
+                            fontFamily = FontFamily(Font(resId = R.font.ledger_regular)),
+                            textAlign = TextAlign.Center
+                        )
+                        Column(
+                            modifier = Modifier
+                                .fillMaxWidth(0.8f)
+                                .height(1.dp)
+                                .border(BorderStroke(1.dp, Color(0xFF707070)))
+                        ){}
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(55.dp, 20.dp),
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                        ){
+                            TextButton(
+                                modifier = Modifier
+                                    .size(40.dp),
+                                shape = RectangleShape,
+                                contentPadding = PaddingValues(),
+                                onClick = {
+                                    // TODO: implement "Share" buttons logic
+                                }
+                            ) {
+                                Image(
+                                    modifier = Modifier
+                                        .size(40.dp),
+                                    painter = painterResource(id = R.drawable.vk_logo),
+                                    contentDescription = "",
+                                )
+                            }
+                            TextButton(
+                                modifier = Modifier
+                                    .size(40.dp),
+                                shape = RectangleShape,
+                                contentPadding = PaddingValues(),
+                                onClick = {
+                                    // TODO: implement "Share" buttons logic
+                                }
+                            ) {
+                                Image(
+                                    modifier = Modifier
+                                        .size(40.dp),
+                                    painter = painterResource(id = R.drawable.telegram_logo),
+                                    contentDescription = "",
+                                )
+                            }
+                            TextButton(
+                                modifier = Modifier
+                                    .size(40.dp),
+                                shape = RectangleShape,
+                                contentPadding = PaddingValues(),
+                                onClick = {
+                                    // TODO: implement "Share" buttons logic
+                                }
+                            ) {
+                                Image(
+                                    modifier = Modifier
+                                        .size(40.dp),
+                                    painter = painterResource(id = R.drawable.whatsapp_logo),
+                                    contentDescription = "",
+                                )
+                            }
+                        }
+                    }
+                }
+            }
+        }
 
         TextButton(
             modifier = Modifier
@@ -139,7 +253,7 @@ fun TotalResultScreen(navController: NavController, filesDir: File) {
             }
 
             for (test in uniqueTasks.entries) {
-                ResultBlock(test.key, test.value, navController)
+                ResultBlock(test.key, test.value, navController, resultToShare, openShareDialog)
             }
 
             Spacer(modifier = Modifier.height(20.dp))
@@ -184,7 +298,7 @@ fun TotalResultScreen(navController: NavController, filesDir: File) {
 }
 
 @Composable
-fun ResultBlock(testName: String, results: MutableList<UserPhilosophy>, navController: NavController, modifier: Modifier = Modifier) {
+fun ResultBlock(testName: String, results: MutableList<UserPhilosophy>, navController: NavController, resultToShare: MutableState<UserPhilosophy>, openShareDialog: MutableState<Boolean>, modifier: Modifier = Modifier) {
 
     Column(
         modifier = modifier
@@ -211,7 +325,7 @@ fun ResultBlock(testName: String, results: MutableList<UserPhilosophy>, navContr
 
         val sortedResults = results.sortedByDescending { it.time }
         for (i in 1..sortedResults.size) {
-            ResultLine(result = sortedResults[i - 1], navController)
+            ResultLine(result = sortedResults[i - 1], navController, resultToShare, openShareDialog)
 
             if (i != sortedResults.size) {
                 Column(
@@ -228,7 +342,7 @@ fun ResultBlock(testName: String, results: MutableList<UserPhilosophy>, navContr
 }
 
 @Composable
-fun ResultLine(result: UserPhilosophy, navController: NavController?) {
+fun ResultLine(result: UserPhilosophy, navController: NavController?, resultToShare: MutableState<UserPhilosophy>, openShareDialog: MutableState<Boolean>) {
     Row(
         Modifier
             .fillMaxWidth()
@@ -261,7 +375,8 @@ fun ResultLine(result: UserPhilosophy, navController: NavController?) {
             colors = ButtonDefaults.buttonColors(Color(0xFFFFEBE3)),
                 contentPadding = PaddingValues(0.dp, 0.dp, 2.dp, 0.dp),
                 onClick = {
-                    navController?.navigate("ethic_intro_screen?time=" + result.time)
+                    resultToShare.value = result
+                    openShareDialog.value = true
                 }
             ) {
                 Icon(

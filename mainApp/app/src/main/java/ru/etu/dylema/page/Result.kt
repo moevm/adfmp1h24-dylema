@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -48,7 +47,7 @@ import ru.etu.dylema.domain.UserPhilosophy
 @Composable
 fun ResultScreen(navController: NavController, philosophy: UserPhilosophy) {
 
-    val openConfirmationDialog = remember {
+    val openShareDialog = remember {
         mutableStateOf(false)
     }
 
@@ -57,9 +56,9 @@ fun ResultScreen(navController: NavController, philosophy: UserPhilosophy) {
             .fillMaxSize()
             .background(Color(0xFFFFEBE3)),
     ) {
-        if (openConfirmationDialog.value) {
+        if (openShareDialog.value) {
             Dialog(onDismissRequest = {
-                openConfirmationDialog.value = false;
+                openShareDialog.value = false;
             }) {
                 Box(
                     modifier = Modifier
@@ -75,7 +74,7 @@ fun ResultScreen(navController: NavController, philosophy: UserPhilosophy) {
                         shape = RectangleShape,
                         contentPadding = PaddingValues(),
                         onClick = {
-                            openConfirmationDialog.value = false
+                            openShareDialog.value = false
                         }
                     ) {
                         Icon(
@@ -282,7 +281,7 @@ fun ResultScreen(navController: NavController, philosophy: UserPhilosophy) {
                         contentPadding = PaddingValues(0.dp, 0.dp, 0.dp, 8.dp),
                         onClick = {
                             // TODO: "Поделиться" button should open small window
-                            openConfirmationDialog.value = true
+                            openShareDialog.value = true
                         }
                     ) {
                         Text(

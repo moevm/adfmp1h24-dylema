@@ -17,6 +17,8 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.ArrowBack
 import androidx.compose.material.icons.outlined.Search
@@ -91,7 +93,6 @@ fun TotalResultScreen(navController: NavController, filesDir: File) {
         contentAlignment = Alignment.BottomEnd
     ) {
 
-        // TODO: should return to prev. page
         TextButton(
             modifier = Modifier
                 .align(Alignment.TopStart)
@@ -110,20 +111,24 @@ fun TotalResultScreen(navController: NavController, filesDir: File) {
                 tint = Color(0xFF000000)
             )
         }
+        Text(
+            modifier = Modifier
+                .align(Alignment.TopCenter)
+                .offset(0.dp, 30.dp),
+            text = "Все результаты",
+            color = Color(0xFF707070),
+            fontSize = 22.sp,
+            fontFamily = FontFamily(Font(resId = R.font.ledger_regular)),
+            textAlign = TextAlign.Center
+        )
         Column(
             modifier = Modifier
-                .fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally
-
+                .fillMaxSize()
+                .padding(0.dp, 70.dp, 0.dp, 0.dp)
+                .verticalScroll(rememberScrollState()),
+            horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            Text(
-                modifier = Modifier.padding(0.dp, 30.dp, 0.dp, 20.dp),
-                text = "Все результаты",
-                color = Color(0xFF707070),
-                fontSize = 22.sp,
-                fontFamily = FontFamily(Font(resId = R.font.ledger_regular)),
-                textAlign = TextAlign.Center
-            )
+
 
             val uniqueTasks: MutableMap<String, MutableList<UserPhilosophy>> = HashMap()
             for (r in results.value) {

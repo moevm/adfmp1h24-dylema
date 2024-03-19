@@ -1,5 +1,6 @@
 package ru.etu.dylema.page
 
+import android.content.Intent
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -58,7 +59,7 @@ import java.util.Date
 import java.util.Locale
 
 @Composable
-fun ResultHistory(navController: NavController, filesDir: File) {
+fun ResultHistory(navController: NavController, filesDir: File, startActivity: (Intent) -> Unit) {
     val openDeleteConfirmationDialog = remember {
         mutableStateOf(false)
     }
@@ -346,7 +347,7 @@ fun ResultHistory(navController: NavController, filesDir: File) {
             }
 
             for (test in uniqueTasks.entries) {
-                ResultBlock(test.key, test.value, navController, resultToShare, openShareDialog)
+                ResultBlock(test.key, test.value, navController, resultToShare, openShareDialog, startActivity)
             }
 
             Spacer(modifier = Modifier.height(20.dp))
@@ -393,6 +394,7 @@ fun ResultBlock(
     navController: NavController,
     resultToShare: MutableState<DilemmaResult?>,
     openShareDialog: MutableState<Boolean>,
+    startActivity: (Intent) -> Unit,
     modifier: Modifier = Modifier
 ) {
 
@@ -421,7 +423,7 @@ fun ResultBlock(
 
         val sortedResults = results.sortedByDescending { it.time }
         for (i in 1..sortedResults.size) {
-            ResultLine(result = sortedResults[i - 1], navController, resultToShare, openShareDialog)
+            ResultLine(result = sortedResults[i - 1], navController, resultToShare, openShareDialog, startActivity)
 
             if (i != sortedResults.size) {
                 Column(
@@ -442,7 +444,8 @@ fun ResultLine(
     result: DilemmaResult,
     navController: NavController?,
     resultToShare: MutableState<DilemmaResult?>,
-    openShareDialog: MutableState<Boolean>
+    openShareDialog: MutableState<Boolean>,
+    startActivity: (Intent) -> Unit
 ) {
     Row(
         Modifier
@@ -476,8 +479,18 @@ fun ResultLine(
                 colors = ButtonDefaults.buttonColors(BackgroundColor),
                 contentPadding = PaddingValues(0.dp, 0.dp, 2.dp, 0.dp),
                 onClick = {
-                    resultToShare.value = result
-                    openShareDialog.value = true
+//                    resultToShare.value = result
+//                    openShareDialog.value = true
+
+                    val sendIntent: Intent = Intent().apply {
+                        action = Intent.ACTION_SEND
+                        putExtra(Intent.EXTRA_TEXT, "Look! I pass this amazing test that told me my ethics: " + result.ethic.title)
+                        type = "text/plain"
+                    }
+
+                    val shareIntent = Intent.createChooser(sendIntent, null)
+                    startActivity(shareIntent)
+
                 }
             ) {
                 Icon(
@@ -530,5 +543,7 @@ fun TotalResultPreview() {
     ResultHistory(
         navController,
         File("")
-    )
+    ){
+
+    }
 }

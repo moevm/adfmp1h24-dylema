@@ -1,5 +1,6 @@
 package ru.etu.dylema
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
@@ -31,6 +32,11 @@ class MainActivity : ComponentActivity() {
 
         super.onCreate(savedInstanceState)
         setContent {
+
+            val startActivityCopy: (Intent) -> Unit = {
+                startActivity(it)
+            }
+
             val navController = rememberNavController()
             val session = remember {
                 mutableStateOf(
@@ -84,7 +90,11 @@ class MainActivity : ComponentActivity() {
                         ResultScreen(navController, controllers.value[session.value.currentDilemma]!!.getResult())
                     }
                     composable("total_result_screen") {
-                        ResultHistory(navController, filesDir)
+                        ResultHistory(
+                            navController = navController,
+                            filesDir = filesDir,
+                            startActivity = startActivityCopy
+                        )
                     }
                     composable(
                         "ethic_intro_screen?time={time}",

@@ -1,5 +1,6 @@
 package ru.etu.dylema.page
 
+import android.content.Intent
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -49,123 +50,13 @@ import ru.etu.dylema.ui.theme.TextColor
 import java.io.File
 
 @Composable
-fun ResultScreen(navController: NavController, result: DilemmaResult) {
-
-    val openShareDialog = remember {
-        mutableStateOf(false)
-    }
+fun ResultScreen(navController: NavController, result: DilemmaResult, startActivity: (Intent) -> Unit) {
 
     Box(
         modifier = Modifier
             .fillMaxSize()
             .background(BackgroundColor),
     ) {
-        if (openShareDialog.value) {
-            Dialog(onDismissRequest = {
-                openShareDialog.value = false
-            }) {
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth(0.9f)
-                        .background(BackgroundColor),
-                    contentAlignment = Alignment.TopCenter
-                ) {
-                    TextButton(
-                        modifier = Modifier
-                            .align(Alignment.TopStart)
-                            .offset((20).dp, 20.dp)
-                            .size(width = 35.dp, height = 35.dp),
-                        shape = RectangleShape,
-                        contentPadding = PaddingValues(),
-                        onClick = {
-                            openShareDialog.value = false
-                        }
-                    ) {
-                        Icon(
-                            modifier = Modifier.size(35.dp),
-                            imageVector = Icons.Outlined.ArrowBack,
-                            contentDescription = "Back button",
-                            tint = Color.Black
-                        )
-                    }
-                    Column(
-                        modifier = Modifier
-                            .padding(0.dp, 20.dp),
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                    ) {
-                        Text(
-                            modifier = Modifier.padding(0.dp, 20.dp),
-                            text = "Поделиться",
-                            color = TextColor,
-                            fontSize = 24.sp,
-                            fontFamily = FontFamily(Font(resId = R.font.ledger_regular)),
-                            textAlign = TextAlign.Center
-                        )
-                        Column(
-                            modifier = Modifier
-                                .fillMaxWidth(0.8f)
-                                .height(1.dp)
-                                .border(BorderStroke(1.dp, Color(0xFF707070)))
-                        ) {}
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(55.dp, 20.dp),
-                            horizontalArrangement = Arrangement.SpaceBetween,
-                        ) {
-                            TextButton(
-                                modifier = Modifier
-                                    .size(40.dp),
-                                shape = RectangleShape,
-                                contentPadding = PaddingValues(),
-                                onClick = {
-                                    // TODO: implement "Share" buttons logic
-                                }
-                            ) {
-                                Image(
-                                    modifier = Modifier
-                                        .size(40.dp),
-                                    painter = painterResource(id = R.drawable.vk_logo),
-                                    contentDescription = "",
-                                )
-                            }
-                            TextButton(
-                                modifier = Modifier
-                                    .size(40.dp),
-                                shape = RectangleShape,
-                                contentPadding = PaddingValues(),
-                                onClick = {
-                                    // TODO: implement "Share" buttons logic
-                                }
-                            ) {
-                                Image(
-                                    modifier = Modifier
-                                        .size(40.dp),
-                                    painter = painterResource(id = R.drawable.telegram_logo),
-                                    contentDescription = "",
-                                )
-                            }
-                            TextButton(
-                                modifier = Modifier
-                                    .size(40.dp),
-                                shape = RectangleShape,
-                                contentPadding = PaddingValues(),
-                                onClick = {
-                                    // TODO: implement "Share" buttons logic
-                                }
-                            ) {
-                                Image(
-                                    modifier = Modifier
-                                        .size(40.dp),
-                                    painter = painterResource(id = R.drawable.whatsapp_logo),
-                                    contentDescription = "",
-                                )
-                            }
-                        }
-                    }
-                }
-            }
-        }
 
         TextButton(
             modifier = Modifier
@@ -266,7 +157,14 @@ fun ResultScreen(navController: NavController, result: DilemmaResult) {
                         border = BorderStroke(1.dp, TextColor),
                         contentPadding = PaddingValues(0.dp, 0.dp, 0.dp, 8.dp),
                         onClick = {
-                            openShareDialog.value = true
+                            val sendIntent: Intent = Intent().apply {
+                                action = Intent.ACTION_SEND
+                                putExtra(Intent.EXTRA_TEXT, "Look! I pass this amazing test that told me my ethics: " + result.ethic.title)
+                                type = "text/plain"
+                            }
+
+                            val shareIntent = Intent.createChooser(sendIntent, null)
+                            startActivity(shareIntent)
                         }
                     ) {
                         Text(
@@ -323,5 +221,7 @@ fun ResultPreview() {
     ResultScreen(
         navController,
         controller.getResult()
-    )
+    ) {
+
+    }
 }

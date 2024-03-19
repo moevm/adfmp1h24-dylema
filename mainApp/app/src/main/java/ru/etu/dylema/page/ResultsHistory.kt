@@ -64,13 +64,6 @@ fun ResultHistory(navController: NavController, filesDir: File, startActivity: (
         mutableStateOf(false)
     }
 
-    val openShareDialog = remember {
-        mutableStateOf(false)
-    }
-    val resultToShare = remember {
-        mutableStateOf<DilemmaResult?>(null)
-    }
-
     val resultFile = File(filesDir, "user-results.json")
     if (!resultFile.exists()) {
         resultFile.writeText("[]")
@@ -90,113 +83,6 @@ fun ResultHistory(navController: NavController, filesDir: File, startActivity: (
             .background(BackgroundColor),
         contentAlignment = Alignment.BottomEnd
     ) {
-
-        if (openShareDialog.value) {
-            Dialog(onDismissRequest = {
-                openShareDialog.value = false;
-            }) {
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth(0.9f)
-                        .background(BackgroundColor),
-                    contentAlignment = Alignment.TopCenter
-                ) {
-                    TextButton(
-                        modifier = Modifier
-                            .align(Alignment.TopStart)
-                            .offset((20).dp, 20.dp)
-                            .size(width = 35.dp, height = 35.dp),
-                        shape = RectangleShape,
-                        contentPadding = PaddingValues(),
-                        onClick = {
-                            openShareDialog.value = false
-                        }
-                    ) {
-                        Icon(
-                            modifier = Modifier.size(35.dp),
-                            imageVector = Icons.Outlined.ArrowBack,
-                            contentDescription = "Back button",
-                            tint = Color.Black
-                        )
-                    }
-                    Column(
-                        modifier = Modifier
-                            .padding(0.dp, 20.dp),
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                    ) {
-                        Text(
-                            modifier = Modifier.padding(0.dp, 20.dp),
-                            text = "Поделиться",
-                            color = TextColor,
-                            fontSize = 24.sp,
-                            fontFamily = FontFamily(Font(resId = R.font.ledger_regular)),
-                            textAlign = TextAlign.Center
-                        )
-                        Column(
-                            modifier = Modifier
-                                .fillMaxWidth(0.8f)
-                                .height(1.dp)
-                                .border(BorderStroke(1.dp, TextColor))
-                        ) {}
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(55.dp, 20.dp),
-                            horizontalArrangement = Arrangement.SpaceBetween,
-                        ) {
-                            TextButton(
-                                modifier = Modifier
-                                    .size(40.dp),
-                                shape = RectangleShape,
-                                contentPadding = PaddingValues(),
-                                onClick = {
-                                    // TODO: implement "Share" buttons logic
-                                }
-                            ) {
-                                Image(
-                                    modifier = Modifier
-                                        .size(40.dp),
-                                    painter = painterResource(id = R.drawable.vk_logo),
-                                    contentDescription = "",
-                                )
-                            }
-                            TextButton(
-                                modifier = Modifier
-                                    .size(40.dp),
-                                shape = RectangleShape,
-                                contentPadding = PaddingValues(),
-                                onClick = {
-                                    // TODO: implement "Share" buttons logic
-                                }
-                            ) {
-                                Image(
-                                    modifier = Modifier
-                                        .size(40.dp),
-                                    painter = painterResource(id = R.drawable.telegram_logo),
-                                    contentDescription = "",
-                                )
-                            }
-                            TextButton(
-                                modifier = Modifier
-                                    .size(40.dp),
-                                shape = RectangleShape,
-                                contentPadding = PaddingValues(),
-                                onClick = {
-                                    // TODO: implement "Share" buttons logic
-                                }
-                            ) {
-                                Image(
-                                    modifier = Modifier
-                                        .size(40.dp),
-                                    painter = painterResource(id = R.drawable.whatsapp_logo),
-                                    contentDescription = "",
-                                )
-                            }
-                        }
-                    }
-                }
-            }
-        }
 
         if (openDeleteConfirmationDialog.value) {
             Dialog(onDismissRequest = {
@@ -347,7 +233,7 @@ fun ResultHistory(navController: NavController, filesDir: File, startActivity: (
             }
 
             for (test in uniqueTasks.entries) {
-                ResultBlock(test.key, test.value, navController, resultToShare, openShareDialog, startActivity)
+                ResultBlock(test.key, test.value, navController, startActivity)
             }
 
             Spacer(modifier = Modifier.height(20.dp))
@@ -392,8 +278,6 @@ fun ResultBlock(
     testName: String,
     results: MutableList<DilemmaResult>,
     navController: NavController,
-    resultToShare: MutableState<DilemmaResult?>,
-    openShareDialog: MutableState<Boolean>,
     startActivity: (Intent) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -423,7 +307,7 @@ fun ResultBlock(
 
         val sortedResults = results.sortedByDescending { it.time }
         for (i in 1..sortedResults.size) {
-            ResultLine(result = sortedResults[i - 1], navController, resultToShare, openShareDialog, startActivity)
+            ResultLine(result = sortedResults[i - 1], navController, startActivity)
 
             if (i != sortedResults.size) {
                 Column(
@@ -443,8 +327,6 @@ fun ResultBlock(
 fun ResultLine(
     result: DilemmaResult,
     navController: NavController?,
-    resultToShare: MutableState<DilemmaResult?>,
-    openShareDialog: MutableState<Boolean>,
     startActivity: (Intent) -> Unit
 ) {
     Row(
@@ -479,9 +361,6 @@ fun ResultLine(
                 colors = ButtonDefaults.buttonColors(BackgroundColor),
                 contentPadding = PaddingValues(0.dp, 0.dp, 2.dp, 0.dp),
                 onClick = {
-//                    resultToShare.value = result
-//                    openShareDialog.value = true
-
                     val sendIntent: Intent = Intent().apply {
                         action = Intent.ACTION_SEND
                         putExtra(Intent.EXTRA_TEXT, "Look! I pass this amazing test that told me my ethics: " + result.ethic.title)
@@ -490,7 +369,6 @@ fun ResultLine(
 
                     val shareIntent = Intent.createChooser(sendIntent, null)
                     startActivity(shareIntent)
-
                 }
             ) {
                 Icon(

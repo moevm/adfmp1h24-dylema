@@ -87,7 +87,11 @@ class MainActivity : ComponentActivity() {
                             navController.navigate("main_screen")
                         }
                         Log.v("qweqweqweqew", controllers.value[session.value.currentDilemma]!!.getResult().time.toString())
-                        ResultScreen(navController, controllers.value[session.value.currentDilemma]!!.getResult())
+                        ResultScreen(
+                            navController = navController,
+                            result = controllers.value[session.value.currentDilemma]!!.getResult(),
+                            startActivity = startActivityCopy
+                        )
                     }
                     composable("total_result_screen") {
                         ResultHistory(

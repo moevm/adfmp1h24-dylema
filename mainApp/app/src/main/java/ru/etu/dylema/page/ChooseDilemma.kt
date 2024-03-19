@@ -1,7 +1,6 @@
 package ru.etu.dylema.page
 
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -28,7 +27,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextAlign
@@ -38,13 +36,16 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import ru.etu.dylema.R
+import ru.etu.dylema.ui.theme.BackgroundColor
+import ru.etu.dylema.ui.theme.ButtonBackgroundColor
+import ru.etu.dylema.ui.theme.TextColor
 
 @Composable
 fun ChooseDilemma(navController: NavController) {
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color(0xFFFFEBE3)),
+            .background(BackgroundColor),
     ) {
         TextButton(
             modifier = Modifier
@@ -59,7 +60,7 @@ fun ChooseDilemma(navController: NavController) {
                 modifier = Modifier.size(35.dp),
                 imageVector = Icons.Outlined.ArrowBack,
                 contentDescription = "Back button",
-                tint = Color(0xFF000000)
+                tint = Color.Black
             )
         }
         Text(
@@ -67,7 +68,7 @@ fun ChooseDilemma(navController: NavController) {
                 .align(Alignment.TopCenter)
                 .offset(0.dp, 35.dp),
             text = "Выберите вид теста",
-            color = Color(0xFF707070),
+            color = TextColor,
             fontSize = 23.sp,
             fontFamily = FontFamily(Font(resId = R.font.ledger_regular)),
             textAlign = TextAlign.Center
@@ -83,16 +84,16 @@ fun ChooseDilemma(navController: NavController) {
             Button(
                 modifier = Modifier
                     .fillMaxWidth(),
-                colors = ButtonDefaults.buttonColors(Color(0xFFF4E0D9)),
+                colors = ButtonDefaults.buttonColors(ButtonBackgroundColor),
                 shape = RectangleShape,
-                border = BorderStroke(1.dp, Color(0xFF707070)),
+                border = BorderStroke(1.dp, TextColor),
                 contentPadding = PaddingValues(0.dp, 0.dp, 0.dp, 8.dp),
                 onClick = { navController.navigate("dilemma_screen") }
 
             ) {
                 Text(
                     text = "Дилемма",
-                    color = Color(0xFF707070),
+                    color = TextColor,
                     fontSize = 20.sp,
                     lineHeight = 20.sp,
                     fontFamily = FontFamily(Font(resId = R.font.ledger_regular)),
@@ -105,16 +106,16 @@ fun ChooseDilemma(navController: NavController) {
             Button(
                 modifier = Modifier
                     .fillMaxWidth(),
-                colors = ButtonDefaults.buttonColors(Color(0xFFF4E0D9)),
+                colors = ButtonDefaults.buttonColors(ButtonBackgroundColor),
                 shape = RectangleShape,
-                border = BorderStroke(1.dp, Color(0xFF707070)),
+                border = BorderStroke(1.dp, TextColor),
                 contentPadding = PaddingValues(0.dp, 0.dp, 0.dp, 8.dp),
                 onClick = { navController.navigate("trolley_screen") }
 
             ) {
                 Text(
                     text = "Вагонетка",
-                    color = Color(0xFF707070),
+                    color = TextColor,
                     fontSize = 20.sp,
                     lineHeight = 20.sp,
                     fontFamily = FontFamily(Font(resId = R.font.ledger_regular)),

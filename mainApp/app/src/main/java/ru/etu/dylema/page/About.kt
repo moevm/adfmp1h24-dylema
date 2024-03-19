@@ -86,7 +86,7 @@ fun About(navController: NavController) {
                 fontFamily = FontFamily(Font(resId = R.font.ledger_regular)),
                 textAlign = TextAlign.Center
             )
-            
+
             Spacer(modifier = Modifier.height(15.dp))
 
             Text(

@@ -88,7 +88,7 @@ fun ChooseDilemma(navController: NavController) {
                 shape = RectangleShape,
                 border = BorderStroke(1.dp, TextColor),
                 contentPadding = PaddingValues(0.dp, 0.dp, 0.dp, 8.dp),
-                onClick = { navController.navigate("dilemma_screen") }
+                onClick = { navController.navigate("text_dilemma_screen") }
 
             ) {
                 Text(
@@ -110,7 +110,7 @@ fun ChooseDilemma(navController: NavController) {
                 shape = RectangleShape,
                 border = BorderStroke(1.dp, TextColor),
                 contentPadding = PaddingValues(0.dp, 0.dp, 0.dp, 8.dp),
-                onClick = { navController.navigate("trolley_screen") }
+                onClick = { navController.navigate("trolley_dilemma_screen") }
 
             ) {
                 Text(

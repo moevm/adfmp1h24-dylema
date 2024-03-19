@@ -1,11 +1,25 @@
 package ru.etu.dylema.domain
 
-enum class Ethic(var title: String) {
-    LIBERTARIANISM("Либертарианство"),
-    UTILITARIANISM("Утилитаризм"),
-    EGOISM("Разумный эгоизм");
+import kotlinx.serialization.Serializable
+import ru.etu.dylema.R
 
-    override fun toString(): String {
-        return title
-    }
+@Serializable
+enum class Ethic(
+    val title: String,
+    val imageId: Int
+) {
+    LIBERTARIANISM(
+        title = "Либертарианство",
+        imageId = R.drawable.libert
+    ),
+    UTILITARIANISM(
+        title = "Утилитаризм",
+        imageId = R.drawable.utilitarism
+    ),
+    EGOISM(
+        title = "Разумный эгоизм",
+        imageId = R.drawable.egoism
+    );
+
+
 }

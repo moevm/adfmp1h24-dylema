@@ -1,5 +1,6 @@
 package ru.etu.dylema.page
 
+import android.util.Log
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -41,8 +42,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import kotlinx.serialization.json.Json
 import ru.etu.dylema.R
-import ru.etu.dylema.domain.Ethic
-import ru.etu.dylema.domain.UserPhilosophy
+import ru.etu.dylema.domain.base_dilemma.DilemmaResult
 import ru.etu.dylema.ui.theme.BackgroundColor
 import ru.etu.dylema.ui.theme.ButtonBackgroundColor
 import ru.etu.dylema.ui.theme.TextColor
@@ -56,20 +56,15 @@ fun ResultDescription(time: Long, navController: NavController, filesDir: File) 
         resultFile.writeText("[]")
     }
 
-    val philosophies =
-        Json.decodeFromString<List<UserPhilosophy>>(
+    val results =
+        Json.decodeFromString<List<DilemmaResult>>(
             resultFile.readText()
         )
 
-    /*val philosophy = remember {
-        mutableStateOf(UserPhilosophy(time = 0))
-    }
+    val resultOtp = results.stream().filter { x -> x.time == time }.findAny()
 
-    philosophy.value.testName = "Вагонетка"
-
-    val philosophies = listOf(philosophy.value)*/
-
-    val philosophyOpt = philosophies.stream().filter { x -> x.time == time }.findAny()
+    Log.v("dsd", time.toString())
+    Log.v("dsd", results.toString())
 
     Box(
         Modifier
@@ -115,7 +110,7 @@ fun ResultDescription(time: Long, navController: NavController, filesDir: File) 
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Top
         ) {
-            if (!philosophyOpt.isPresent) {
+            if (!resultOtp.isPresent) {
                 Column(
                     modifier = Modifier
                         .weight(100f)
@@ -159,30 +154,15 @@ fun ResultDescription(time: Long, navController: NavController, filesDir: File) 
             } else {
                 Row(
                     modifier = Modifier
-                        .fillMaxWidth()
+                            .fillMaxWidth()
                         .padding(0.dp, 20.dp),
                     verticalAlignment = Alignment.Top,
                     horizontalArrangement = Arrangement.Center
                 ) {
-                    when (philosophyOpt.get().getEthic()) {
-                        Ethic.EGOISM -> Image(
-                            painter = painterResource(id = R.drawable.egoism),
-                            contentDescription = Ethic.EGOISM.toString(),
-                            alignment = Alignment.TopCenter
-                        )
-
-                        Ethic.UTILITARIANISM -> Image(
-                            painter = painterResource(id = R.drawable.utilitarism),
-                            contentDescription = Ethic.UTILITARIANISM.toString(),
-                            alignment = Alignment.TopCenter
-                        )
-
-                        Ethic.LIBERTARIANISM -> Image(
-                            painter = painterResource(id = R.drawable.libert),
-                            contentDescription = Ethic.LIBERTARIANISM.toString(),
-                            alignment = Alignment.TopCenter
-                        )
-                    }
+                    Image(
+                        painter = painterResource(id = resultOtp.get().ethic.imageId),
+                        contentDescription = resultOtp.get().ethic.title
+                    )
                 }
                 Column(
                     modifier = Modifier
@@ -191,7 +171,7 @@ fun ResultDescription(time: Long, navController: NavController, filesDir: File) 
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Text(
-                        text = "Результаты " + philosophyOpt.get().username,
+                        text = "Результаты",
                         color = TextColor,
                         fontSize = 24.sp,
                         fontFamily = FontFamily(Font(resId = R.font.ledger_regular)),
@@ -200,21 +180,21 @@ fun ResultDescription(time: Long, navController: NavController, filesDir: File) 
                     Spacer(modifier = Modifier.height(10.dp))
                     // TODO: Maybe shift this part to dilemma files since every dilemma has different results...
                     Text(
-                        text = Ethic.LIBERTARIANISM.title + ": " + philosophyOpt.get().libLevel,
+                        text = resultOtp.get().dilemmaType.component1name + ": " + resultOtp.get().state.component1,
                         color = TextColor,
                         fontSize = 20.sp,
                         fontFamily = FontFamily(Font(resId = R.font.ledger_regular)),
                         textAlign = TextAlign.Start,
                     )
                     Text(
-                        text = Ethic.UTILITARIANISM.title + ": " + philosophyOpt.get().utLevel,
+                        text = resultOtp.get().dilemmaType.component2name + ": " + resultOtp.get().state.component2,
                         color = TextColor,
                         fontSize = 20.sp,
                         fontFamily = FontFamily(Font(resId = R.font.ledger_regular)),
                         textAlign = TextAlign.Start,
                     )
                     Text(
-                        text = Ethic.EGOISM.title + ": " + philosophyOpt.get().selfLevel,
+                        text = resultOtp.get().dilemmaType.component3name + ": " + resultOtp.get().state.component3,
                         color = TextColor,
                         fontSize = 20.sp,
                         fontFamily = FontFamily(Font(resId = R.font.ledger_regular)),
@@ -222,7 +202,7 @@ fun ResultDescription(time: Long, navController: NavController, filesDir: File) 
                     )
                     Spacer(modifier = Modifier.height(10.dp))
                     Text(
-                        text = "Этика: " + philosophyOpt.get().getEthic().toString(),
+                        text = "Этика: " + resultOtp.get().ethic.title,
                         color = TextColor,
                         fontSize = 24.sp,
                         fontFamily = FontFamily(Font(resId = R.font.ledger_regular)),

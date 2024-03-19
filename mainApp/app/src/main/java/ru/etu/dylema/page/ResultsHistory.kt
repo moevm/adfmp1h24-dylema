@@ -48,7 +48,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import kotlinx.serialization.json.Json
 import ru.etu.dylema.R
-import ru.etu.dylema.domain.UserPhilosophy
+import ru.etu.dylema.domain.base_dilemma.DilemmaResult
 import ru.etu.dylema.ui.theme.BackgroundColor
 import ru.etu.dylema.ui.theme.ButtonBackgroundColor
 import ru.etu.dylema.ui.theme.TextColor
@@ -58,7 +58,7 @@ import java.util.Date
 import java.util.Locale
 
 @Composable
-fun TotalResultScreen(navController: NavController, filesDir: File) {
+fun ResultHistory(navController: NavController, filesDir: File) {
     val openDeleteConfirmationDialog = remember {
         mutableStateOf(false)
     }
@@ -67,7 +67,7 @@ fun TotalResultScreen(navController: NavController, filesDir: File) {
         mutableStateOf(false)
     }
     val resultToShare = remember {
-        mutableStateOf(UserPhilosophy(time = 0))
+        mutableStateOf<DilemmaResult?>(null)
     }
 
     val resultFile = File(filesDir, "user-results.json")
@@ -77,28 +77,11 @@ fun TotalResultScreen(navController: NavController, filesDir: File) {
 
     val results = remember {
         mutableStateOf(
-            Json.decodeFromString<List<UserPhilosophy>>(
+            Json.decodeFromString<List<DilemmaResult>>(
                 resultFile.readText()
             )
         )
     }
-
-    /*val philosophy = remember {
-        mutableStateOf(UserPhilosophy(time = 0))
-    }
-
-    philosophy.value.testName = "Вагонетка"
-
-    val philosophy1 = remember {
-        mutableStateOf(UserPhilosophy(time = 234553L))
-    }
-
-    philosophy1.value.testName = "Дилемма"
-
-
-    val results = remember {
-        mutableStateOf(listOf(philosophy.value, philosophy1.value, philosophy.value, philosophy1.value))
-    }*/
 
     Box(
         modifier = Modifier
@@ -354,12 +337,12 @@ fun TotalResultScreen(navController: NavController, filesDir: File) {
         ) {
 
 
-            val uniqueTasks: MutableMap<String, MutableList<UserPhilosophy>> = HashMap()
+            val uniqueTasks: MutableMap<String, MutableList<DilemmaResult>> = HashMap()
             for (r in results.value) {
-                if (r.testName !in uniqueTasks.keys) {
-                    uniqueTasks[r.testName] = ArrayList()
+                if (r.dilemmaType.title !in uniqueTasks.keys) {
+                    uniqueTasks[r.dilemmaType.title] = ArrayList()
                 }
-                uniqueTasks[r.testName]!!.add(r)
+                uniqueTasks[r.dilemmaType.title]!!.add(r)
             }
 
             for (test in uniqueTasks.entries) {
@@ -376,7 +359,7 @@ fun TotalResultScreen(navController: NavController, filesDir: File) {
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Button(
-                    colors = ButtonDefaults.buttonColors(ButtonBackgroundColor),
+                    colors = ButtonDefaults.buttonColors(BackgroundColor),
                     onClick = {
                         openDeleteConfirmationDialog.value = true
                     },
@@ -406,9 +389,9 @@ fun TotalResultScreen(navController: NavController, filesDir: File) {
 @Composable
 fun ResultBlock(
     testName: String,
-    results: MutableList<UserPhilosophy>,
+    results: MutableList<DilemmaResult>,
     navController: NavController,
-    resultToShare: MutableState<UserPhilosophy>,
+    resultToShare: MutableState<DilemmaResult?>,
     openShareDialog: MutableState<Boolean>,
     modifier: Modifier = Modifier
 ) {
@@ -456,9 +439,9 @@ fun ResultBlock(
 
 @Composable
 fun ResultLine(
-    result: UserPhilosophy,
+    result: DilemmaResult,
     navController: NavController?,
-    resultToShare: MutableState<UserPhilosophy>,
+    resultToShare: MutableState<DilemmaResult?>,
     openShareDialog: MutableState<Boolean>
 ) {
     Row(
@@ -479,7 +462,7 @@ fun ResultLine(
         )
 
         Text(
-            text = result.username,
+            text = result.ethic.title,
             color = Color(0xFF707070),
             fontSize = 20.sp,
             fontFamily = FontFamily(Font(resId = R.font.ledger_regular)),
@@ -544,7 +527,7 @@ fun getDate(millis: Long): String {
 @Composable
 fun TotalResultPreview() {
     val navController = rememberNavController()
-    TotalResultScreen(
+    ResultHistory(
         navController,
         File("")
     )

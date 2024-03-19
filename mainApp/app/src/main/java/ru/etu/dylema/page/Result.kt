@@ -41,14 +41,15 @@ import androidx.compose.ui.window.Dialog
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import ru.etu.dylema.R
-import ru.etu.dylema.domain.Ethic
-import ru.etu.dylema.domain.UserPhilosophy
+import ru.etu.dylema.domain.base_dilemma.DilemmaResult
+import ru.etu.dylema.domain.text_dilemma.TextDilemmaController
 import ru.etu.dylema.ui.theme.BackgroundColor
 import ru.etu.dylema.ui.theme.ButtonBackgroundColor
 import ru.etu.dylema.ui.theme.TextColor
+import java.io.File
 
 @Composable
-fun ResultScreen(navController: NavController, philosophy: UserPhilosophy) {
+fun ResultScreen(navController: NavController, result: DilemmaResult) {
 
     val openShareDialog = remember {
         mutableStateOf(false)
@@ -61,7 +62,7 @@ fun ResultScreen(navController: NavController, philosophy: UserPhilosophy) {
     ) {
         if (openShareDialog.value) {
             Dialog(onDismissRequest = {
-                openShareDialog.value = false;
+                openShareDialog.value = false
             }) {
                 Box(
                     modifier = Modifier
@@ -191,7 +192,7 @@ fun ResultScreen(navController: NavController, philosophy: UserPhilosophy) {
             verticalArrangement = Arrangement.SpaceBetween
         ) {
             Text(
-                text = "Результаты: " + philosophy.testName,
+                text = "Результаты: " + result.dilemmaType.title,
                 color = TextColor,
                 fontSize = 23.sp,
                 fontFamily = FontFamily(Font(resId = R.font.ledger_regular)),
@@ -205,34 +206,15 @@ fun ResultScreen(navController: NavController, philosophy: UserPhilosophy) {
                 fontFamily = FontFamily(Font(resId = R.font.ledger_regular)),
                 textAlign = TextAlign.Center
             )
-            Row(
+            Image(
                 modifier = Modifier
                     .fillMaxWidth()
                     .weight(1.6f)
                     .padding(0.dp, 20.dp),
-                verticalAlignment = Alignment.Top,
-                horizontalArrangement = Arrangement.Center
-            ) {
-                when (philosophy.getEthic()) {
-                    Ethic.EGOISM -> Image(
-                        painter = painterResource(id = R.drawable.egoism),
-                        contentDescription = Ethic.EGOISM.toString(),
-                        alignment = Alignment.TopCenter
-                    )
-
-                    Ethic.UTILITARIANISM -> Image(
-                        painter = painterResource(id = R.drawable.utilitarism),
-                        contentDescription = Ethic.UTILITARIANISM.toString(),
-                        alignment = Alignment.TopCenter
-                    )
-
-                    Ethic.LIBERTARIANISM -> Image(
-                        painter = painterResource(id = R.drawable.libert),
-                        contentDescription = Ethic.LIBERTARIANISM.toString(),
-                        alignment = Alignment.TopCenter
-                    )
-                }
-            }
+                painter = painterResource(id = result.ethic.imageId),
+                contentDescription = result.ethic.title,
+                alignment = Alignment.TopCenter
+            )
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -241,7 +223,7 @@ fun ResultScreen(navController: NavController, philosophy: UserPhilosophy) {
             ) {
                 Text(
                     modifier = Modifier.padding(0.dp, 10.dp),
-                    text = philosophy.getEthic().toString(),
+                    text = result.ethic.title,
                     color = TextColor,
                     fontSize = 40.sp,
                     fontFamily = FontFamily(Font(resId = R.font.ledger_regular)),
@@ -262,7 +244,7 @@ fun ResultScreen(navController: NavController, philosophy: UserPhilosophy) {
                         border = BorderStroke(1.dp, TextColor),
                         contentPadding = PaddingValues(0.dp, 0.dp, 0.dp, 8.dp),
                         onClick = {
-                            navController.navigate("ethic_intro_screen?time=" + philosophy.time)
+                            navController.navigate("ethic_intro_screen?time=" + result.time)
                         }
                     ) {
                         Text(
@@ -332,11 +314,14 @@ fun ResultScreen(navController: NavController, philosophy: UserPhilosophy) {
 @Composable
 fun ResultPreview() {
     val navController = rememberNavController()
-    val philosophy = remember {
-        mutableStateOf(UserPhilosophy(time = System.currentTimeMillis()))
-    }
+    val controller = TextDilemmaController(File(""))
+    controller.init()
+    controller.applyLeft()
+    controller.applyLeft()
+    controller.applyLeft()
+
     ResultScreen(
         navController,
-        philosophy.value
+        controller.getResult()
     )
 }

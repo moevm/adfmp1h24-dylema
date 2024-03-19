@@ -1,5 +1,6 @@
 package ru.etu.dylema.page.dilemma
 
+import android.util.Log
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
@@ -44,11 +45,9 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
 import ru.etu.dylema.R
-import ru.etu.dylema.domain.UserPhilosophy
-import ru.etu.dylema.domain.trolley_dilemma.TrolleyDilemmaProvider
+import ru.etu.dylema.domain.base_dilemma.DilemmaController
+import ru.etu.dylema.domain.trolley_dilemma.TrolleyDilemmaController
 import ru.etu.dylema.ui.theme.BackgroundBorderColor
 import ru.etu.dylema.ui.theme.BackgroundColor
 import ru.etu.dylema.ui.theme.ButtonBackgroundColor
@@ -58,20 +57,16 @@ import ru.etu.dylema.ui.theme.TextColor
 import java.io.File
 
 @Composable
-fun TrolleyScreen(
+fun TrolleyDilemma(
     navController: NavController,
-    philosophy: UserPhilosophy,
-    filesDir: File
+    dilemmaController: DilemmaController
 ) {
     val openStopConfirmationDialog = remember {
         mutableStateOf(false)
     }
 
-    val trolleyDilemmaProvider = remember {
-        mutableStateOf(TrolleyDilemmaProvider())
-    }
-    val currentTask = remember {
-        mutableStateOf(trolleyDilemmaProvider.value.current())
+    val currentDilemmaPart = remember {
+        mutableStateOf(dilemmaController.current())
     }
 
     Box(
@@ -81,7 +76,7 @@ fun TrolleyScreen(
     ) {
         if (openStopConfirmationDialog.value) {
             Dialog(onDismissRequest = {
-                openStopConfirmationDialog.value = false;
+                openStopConfirmationDialog.value = false
             }) {
                 Box(
                     modifier = Modifier
@@ -214,8 +209,8 @@ fun TrolleyScreen(
             Text(
                 modifier = Modifier
                     .padding(0.dp, 30.dp, 0.dp, 20.dp),
-                text = "Вопрос " + trolleyDilemmaProvider.value.currentNumber() + "/"
-                        + trolleyDilemmaProvider.value.totalCount(),
+                text = "Вопрос " + dilemmaController.currentNumber() + "/"
+                        + dilemmaController.totalCount(),
                 color = TextColor,
                 fontSize = 24.sp,
                 fontFamily = FontFamily(Font(resId = R.font.ledger_regular))
@@ -227,13 +222,13 @@ fun TrolleyScreen(
                 color = ProgressIndicatorColor,
                 trackColor = ProgressIndicatorTrackColor,
                 strokeCap = StrokeCap.Round,
-                progress = (trolleyDilemmaProvider.value.currentNumber() - 1) / (trolleyDilemmaProvider.value.totalCount() * 1f) + 0.05f
+                progress = (dilemmaController.currentNumber() - 1) / (dilemmaController.totalCount() * 1f) + 0.05f
             )
             Image(
                 modifier = Modifier
                     .fillMaxWidth()
                     .weight(1f),
-                painter = painterResource(id = currentTask.value.imageId),
+                painter = painterResource(id = currentDilemmaPart.value.imageId),
                 contentDescription = "Andy Rubin",
                 alignment = Alignment.TopCenter
             )
@@ -245,9 +240,8 @@ fun TrolleyScreen(
                     .weight(2f),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                // TODO: Add progress bar (https://developer.android.com/jetpack/compose/components/progress)
                 Text(
-                    text = "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab.",
+                    text = currentDilemmaPart.value.text,
                     color = TextColor,
                     fontSize = 18.sp,
                     fontFamily = FontFamily(Font(resId = R.font.ledger_regular)),
@@ -270,15 +264,13 @@ fun TrolleyScreen(
                         border = BorderStroke(1.dp, TextColor),
                         contentPadding = PaddingValues(0.dp, 0.dp, 0.dp, 8.dp),
                         onClick = {
-                            val solution = currentTask.value.leftSolution
-                            philosophy.accept(solution)
-
-                            if (currentTask.value.isFinal) {
-                                saveResults(filesDir, philosophy)
+                            val finished = dilemmaController.applyLeft()
+                            if (finished) {
+                                dilemmaController.saveResult()
+                                Log.v("SAVE", "SAVE!!!!! time: " + dilemmaController.initTime)
                                 navController.navigate("result_screen")
                             } else {
-                                val task = trolleyDilemmaProvider.value.next()
-                                currentTask.value = task
+                                currentDilemmaPart.value = dilemmaController.current()
                             }
                         }
                     ) {
@@ -326,15 +318,12 @@ fun TrolleyScreen(
                         border = BorderStroke(1.dp, TextColor),
                         contentPadding = PaddingValues(0.dp, 0.dp, 0.dp, 8.dp),
                         onClick = {
-                            val solution = currentTask.value.rightSolution
-                            philosophy.accept(solution)
-
-                            if (currentTask.value.isFinal) {
-                                saveResults(filesDir, philosophy)
+                            val finished = dilemmaController.applyRight()
+                            if (finished) {
+                                dilemmaController.saveResult()
                                 navController.navigate("result_screen")
                             } else {
-                                val task = trolleyDilemmaProvider.value.next()
-                                currentTask.value = task
+                                currentDilemmaPart.value = dilemmaController.current()
                             }
                         }
                     ) {
@@ -361,26 +350,8 @@ fun TrolleyScreen(
 @Composable
 fun TrolleyScreenPreview() {
     val navController = rememberNavController()
-    val philosophy = remember {
-        mutableStateOf(UserPhilosophy(time = System.currentTimeMillis()))
-    }
-    TrolleyScreen(
+    TrolleyDilemma(
         navController,
-        philosophy.value,
-        File("")
+        TrolleyDilemmaController(File(""))
     )
-}
-
-private fun saveResults(filesDir: File, philosophy: UserPhilosophy) {
-    val resultFile = File(filesDir, "user-results.json")
-    philosophy.testName = "Вагонетка"
-
-    if (!resultFile.exists()) {
-        resultFile.writeText("[]")
-    }
-
-    val results = Json.decodeFromString<ArrayList<UserPhilosophy>>(resultFile.readText())
-    results.add(philosophy)
-
-    resultFile.writeText(Json.encodeToString(results))
 }

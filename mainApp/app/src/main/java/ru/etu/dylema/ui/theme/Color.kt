@@ -19,3 +19,6 @@ val TextColorDisabled = Color(0x4D707070)
 val ButtonBackgroundColor = Color(0xFFF4E0D9)
 
 val ButtonBackgroundColorDisabled = Color(0xFFF4E0D9)
+
+val ProgressIndicatorColor = Color(0xFFD4BA89)
+val ProgressIndicatorTrackColor = Color(0xFFD3D7CF)

@@ -48,7 +48,7 @@ import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import ru.etu.dylema.R
 import ru.etu.dylema.domain.UserPhilosophy
-import ru.etu.dylema.domain.dilemma.TextDilemmaProvider
+import ru.etu.dylema.domain.text_dilemma.TextDilemmaProvider
 import ru.etu.dylema.ui.theme.BackgroundBorderColor
 import ru.etu.dylema.ui.theme.BackgroundColor
 import ru.etu.dylema.ui.theme.ButtonBackgroundColor

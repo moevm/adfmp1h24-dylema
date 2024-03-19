@@ -1,6 +1,7 @@
 package ru.etu.dylema.domain
 
 import kotlinx.serialization.Serializable
+import ru.etu.dylema.domain.text_dilemma.TextDilemmaSolution
 
 @Serializable
 class UserPhilosophy(var username: String = "user", val time: Long) {
@@ -10,7 +11,7 @@ class UserPhilosophy(var username: String = "user", val time: Long) {
     var selfLevel: Int = 50
     var testName = ""
 
-    fun accept(solution: DilemmaSolution) {
+    fun accept(solution: TextDilemmaSolution) {
         libLevel += solution.lib
         utLevel += solution.ut
         selfLevel += solution.self

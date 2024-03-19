@@ -178,7 +178,6 @@ fun ResultDescription(time: Long, navController: NavController, filesDir: File) 
                         textAlign = TextAlign.Center,
                     )
                     Spacer(modifier = Modifier.height(10.dp))
-                    // TODO: Maybe shift this part to dilemma files since every dilemma has different results...
                     Text(
                         text = resultOtp.get().dilemmaType.component1name + ": " + resultOtp.get().state.component1,
                         color = TextColor,

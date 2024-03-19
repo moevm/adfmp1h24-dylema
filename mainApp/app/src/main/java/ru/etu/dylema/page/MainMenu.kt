@@ -166,7 +166,6 @@ fun MainMenu(navController: NavController, filesDir: File) {
                     )
                 }
                 Spacer(modifier = Modifier.height(30.dp))
-                // TODO: This button should block if there isn't any results stored!
                 Button(
                     modifier = Modifier
                         .width(210.dp),

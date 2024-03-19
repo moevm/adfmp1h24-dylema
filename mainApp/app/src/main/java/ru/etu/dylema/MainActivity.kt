@@ -27,7 +27,6 @@ import ru.etu.dylema.ui.theme.DilemmaTheme
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
 
-        // TODO: result are not saved in the device?
         // TODO: check that all pages have consistent title sizes and positions. Same with close/return buttons
 
         super.onCreate(savedInstanceState)

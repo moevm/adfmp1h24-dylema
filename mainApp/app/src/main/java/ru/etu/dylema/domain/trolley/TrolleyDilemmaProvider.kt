@@ -17,16 +17,16 @@ class TrolleyDilemmaProvider() {
         if (pointer == (trolleyDilemmas.size - 1)) {
             return trolleyDilemmas[pointer]
         }
-
-        return trolleyDilemmas[++pointer]
+        pointer++
+        return trolleyDilemmas[pointer]
     }
 
     fun prev(): TrolleyDilemma {
         if (pointer <= 0) {
             return trolleyDilemmas[pointer]
         }
-
-        return trolleyDilemmas[--pointer]
+        pointer--
+        return trolleyDilemmas[pointer]
     }
 
     fun current(): TrolleyDilemma {

@@ -23,6 +23,7 @@ import androidx.compose.material.icons.outlined.Close
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -212,6 +213,13 @@ fun TrolleyScreen(
                 color = Color(0xFF707070),
                 fontSize = 24.sp,
                 fontFamily = FontFamily(Font(resId = R.font.ledger_regular))
+            )
+            LinearProgressIndicator(
+                modifier = Modifier
+                    .padding(0.dp, 0.dp, 0.dp, 20.dp),
+                color = Color(0xFFD4BA89),
+                trackColor = Color(0xFFD3D7CF),
+                progress = (trolleyDilemmaProvider.value.currentNumber() - 1) / (trolleyDilemmaProvider.value.totalCount() * 1f) + 0.05f
             )
             Image(
                 modifier = Modifier

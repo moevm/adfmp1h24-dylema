@@ -43,6 +43,9 @@ import androidx.navigation.compose.rememberNavController
 import ru.etu.dylema.R
 import ru.etu.dylema.domain.Ethic
 import ru.etu.dylema.domain.UserPhilosophy
+import ru.etu.dylema.ui.theme.BackgroundColor
+import ru.etu.dylema.ui.theme.ButtonBackgroundColor
+import ru.etu.dylema.ui.theme.TextColor
 
 @Composable
 fun ResultScreen(navController: NavController, philosophy: UserPhilosophy) {
@@ -54,7 +57,7 @@ fun ResultScreen(navController: NavController, philosophy: UserPhilosophy) {
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color(0xFFFFEBE3)),
+            .background(BackgroundColor),
     ) {
         if (openShareDialog.value) {
             Dialog(onDismissRequest = {
@@ -63,7 +66,7 @@ fun ResultScreen(navController: NavController, philosophy: UserPhilosophy) {
                 Box(
                     modifier = Modifier
                         .fillMaxWidth(0.9f)
-                        .background(Color(0xFFFFEBE3)),
+                        .background(BackgroundColor),
                     contentAlignment = Alignment.TopCenter
                 ) {
                     TextButton(
@@ -81,7 +84,7 @@ fun ResultScreen(navController: NavController, philosophy: UserPhilosophy) {
                             modifier = Modifier.size(35.dp),
                             imageVector = Icons.Outlined.ArrowBack,
                             contentDescription = "Back button",
-                            tint = Color(0xFF000000)
+                            tint = Color.Black
                         )
                     }
                     Column(
@@ -92,7 +95,7 @@ fun ResultScreen(navController: NavController, philosophy: UserPhilosophy) {
                         Text(
                             modifier = Modifier.padding(0.dp, 20.dp),
                             text = "Поделиться",
-                            color = Color(0xFF707070),
+                            color = TextColor,
                             fontSize = 24.sp,
                             fontFamily = FontFamily(Font(resId = R.font.ledger_regular)),
                             textAlign = TextAlign.Center
@@ -102,13 +105,13 @@ fun ResultScreen(navController: NavController, philosophy: UserPhilosophy) {
                                 .fillMaxWidth(0.8f)
                                 .height(1.dp)
                                 .border(BorderStroke(1.dp, Color(0xFF707070)))
-                        ){}
+                        ) {}
                         Row(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(55.dp, 20.dp),
                             horizontalArrangement = Arrangement.SpaceBetween,
-                        ){
+                        ) {
                             TextButton(
                                 modifier = Modifier
                                     .size(40.dp),
@@ -177,7 +180,7 @@ fun ResultScreen(navController: NavController, philosophy: UserPhilosophy) {
                 modifier = Modifier.size(35.dp),
                 imageVector = Icons.Outlined.ArrowBack,
                 contentDescription = "Back button",
-                tint = Color(0xFF000000)
+                tint = Color.Black
             )
         }
         Column(
@@ -189,14 +192,14 @@ fun ResultScreen(navController: NavController, philosophy: UserPhilosophy) {
         ) {
             Text(
                 text = "Результаты: " + philosophy.testName,
-                color = Color(0xFF707070),
+                color = TextColor,
                 fontSize = 23.sp,
                 fontFamily = FontFamily(Font(resId = R.font.ledger_regular)),
                 textAlign = TextAlign.Center
             )
             Text(
                 text = "Ваша \nфилософская школа",
-                color = Color(0xFF707070),
+                color = TextColor,
                 fontSize = 32.sp,
                 lineHeight = 35.sp,
                 fontFamily = FontFamily(Font(resId = R.font.ledger_regular)),
@@ -239,7 +242,7 @@ fun ResultScreen(navController: NavController, philosophy: UserPhilosophy) {
                 Text(
                     modifier = Modifier.padding(0.dp, 10.dp),
                     text = philosophy.getEthic().toString(),
-                    color = Color(0xFF707070),
+                    color = TextColor,
                     fontSize = 40.sp,
                     fontFamily = FontFamily(Font(resId = R.font.ledger_regular)),
                     textAlign = TextAlign.Center,
@@ -254,16 +257,17 @@ fun ResultScreen(navController: NavController, philosophy: UserPhilosophy) {
                     Button(
                         modifier = Modifier
                             .fillMaxWidth(0.8f),
-                        colors = ButtonDefaults.buttonColors(Color(0xFFF4E0D9)),
+                        colors = ButtonDefaults.buttonColors(ButtonBackgroundColor),
                         shape = RectangleShape,
-                        border = BorderStroke(1.dp, Color(0xFF707070)),
+                        border = BorderStroke(1.dp, TextColor),
                         contentPadding = PaddingValues(0.dp, 0.dp, 0.dp, 8.dp),
                         onClick = {
                             navController.navigate("ethic_intro_screen?time=" + philosophy.time)
                         }
                     ) {
                         Text(
-                            text = "Подробнее", color = Color(0xFF707070),
+                            text = "Подробнее",
+                            color = TextColor,
                             fontSize = 32.sp,
                             fontFamily = FontFamily(Font(resId = R.font.ledger_regular)),
                             textAlign = TextAlign.Center
@@ -275,16 +279,17 @@ fun ResultScreen(navController: NavController, philosophy: UserPhilosophy) {
                     Button(
                         modifier = Modifier
                             .fillMaxWidth(0.8f),
-                        colors = ButtonDefaults.buttonColors(Color(0xFFF4E0D9)),
+                        colors = ButtonDefaults.buttonColors(ButtonBackgroundColor),
                         shape = RectangleShape,
-                        border = BorderStroke(1.dp, Color(0xFF707070)),
+                        border = BorderStroke(1.dp, TextColor),
                         contentPadding = PaddingValues(0.dp, 0.dp, 0.dp, 8.dp),
                         onClick = {
                             openShareDialog.value = true
                         }
                     ) {
                         Text(
-                            text = "Поделиться", color = Color(0xFF707070),
+                            text = "Поделиться",
+                            color = TextColor,
                             fontSize = 32.sp,
                             fontFamily = FontFamily(Font(resId = R.font.ledger_regular)),
                             textAlign = TextAlign.Center
@@ -296,16 +301,16 @@ fun ResultScreen(navController: NavController, philosophy: UserPhilosophy) {
                     Button(
                         modifier = Modifier
                             .fillMaxWidth(0.8f),
-                        colors = ButtonDefaults.buttonColors(Color(0xFFF4E0D9)),
+                        colors = ButtonDefaults.buttonColors(ButtonBackgroundColor),
                         shape = RectangleShape,
-                        border = BorderStroke(1.dp, Color(0xFF707070)),
+                        border = BorderStroke(1.dp, TextColor),
                         contentPadding = PaddingValues(0.dp, 0.dp, 0.dp, 8.dp),
                         onClick = {
                             navController.navigate("total_result_screen")
                         }
                     ) {
                         Text(
-                            text = "Все результаты", color = Color(0xFF707070),
+                            text = "Все результаты", color = TextColor,
                             fontSize = 32.sp,
                             fontFamily = FontFamily(Font(resId = R.font.ledger_regular)),
                             textAlign = TextAlign.Center

@@ -1,6 +1,7 @@
 package ru.etu.dylema.page
 
 import android.content.Intent
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -58,6 +59,10 @@ fun ResultScreen(navController: NavController, result: DilemmaResult, startActiv
             .fillMaxSize()
             .background(BackgroundColor),
     ) {
+
+        BackHandler {
+            navController.navigate("main_screen")
+        }
 
         TextButton(
             modifier = Modifier

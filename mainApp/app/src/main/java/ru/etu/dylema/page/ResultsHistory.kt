@@ -286,7 +286,8 @@ fun ResultBlock(
     Column(
         modifier = modifier
             .padding(10.dp, 10.dp)
-            .border(BorderStroke(3.dp, TextColor))
+            .border(BorderStroke(3.dp, TextColor)),
+        horizontalAlignment = Alignment.CenterHorizontally
 
     ) {
         Text(
@@ -297,7 +298,7 @@ fun ResultBlock(
             color = TextColor,
             fontSize = 24.sp,
             fontFamily = FontFamily(Font(resId = R.font.ledger_regular)),
-            textAlign = TextAlign.Left
+            textAlign = TextAlign.Center
         )
         Column(
             modifier = Modifier
@@ -347,13 +348,13 @@ fun ResultLine(
             textAlign = TextAlign.Center
         )
 
-        Text(
+        /*Text(
             text = result.ethic.title,
             color = Color(0xFF707070),
             fontSize = 20.sp,
             fontFamily = FontFamily(Font(resId = R.font.ledger_regular)),
             textAlign = TextAlign.Center
-        )
+        )*/
 
         Row() {
             Button(

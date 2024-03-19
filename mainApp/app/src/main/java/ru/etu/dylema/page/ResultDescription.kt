@@ -43,6 +43,9 @@ import kotlinx.serialization.json.Json
 import ru.etu.dylema.R
 import ru.etu.dylema.domain.Ethic
 import ru.etu.dylema.domain.UserPhilosophy
+import ru.etu.dylema.ui.theme.BackgroundColor
+import ru.etu.dylema.ui.theme.ButtonBackgroundColor
+import ru.etu.dylema.ui.theme.TextColor
 import java.io.File
 
 @Composable
@@ -66,12 +69,12 @@ fun ResultDescription(time: Long, navController: NavController, filesDir: File) 
 
     val philosophies = listOf(philosophy.value)*/
 
-    val philosophyOpt = philosophies.stream().filter{x -> x.time == time}.findAny()
+    val philosophyOpt = philosophies.stream().filter { x -> x.time == time }.findAny()
 
     Box(
         Modifier
             .fillMaxSize()
-            .background(Color(0xFFFFEBE3)),
+            .background(BackgroundColor),
         Alignment.BottomEnd
     ) {
         TextButton(
@@ -89,7 +92,7 @@ fun ResultDescription(time: Long, navController: NavController, filesDir: File) 
                 modifier = Modifier.size(35.dp),
                 imageVector = Icons.Outlined.ArrowBack,
                 contentDescription = "Back button",
-                tint = Color(0xFF000000)
+                tint = Color.Black
             )
         }
 
@@ -98,7 +101,7 @@ fun ResultDescription(time: Long, navController: NavController, filesDir: File) 
                 .align(Alignment.TopCenter)
                 .offset(0.dp, 35.dp),
             text = "Обзор",
-            color = Color(0xFF707070),
+            color = TextColor,
             fontSize = 23.sp,
             fontFamily = FontFamily(Font(resId = R.font.ledger_regular)),
             textAlign = TextAlign.Center
@@ -124,7 +127,7 @@ fun ResultDescription(time: Long, navController: NavController, filesDir: File) 
                     Text(
                         modifier = Modifier,
                         text = "Не удалось найти результат!",
-                        color = Color(0xFF707070),
+                        color = TextColor,
                         fontSize = 35.sp,
                         lineHeight = 35.sp,
                         fontFamily = FontFamily(Font(resId = R.font.ledger_regular)),
@@ -136,16 +139,16 @@ fun ResultDescription(time: Long, navController: NavController, filesDir: File) 
                     Button(
                         modifier = Modifier
                             .fillMaxWidth(0.9f),
-                        colors = ButtonDefaults.buttonColors(Color(0xFFF4E0D9)),
+                        colors = ButtonDefaults.buttonColors(ButtonBackgroundColor),
                         shape = RectangleShape,
-                        border = BorderStroke(1.dp, Color(0xFF707070)),
+                        border = BorderStroke(1.dp, TextColor),
                         contentPadding = PaddingValues(0.dp, 0.dp, 0.dp, 8.dp),
                         onClick = { navController.navigate("main_screen") }
 
                     ) {
                         Text(
                             text = "Вернуться в главное меню",
-                            color = Color(0xFF707070),
+                            color = TextColor,
                             fontSize = 32.sp,
                             lineHeight = 32.sp,
                             fontFamily = FontFamily(Font(resId = R.font.ledger_regular)),
@@ -189,7 +192,7 @@ fun ResultDescription(time: Long, navController: NavController, filesDir: File) 
                 ) {
                     Text(
                         text = "Результаты " + philosophyOpt.get().username,
-                        color = Color(0xFF707070),
+                        color = TextColor,
                         fontSize = 24.sp,
                         fontFamily = FontFamily(Font(resId = R.font.ledger_regular)),
                         textAlign = TextAlign.Center,
@@ -198,21 +201,21 @@ fun ResultDescription(time: Long, navController: NavController, filesDir: File) 
                     // TODO: Maybe shift this part to dilemma files since every dilemma has different results...
                     Text(
                         text = Ethic.LIBERTARIANISM.title + ": " + philosophyOpt.get().libLevel,
-                        color = Color(0xFF707070),
+                        color = TextColor,
                         fontSize = 20.sp,
                         fontFamily = FontFamily(Font(resId = R.font.ledger_regular)),
                         textAlign = TextAlign.Start,
                     )
                     Text(
                         text = Ethic.UTILITARIANISM.title + ": " + philosophyOpt.get().utLevel,
-                        color = Color(0xFF707070),
+                        color = TextColor,
                         fontSize = 20.sp,
                         fontFamily = FontFamily(Font(resId = R.font.ledger_regular)),
                         textAlign = TextAlign.Start,
                     )
                     Text(
                         text = Ethic.EGOISM.title + ": " + philosophyOpt.get().selfLevel,
-                        color = Color(0xFF707070),
+                        color = TextColor,
                         fontSize = 20.sp,
                         fontFamily = FontFamily(Font(resId = R.font.ledger_regular)),
                         textAlign = TextAlign.Start,
@@ -220,7 +223,7 @@ fun ResultDescription(time: Long, navController: NavController, filesDir: File) 
                     Spacer(modifier = Modifier.height(10.dp))
                     Text(
                         text = "Этика: " + philosophyOpt.get().getEthic().toString(),
-                        color = Color(0xFF707070),
+                        color = TextColor,
                         fontSize = 24.sp,
                         fontFamily = FontFamily(Font(resId = R.font.ledger_regular)),
                         textAlign = TextAlign.Center,
@@ -231,13 +234,13 @@ fun ResultDescription(time: Long, navController: NavController, filesDir: File) 
                             .fillMaxWidth()
                             .height(2.dp)
                             .border(BorderStroke(2.dp, Color(0xFF707070)))
-                    ){}
+                    ) {}
                     Spacer(modifier = Modifier.height(10.dp))
                     Text(
                         text = "Когда волк волк, а другой волк не волк, то волк не волку волк, а не волк не волк, ведь он не волк, а когда волк не волк, он не волк, не волк никому не волк, только волк всем волк, даже не волку волк волк, если не волк волку не волк.\n" +
                                 "\n" +
                                 "Ещё один абзац таких же умных мыслей, который подытоживает вышесказанное и раскрывает читателю его мировоззрение.",
-                        color = Color(0xFF707070),
+                        color = TextColor,
                         fontSize = 20.sp,
                         fontFamily = FontFamily(Font(resId = R.font.ledger_regular)),
                         textAlign = TextAlign.Center,

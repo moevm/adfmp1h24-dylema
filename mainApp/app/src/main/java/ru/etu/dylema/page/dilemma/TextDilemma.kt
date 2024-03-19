@@ -134,13 +134,13 @@ fun DilemmaScreen(
                                 .fillMaxWidth(0.8f)
                                 .height(1.dp)
                                 .border(BorderStroke(1.dp, TextColor))
-                        ){}
+                        ) {}
                         Row(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(55.dp, 20.dp),
                             horizontalArrangement = Arrangement.SpaceBetween,
-                        ){
+                        ) {
                             Button(
                                 colors = ButtonDefaults.buttonColors(ButtonBackgroundColor),
                                 shape = RectangleShape,
@@ -293,7 +293,7 @@ fun DilemmaScreen(
                                 .weight(1f)
                                 .height(1.dp)
                                 .border(BorderStroke(1.dp, TextColor))
-                        ){}
+                        ) {}
 
                         Text(
                             text = " или ",
@@ -308,7 +308,7 @@ fun DilemmaScreen(
                                 .weight(1f)
                                 .height(1.dp)
                                 .border(BorderStroke(1.dp, TextColor))
-                        ){}
+                        ) {}
                     }
                     Spacer(modifier = Modifier.height(10.dp))
 

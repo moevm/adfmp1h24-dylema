@@ -11,14 +11,11 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.requiredHeight
-import androidx.compose.foundation.layout.requiredSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.ArrowBack
@@ -50,8 +47,14 @@ import androidx.navigation.compose.rememberNavController
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import ru.etu.dylema.R
-import ru.etu.dylema.domain.trolley.TrolleyDilemmaProvider
 import ru.etu.dylema.domain.UserPhilosophy
+import ru.etu.dylema.domain.trolley.TrolleyDilemmaProvider
+import ru.etu.dylema.ui.theme.BackgroundBorderColor
+import ru.etu.dylema.ui.theme.BackgroundColor
+import ru.etu.dylema.ui.theme.ButtonBackgroundColor
+import ru.etu.dylema.ui.theme.ProgressIndicatorColor
+import ru.etu.dylema.ui.theme.ProgressIndicatorTrackColor
+import ru.etu.dylema.ui.theme.TextColor
 import java.io.File
 
 @Composable
@@ -74,7 +77,7 @@ fun TrolleyScreen(
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color(0xFFFFEBE3)),
+            .background(BackgroundColor),
     ) {
         if (openStopConfirmationDialog.value) {
             Dialog(onDismissRequest = {
@@ -83,7 +86,7 @@ fun TrolleyScreen(
                 Box(
                     modifier = Modifier
                         .fillMaxWidth(0.9f)
-                        .background(Color(0xFFFFEBE3)),
+                        .background(BackgroundColor),
                     contentAlignment = Alignment.TopCenter
                 ) {
                     TextButton(
@@ -101,7 +104,7 @@ fun TrolleyScreen(
                             modifier = Modifier.size(35.dp),
                             imageVector = Icons.Outlined.ArrowBack,
                             contentDescription = "Back button",
-                            tint = Color(0xFF000000)
+                            tint = Color.Black
                         )
                     }
                     Column(
@@ -112,7 +115,7 @@ fun TrolleyScreen(
                         Text(
                             modifier = Modifier.padding(0.dp, 20.dp, 0.dp, 0.dp),
                             text = "Покинуть тест?",
-                            color = Color(0xFF707070),
+                            color = TextColor,
                             fontSize = 20.sp,
                             fontFamily = FontFamily(Font(resId = R.font.ledger_regular)),
                             textAlign = TextAlign.Center
@@ -120,7 +123,7 @@ fun TrolleyScreen(
                         Text(
                             modifier = Modifier.padding(0.dp, 20.dp),
                             text = "Весь ваш прогресс не будет сохранен!",
-                            color = Color(0xFF707070),
+                            color = TextColor,
                             fontSize = 24.sp,
                             fontFamily = FontFamily(Font(resId = R.font.ledger_regular)),
                             textAlign = TextAlign.Center
@@ -129,18 +132,18 @@ fun TrolleyScreen(
                             modifier = Modifier
                                 .fillMaxWidth(0.8f)
                                 .height(1.dp)
-                                .border(BorderStroke(1.dp, Color(0xFF707070)))
-                        ){}
+                                .border(BorderStroke(1.dp, TextColor))
+                        ) {}
                         Row(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(55.dp, 20.dp),
                             horizontalArrangement = Arrangement.SpaceBetween,
-                        ){
+                        ) {
                             Button(
-                                colors = ButtonDefaults.buttonColors(Color(0xFFF4E0D9)),
+                                colors = ButtonDefaults.buttonColors(ButtonBackgroundColor),
                                 shape = RectangleShape,
-                                border = BorderStroke(1.dp, Color(0xFF707070)),
+                                border = BorderStroke(1.dp, TextColor),
                                 contentPadding = PaddingValues(10.dp, 10.dp),
                                 onClick = {
                                     openStopConfirmationDialog.value = false
@@ -149,7 +152,7 @@ fun TrolleyScreen(
                             ) {
                                 Text(
                                     text = "Да",
-                                    color = Color(0xFF707070),
+                                    color = TextColor,
                                     fontSize = 24.sp,
                                     lineHeight = 24.sp,
                                     fontFamily = FontFamily(Font(resId = R.font.ledger_regular)),
@@ -157,15 +160,15 @@ fun TrolleyScreen(
                                 )
                             }
                             Button(
-                                colors = ButtonDefaults.buttonColors(Color(0xFFF4E0D9)),
+                                colors = ButtonDefaults.buttonColors(ButtonBackgroundColor),
                                 shape = RectangleShape,
-                                border = BorderStroke(1.dp, Color(0xFF707070)),
+                                border = BorderStroke(1.dp, TextColor),
                                 contentPadding = PaddingValues(10.dp, 10.dp),
                                 onClick = { openStopConfirmationDialog.value = false }
                             ) {
                                 Text(
                                     text = "Нет",
-                                    color = Color(0xFF707070),
+                                    color = TextColor,
                                     fontSize = 24.sp,
                                     lineHeight = 24.sp,
                                     fontFamily = FontFamily(Font(resId = R.font.ledger_regular)),
@@ -189,7 +192,6 @@ fun TrolleyScreen(
                 .size(width = 35.dp, height = 35.dp),
             shape = RectangleShape,
             contentPadding = PaddingValues(),
-            // TODO: Add confirmation window
             onClick = {
                 openStopConfirmationDialog.value = true
             }
@@ -198,14 +200,14 @@ fun TrolleyScreen(
                 modifier = Modifier.size(35.dp),
                 imageVector = Icons.Outlined.Close,
                 contentDescription = "Back button",
-                tint = Color(0xFF000000)
+                tint = Color.Black
             )
         }
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(20.dp, 30.dp)
-                .border(3.dp, Color(0xFFCCCCCC)),
+                .border(3.dp, BackgroundBorderColor),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.SpaceBetween
         ) {
@@ -214,7 +216,7 @@ fun TrolleyScreen(
                     .padding(0.dp, 30.dp, 0.dp, 20.dp),
                 text = "Вопрос " + trolleyDilemmaProvider.value.currentNumber() + "/"
                         + trolleyDilemmaProvider.value.totalCount(),
-                color = Color(0xFF707070),
+                color = TextColor,
                 fontSize = 24.sp,
                 fontFamily = FontFamily(Font(resId = R.font.ledger_regular))
             )
@@ -222,8 +224,8 @@ fun TrolleyScreen(
                 modifier = Modifier
                     .weight(0.13f)
                     .padding(0.dp, 0.dp, 0.dp, 20.dp),
-                color = Color(0xFFD4BA89),
-                trackColor = Color(0xFFD3D7CF),
+                color = ProgressIndicatorColor,
+                trackColor = ProgressIndicatorTrackColor,
                 strokeCap = StrokeCap.Round,
                 progress = (trolleyDilemmaProvider.value.currentNumber() - 1) / (trolleyDilemmaProvider.value.totalCount() * 1f) + 0.05f
             )
@@ -246,7 +248,7 @@ fun TrolleyScreen(
                 // TODO: Add progress bar (https://developer.android.com/jetpack/compose/components/progress)
                 Text(
                     text = "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab.",
-                    color = Color(0xFF707070),
+                    color = TextColor,
                     fontSize = 18.sp,
                     fontFamily = FontFamily(Font(resId = R.font.ledger_regular)),
                     textAlign = TextAlign.Center,
@@ -263,9 +265,9 @@ fun TrolleyScreen(
                     Button(
                         modifier = Modifier
                             .fillMaxWidth(0.9f),
-                        colors = ButtonDefaults.buttonColors(Color(0xFFF4E0D9)),
+                        colors = ButtonDefaults.buttonColors(ButtonBackgroundColor),
                         shape = RectangleShape,
-                        border = BorderStroke(1.dp, Color(0xFF707070)),
+                        border = BorderStroke(1.dp, TextColor),
                         contentPadding = PaddingValues(0.dp, 0.dp, 0.dp, 8.dp),
                         onClick = {
                             val solution = currentTask.value.leftSolution
@@ -281,7 +283,7 @@ fun TrolleyScreen(
                         }
                     ) {
                         Text(
-                            text = "Первое", color = Color(0xFF707070),
+                            text = "Первое", color = TextColor,
                             fontSize = 24.sp,
                             fontFamily = FontFamily(Font(resId = R.font.ledger_regular)),
                             textAlign = TextAlign.Center
@@ -297,12 +299,12 @@ fun TrolleyScreen(
                             modifier = Modifier
                                 .weight(1f)
                                 .height(1.dp)
-                                .border(BorderStroke(1.dp, Color(0xFF707070)))
-                        ){}
+                                .border(BorderStroke(1.dp, TextColor))
+                        ) {}
 
                         Text(
                             text = " или ",
-                            color = Color(0xFF707070),
+                            color = TextColor,
                             fontSize = 20.sp,
                             fontFamily = FontFamily(Font(resId = R.font.ledger_regular)),
                             textAlign = TextAlign.Center
@@ -312,16 +314,16 @@ fun TrolleyScreen(
                             modifier = Modifier
                                 .weight(1f)
                                 .height(1.dp)
-                                .border(BorderStroke(1.dp, Color(0xFF707070)))
-                        ){}
+                                .border(BorderStroke(1.dp, TextColor))
+                        ) {}
                     }
                     Spacer(modifier = Modifier.height(10.dp))
                     Button(
                         modifier = Modifier
                             .fillMaxWidth(0.9f),
-                        colors = ButtonDefaults.buttonColors(Color(0xFFF4E0D9)),
+                        colors = ButtonDefaults.buttonColors(ButtonBackgroundColor),
                         shape = RectangleShape,
-                        border = BorderStroke(1.dp, Color(0xFF707070)),
+                        border = BorderStroke(1.dp, TextColor),
                         contentPadding = PaddingValues(0.dp, 0.dp, 0.dp, 8.dp),
                         onClick = {
                             val solution = currentTask.value.rightSolution
@@ -337,7 +339,7 @@ fun TrolleyScreen(
                         }
                     ) {
                         Text(
-                            text = "Второе", color = Color(0xFF707070),
+                            text = "Второе", color = TextColor,
                             fontSize = 24.sp,
                             fontFamily = FontFamily(Font(resId = R.font.ledger_regular)),
                             textAlign = TextAlign.Center

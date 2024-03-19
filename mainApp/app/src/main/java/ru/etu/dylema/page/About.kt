@@ -35,17 +35,18 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import ru.etu.dylema.R
+import ru.etu.dylema.ui.theme.BackgroundColor
+import ru.etu.dylema.ui.theme.TextColor
 
 @Composable
 fun About(navController: NavController) {
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color(0xFFFFEBE3)),
+            .background(BackgroundColor),
     ) {
         TextButton(
             modifier = Modifier
-
                 .align(Alignment.TopStart)
                 .offset((20).dp, 20.dp)
                 .size(width = 35.dp, height = 35.dp),
@@ -57,7 +58,7 @@ fun About(navController: NavController) {
                 modifier = Modifier.size(35.dp),
                 imageVector = Icons.Outlined.ArrowBack,
                 contentDescription = "Back button",
-                tint = Color(0xFF000000)
+                tint = Color.Black
             )
         }
         Text(
@@ -65,7 +66,7 @@ fun About(navController: NavController) {
                 .align(Alignment.TopCenter)
                 .offset(0.dp, 35.dp),
             text = "Справка",
-            color = Color(0xFF707070),
+            color = TextColor,
             fontSize = 23.sp,
             fontFamily = FontFamily(Font(resId = R.font.ledger_regular)),
             textAlign = TextAlign.Center
@@ -80,7 +81,7 @@ fun About(navController: NavController) {
         ) {
             Text(
                 text = "Данное приложение разрабатывалось в рамках прохождения курса “Разработка приложений для мобильных платформ” СПбГЭТУ “ЛЭТИ”",
-                color = Color(0xFF707070),
+                color = TextColor,
                 fontSize = 24.sp,
                 fontFamily = FontFamily(Font(resId = R.font.ledger_regular)),
                 textAlign = TextAlign.Center
@@ -91,7 +92,7 @@ fun About(navController: NavController) {
             Text(
                 modifier = Modifier.fillMaxWidth(),
                 text = "Разработчики:",
-                color = Color(0xFF707070),
+                color = TextColor,
                 fontSize = 24.sp,
                 fontFamily = FontFamily(Font(resId = R.font.ledger_regular)),
                 textAlign = TextAlign.Left
@@ -107,7 +108,7 @@ fun About(navController: NavController) {
                 Text(
                     modifier = Modifier.fillMaxWidth(),
                     text = "Табаков Павел Леонидович",
-                    color = Color(0xFF000000),
+                    color = Color.Black,
                     fontSize = 24.sp,
                     fontFamily = FontFamily(Font(resId = R.font.ledger_regular)),
                     textAlign = TextAlign.Left
@@ -118,7 +119,7 @@ fun About(navController: NavController) {
                 Text(
                     modifier = Modifier.fillMaxWidth(),
                     text = "Аристархов Илья Евгеньевич",
-                    color = Color(0xFF000000),
+                    color = Color.Black,
                     fontSize = 24.sp,
                     fontFamily = FontFamily(Font(resId = R.font.ledger_regular)),
                     textAlign = TextAlign.Left
@@ -129,7 +130,7 @@ fun About(navController: NavController) {
                 Text(
                     modifier = Modifier.fillMaxWidth(),
                     text = "Максимов Евгений Алексеевич",
-                    color = Color(0xFF000000),
+                    color = Color.Black,
                     fontSize = 24.sp,
                     fontFamily = FontFamily(Font(resId = R.font.ledger_regular)),
                     textAlign = TextAlign.Left
@@ -141,7 +142,7 @@ fun About(navController: NavController) {
             Text(
                 modifier = Modifier.fillMaxWidth(),
                 text = "А какой вы волк?",
-                color = Color(0xFF707070),
+                color = TextColor,
                 fontSize = 32.sp,
                 fontFamily = FontFamily(Font(resId = R.font.ledger_regular)),
                 textAlign = TextAlign.Center

@@ -21,7 +21,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.Font
@@ -33,14 +32,21 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import ru.etu.dylema.R
+import ru.etu.dylema.ui.theme.BackgroundBorderColor
+import ru.etu.dylema.ui.theme.BackgroundColor
+import ru.etu.dylema.ui.theme.ButtonBackgroundColor
+import ru.etu.dylema.ui.theme.TextColor
+import ru.etu.dylema.ui.theme.TextColorDisabled
 
 @Composable
 fun MainMenu(navController: NavController) {
 
+    val isResultsHistoryButtonDisabled = false
+
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color(0xFFFFEBE3)),
+            .background(BackgroundColor),
         contentAlignment = Alignment.BottomStart
     ) {
 
@@ -48,7 +54,7 @@ fun MainMenu(navController: NavController) {
             modifier = Modifier
                 .fillMaxSize()
                 .padding(20.dp, 30.dp)
-                .border(3.dp, Color(0xFFCCCCCC)),
+                .border(3.dp, BackgroundBorderColor),
             verticalArrangement = Arrangement.Top
         ) {
             Column(
@@ -71,7 +77,7 @@ fun MainMenu(navController: NavController) {
                     modifier = Modifier
                         .fillMaxWidth(),
                     textAlign = TextAlign.Center,
-                    color = Color(0xFF707070),
+                    color = TextColor,
                     fontSize = 50.sp,
                     fontFamily = FontFamily(Font(resId = R.font.ledger_regular)),
                     text = "Дилемма"
@@ -87,15 +93,15 @@ fun MainMenu(navController: NavController) {
                 Button(
                     modifier = Modifier
                         .size(width = 210.dp, height = 55.dp),
-                    colors = ButtonDefaults.buttonColors(Color(0xFFF4E0D9)),
+                    colors = ButtonDefaults.buttonColors(ButtonBackgroundColor),
                     shape = RectangleShape,
-                    border = BorderStroke(1.dp, Color(0xFF707070)),
+                    border = BorderStroke(1.dp, TextColor),
                     contentPadding = PaddingValues(0.dp, 0.dp, 0.dp, 8.dp),
                     onClick = { navController.navigate("choose_dilemma_screen") }
                 ) {
                     Text(
                         text = "Играть",
-                        color = Color(0xFF707070),
+                        color = TextColor,
                         fontSize = 32.sp,
                         lineHeight = 32.sp,
                         fontFamily = FontFamily(Font(resId = R.font.ledger_regular)),
@@ -107,15 +113,23 @@ fun MainMenu(navController: NavController) {
                 Button(
                     modifier = Modifier
                         .width(210.dp),
-                    colors = ButtonDefaults.buttonColors(Color(0xFFF4E0D9)),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = ButtonBackgroundColor,
+                        contentColor = TextColor,
+                        disabledContainerColor = ButtonBackgroundColor,
+                        disabledContentColor = TextColorDisabled
+                    ),
                     shape = RectangleShape,
-                    border = BorderStroke(1.dp, Color(0xFF707070)),
+                    border = BorderStroke(
+                        1.dp,
+                        if (isResultsHistoryButtonDisabled) TextColorDisabled else TextColor
+                    ),
                     contentPadding = PaddingValues(0.dp, 0.dp, 0.dp, 8.dp),
+                    enabled = !isResultsHistoryButtonDisabled,
                     onClick = { navController.navigate("total_result_screen") },
                 ) {
                     Text(
                         text = "Результаты",
-                        color = Color(0xFF707070),
                         fontSize = 32.sp,
                         lineHeight = 32.sp,
                         fontFamily = FontFamily(Font(resId = R.font.ledger_regular)),
@@ -126,15 +140,15 @@ fun MainMenu(navController: NavController) {
                 Button(
                     modifier = Modifier
                         .width(210.dp),
-                    colors = ButtonDefaults.buttonColors(Color(0xFFF4E0D9)),
+                    colors = ButtonDefaults.buttonColors(ButtonBackgroundColor),
                     shape = RectangleShape,
-                    border = BorderStroke(1.dp, Color(0xFF707070)),
+                    border = BorderStroke(1.dp, TextColor),
                     contentPadding = PaddingValues(0.dp, 0.dp, 0.dp, 8.dp),
                     onClick = { navController.navigate("about") },
                 ) {
                     Text(
                         text = "Справка",
-                        color = Color(0xFF707070),
+                        color = TextColor,
                         fontSize = 32.sp,
                         lineHeight = 32.sp,
                         fontFamily = FontFamily(Font(resId = R.font.ledger_regular)),

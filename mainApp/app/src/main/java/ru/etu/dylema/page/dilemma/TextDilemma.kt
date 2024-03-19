@@ -23,6 +23,7 @@ import androidx.compose.material.icons.outlined.Close
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -32,6 +33,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
@@ -206,12 +208,19 @@ fun DilemmaScreen(
         ) {
             Text(
                 modifier = Modifier
-                    .padding(0.dp, 30.dp, 0.dp, 0.dp),
+                    .padding(0.dp, 30.dp, 0.dp, 20.dp),
                 text = "Вопрос " + textDilemmaProvider.value.currentNumber() + "/"
                         + textDilemmaProvider.value.totalCount(),
                 color = Color(0xFF707070),
                 fontSize = 24.sp,
                 fontFamily = FontFamily(Font(resId = R.font.ledger_regular))
+            )
+            LinearProgressIndicator(
+                modifier = Modifier
+                    .padding(0.dp, 10.dp, 0.dp, 0.dp),
+                color = Color(0xFFD4BA89),
+                trackColor = Color(0xFFD3D7CF),
+                progress = (textDilemmaProvider.value.currentNumber() - 1) / (textDilemmaProvider.value.totalCount() * 1f) + 0.05f
             )
             Column(
                 modifier = Modifier

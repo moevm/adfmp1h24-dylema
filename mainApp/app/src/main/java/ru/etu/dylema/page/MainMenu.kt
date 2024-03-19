@@ -56,7 +56,7 @@ sealed class BackPress {
 }
 
 @Composable
-fun MainMenu(navController: NavController, filesDir: File) {
+fun MainMenu(navController: NavController, filesDir: File, exit: () -> Unit = {}) {
 
     val resultFile = File(filesDir, "user-results.json")
     if (!resultFile.exists()) {
@@ -99,6 +99,10 @@ fun MainMenu(navController: NavController, filesDir: File) {
     BackHandler(backPressState == BackPress.Idle) {
         backPressState = BackPress.InitialTouch
         showToast = true
+    }
+
+    BackHandler(backPressState == BackPress.InitialTouch) {
+        exit()
     }
 
     Box(

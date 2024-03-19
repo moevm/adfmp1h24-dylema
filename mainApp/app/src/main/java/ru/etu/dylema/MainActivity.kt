@@ -56,7 +56,7 @@ class MainActivity : ComponentActivity() {
                         MainMenu(
                             navController = navController,
                             filesDir = filesDir
-                        )
+                        ) { finishAndRemoveTask() }
                     }
                     composable("about") {
                         About(navController)

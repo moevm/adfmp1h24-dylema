@@ -19,13 +19,13 @@ class TrolleyDilemmaController(filesDir: File) : DilemmaController(
         ),
         DilemmaPart(
             text = "Why do you skip it?",
-            imageId = R.drawable.ic_launcher_background,
+            imageId = R.drawable.img,
             leftSolution = DilemmaState(component1 = 25),
             rightSolution = DilemmaState(component2 = 25)
         ),
         DilemmaPart(
             text = "STOP!",
-            imageId = R.drawable.ic_launcher_foreground,
+            imageId = R.drawable.img,
             leftSolution = DilemmaState(component2 = 25),
             rightSolution = DilemmaState(component3 = 25)
         )

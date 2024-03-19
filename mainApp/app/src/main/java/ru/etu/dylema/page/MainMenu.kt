@@ -1,5 +1,7 @@
 package ru.etu.dylema.page
 
+import android.widget.Toast
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -19,11 +21,15 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
@@ -33,6 +39,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import kotlinx.coroutines.delay
 import kotlinx.serialization.json.Json
 import ru.etu.dylema.R
 import ru.etu.dylema.domain.base_dilemma.DilemmaResult
@@ -42,6 +49,11 @@ import ru.etu.dylema.ui.theme.ButtonBackgroundColor
 import ru.etu.dylema.ui.theme.TextColor
 import ru.etu.dylema.ui.theme.TextColorDisabled
 import java.io.File
+
+sealed class BackPress {
+    object Idle : BackPress()
+    object InitialTouch : BackPress()
+}
 
 @Composable
 fun MainMenu(navController: NavController, filesDir: File) {
@@ -61,13 +73,40 @@ fun MainMenu(navController: NavController, filesDir: File) {
 
     val isResultsHistoryButtonDisabled = results.value.isEmpty()
 
+    val doublePressed = remember {
+        mutableStateOf(
+            false
+        )
+    }
+
+    var showToast by remember { mutableStateOf(false) }
+
+    var backPressState by remember { mutableStateOf<BackPress>(BackPress.Idle) }
+    val context = LocalContext.current
+
+    if(showToast){
+        Toast.makeText(context, "Press again to exit", Toast.LENGTH_SHORT).show()
+        showToast= false
+    }
+
+    LaunchedEffect(key1 = backPressState) {
+        if (backPressState == BackPress.InitialTouch) {
+            delay(2000)
+            backPressState = BackPress.Idle
+        }
+    }
+
+    BackHandler(backPressState == BackPress.Idle) {
+        backPressState = BackPress.InitialTouch
+        showToast = true
+    }
+
     Box(
         modifier = Modifier
             .fillMaxSize()
             .background(BackgroundColor),
         contentAlignment = Alignment.BottomStart
     ) {
-
         Column(
             modifier = Modifier
                 .fillMaxSize()

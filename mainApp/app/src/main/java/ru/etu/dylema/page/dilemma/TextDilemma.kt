@@ -217,9 +217,11 @@ fun DilemmaScreen(
             )
             LinearProgressIndicator(
                 modifier = Modifier
+                    .height(20.dp)
                     .padding(0.dp, 10.dp, 0.dp, 0.dp),
                 color = Color(0xFFD4BA89),
                 trackColor = Color(0xFFD3D7CF),
+                strokeCap = StrokeCap.Round,
                 progress = (textDilemmaProvider.value.currentNumber() - 1) / (textDilemmaProvider.value.totalCount() * 1f) + 0.05f
             )
             Column(

@@ -11,11 +11,14 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.requiredHeight
+import androidx.compose.foundation.layout.requiredSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.ArrowBack
@@ -33,6 +36,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
@@ -216,9 +220,11 @@ fun TrolleyScreen(
             )
             LinearProgressIndicator(
                 modifier = Modifier
+                    .weight(0.13f)
                     .padding(0.dp, 0.dp, 0.dp, 20.dp),
                 color = Color(0xFFD4BA89),
                 trackColor = Color(0xFFD3D7CF),
+                strokeCap = StrokeCap.Round,
                 progress = (trolleyDilemmaProvider.value.currentNumber() - 1) / (trolleyDilemmaProvider.value.totalCount() * 1f) + 0.05f
             )
             Image(

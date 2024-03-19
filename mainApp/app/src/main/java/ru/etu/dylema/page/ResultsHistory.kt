@@ -50,6 +50,7 @@ import androidx.navigation.compose.rememberNavController
 import kotlinx.serialization.json.Json
 import ru.etu.dylema.R
 import ru.etu.dylema.domain.base_dilemma.DilemmaResult
+import ru.etu.dylema.domain.createTextForShare
 import ru.etu.dylema.ui.theme.BackgroundColor
 import ru.etu.dylema.ui.theme.ButtonBackgroundColor
 import ru.etu.dylema.ui.theme.TextColor
@@ -363,7 +364,7 @@ fun ResultLine(
                 onClick = {
                     val sendIntent: Intent = Intent().apply {
                         action = Intent.ACTION_SEND
-                        putExtra(Intent.EXTRA_TEXT, "Look! I pass this amazing test that told me my ethics: " + result.ethic.title)
+                        putExtra(Intent.EXTRA_TEXT, createTextForShare(result))
                         type = "text/plain"
                     }
 

@@ -43,6 +43,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import ru.etu.dylema.R
 import ru.etu.dylema.domain.base_dilemma.DilemmaResult
+import ru.etu.dylema.domain.createTextForShare
 import ru.etu.dylema.domain.text_dilemma.TextDilemmaController
 import ru.etu.dylema.ui.theme.BackgroundColor
 import ru.etu.dylema.ui.theme.ButtonBackgroundColor
@@ -159,7 +160,7 @@ fun ResultScreen(navController: NavController, result: DilemmaResult, startActiv
                         onClick = {
                             val sendIntent: Intent = Intent().apply {
                                 action = Intent.ACTION_SEND
-                                putExtra(Intent.EXTRA_TEXT, "Look! I pass this amazing test that told me my ethics: " + result.ethic.title)
+                                putExtra(Intent.EXTRA_TEXT, createTextForShare(result))
                                 type = "text/plain"
                             }
 

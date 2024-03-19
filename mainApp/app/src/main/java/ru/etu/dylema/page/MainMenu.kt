@@ -19,6 +19,8 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.RectangleShape
@@ -31,17 +33,33 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import kotlinx.serialization.json.Json
 import ru.etu.dylema.R
+import ru.etu.dylema.domain.base_dilemma.DilemmaResult
 import ru.etu.dylema.ui.theme.BackgroundBorderColor
 import ru.etu.dylema.ui.theme.BackgroundColor
 import ru.etu.dylema.ui.theme.ButtonBackgroundColor
 import ru.etu.dylema.ui.theme.TextColor
 import ru.etu.dylema.ui.theme.TextColorDisabled
+import java.io.File
 
 @Composable
-fun MainMenu(navController: NavController) {
+fun MainMenu(navController: NavController, filesDir: File) {
 
-    val isResultsHistoryButtonDisabled = false
+    val resultFile = File(filesDir, "user-results.json")
+    if (!resultFile.exists()) {
+        resultFile.writeText("[]")
+    }
+
+    val results = remember {
+        mutableStateOf(
+            Json.decodeFromString<List<DilemmaResult>>(
+                resultFile.readText()
+            )
+        )
+    }
+
+    val isResultsHistoryButtonDisabled = results.value.isEmpty()
 
     Box(
         modifier = Modifier
@@ -176,6 +194,7 @@ fun MainMenu(navController: NavController) {
 fun MainMenuPreview() {
     val navController = rememberNavController()
     MainMenu(
-        navController
+        navController,
+        File("")
     )
 }

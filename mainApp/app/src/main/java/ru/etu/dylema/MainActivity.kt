@@ -54,7 +54,10 @@ class MainActivity : ComponentActivity() {
                 NavHost(navController = navController, startDestination = "main_screen") {
                     composable("main_screen") {
                         session.value.reset()
-                        MainMenu(navController)
+                        MainMenu(
+                            navController = navController,
+                            filesDir = filesDir
+                        )
                     }
                     composable("about") {
                         About(navController)

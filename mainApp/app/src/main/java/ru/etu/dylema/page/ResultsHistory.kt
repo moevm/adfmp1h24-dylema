@@ -49,6 +49,9 @@ import androidx.navigation.compose.rememberNavController
 import kotlinx.serialization.json.Json
 import ru.etu.dylema.R
 import ru.etu.dylema.domain.UserPhilosophy
+import ru.etu.dylema.ui.theme.BackgroundColor
+import ru.etu.dylema.ui.theme.ButtonBackgroundColor
+import ru.etu.dylema.ui.theme.TextColor
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -100,7 +103,7 @@ fun TotalResultScreen(navController: NavController, filesDir: File) {
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color(0xFFFFEBE3)),
+            .background(BackgroundColor),
         contentAlignment = Alignment.BottomEnd
     ) {
 
@@ -111,7 +114,7 @@ fun TotalResultScreen(navController: NavController, filesDir: File) {
                 Box(
                     modifier = Modifier
                         .fillMaxWidth(0.9f)
-                        .background(Color(0xFFFFEBE3)),
+                        .background(BackgroundColor),
                     contentAlignment = Alignment.TopCenter
                 ) {
                     TextButton(
@@ -129,7 +132,7 @@ fun TotalResultScreen(navController: NavController, filesDir: File) {
                             modifier = Modifier.size(35.dp),
                             imageVector = Icons.Outlined.ArrowBack,
                             contentDescription = "Back button",
-                            tint = Color(0xFF000000)
+                            tint = Color.Black
                         )
                     }
                     Column(
@@ -140,7 +143,7 @@ fun TotalResultScreen(navController: NavController, filesDir: File) {
                         Text(
                             modifier = Modifier.padding(0.dp, 20.dp),
                             text = "Поделиться",
-                            color = Color(0xFF707070),
+                            color = TextColor,
                             fontSize = 24.sp,
                             fontFamily = FontFamily(Font(resId = R.font.ledger_regular)),
                             textAlign = TextAlign.Center
@@ -149,14 +152,14 @@ fun TotalResultScreen(navController: NavController, filesDir: File) {
                             modifier = Modifier
                                 .fillMaxWidth(0.8f)
                                 .height(1.dp)
-                                .border(BorderStroke(1.dp, Color(0xFF707070)))
-                        ){}
+                                .border(BorderStroke(1.dp, TextColor))
+                        ) {}
                         Row(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(55.dp, 20.dp),
                             horizontalArrangement = Arrangement.SpaceBetween,
-                        ){
+                        ) {
                             TextButton(
                                 modifier = Modifier
                                     .size(40.dp),
@@ -218,7 +221,7 @@ fun TotalResultScreen(navController: NavController, filesDir: File) {
                 Box(
                     modifier = Modifier
                         .fillMaxWidth(1f)
-                        .background(Color(0xFFFFEBE3)),
+                        .background(BackgroundColor),
                     contentAlignment = Alignment.TopCenter
                 ) {
                     TextButton(
@@ -236,7 +239,7 @@ fun TotalResultScreen(navController: NavController, filesDir: File) {
                             modifier = Modifier.size(35.dp),
                             imageVector = Icons.Outlined.ArrowBack,
                             contentDescription = "Back button",
-                            tint = Color(0xFF000000)
+                            tint = Color.Black
                         )
                     }
                     Column(
@@ -247,7 +250,7 @@ fun TotalResultScreen(navController: NavController, filesDir: File) {
                         Text(
                             modifier = Modifier.padding(0.dp, 20.dp, 0.dp, 0.dp),
                             text = "Удалить все результаты?",
-                            color = Color(0xFF707070),
+                            color = TextColor,
                             fontSize = 20.sp,
                             fontFamily = FontFamily(Font(resId = R.font.ledger_regular)),
                             textAlign = TextAlign.Center
@@ -255,7 +258,7 @@ fun TotalResultScreen(navController: NavController, filesDir: File) {
                         Text(
                             modifier = Modifier.padding(0.dp, 20.dp),
                             text = "Это действие нельзя отменить.",
-                            color = Color(0xFF707070),
+                            color = TextColor,
                             fontSize = 24.sp,
                             fontFamily = FontFamily(Font(resId = R.font.ledger_regular)),
                             textAlign = TextAlign.Center
@@ -264,18 +267,18 @@ fun TotalResultScreen(navController: NavController, filesDir: File) {
                             modifier = Modifier
                                 .fillMaxWidth(0.8f)
                                 .height(1.dp)
-                                .border(BorderStroke(1.dp, Color(0xFF707070)))
-                        ){}
+                                .border(BorderStroke(1.dp, TextColor))
+                        ) {}
                         Row(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(55.dp, 20.dp),
                             horizontalArrangement = Arrangement.SpaceBetween,
-                        ){
+                        ) {
                             Button(
-                                colors = ButtonDefaults.buttonColors(Color(0xFFF4E0D9)),
+                                colors = ButtonDefaults.buttonColors(ButtonBackgroundColor),
                                 shape = RectangleShape,
-                                border = BorderStroke(1.dp, Color(0xFF707070)),
+                                border = BorderStroke(1.dp, TextColor),
                                 contentPadding = PaddingValues(10.dp, 10.dp),
                                 onClick = {
                                     openDeleteConfirmationDialog.value = false
@@ -285,7 +288,7 @@ fun TotalResultScreen(navController: NavController, filesDir: File) {
                             ) {
                                 Text(
                                     text = "Да",
-                                    color = Color(0xFF707070),
+                                    color = TextColor,
                                     fontSize = 24.sp,
                                     lineHeight = 24.sp,
                                     fontFamily = FontFamily(Font(resId = R.font.ledger_regular)),
@@ -293,15 +296,15 @@ fun TotalResultScreen(navController: NavController, filesDir: File) {
                                 )
                             }
                             Button(
-                                colors = ButtonDefaults.buttonColors(Color(0xFFF4E0D9)),
+                                colors = ButtonDefaults.buttonColors(ButtonBackgroundColor),
                                 shape = RectangleShape,
-                                border = BorderStroke(1.dp, Color(0xFF707070)),
+                                border = BorderStroke(1.dp, TextColor),
                                 contentPadding = PaddingValues(10.dp, 10.dp),
                                 onClick = { openDeleteConfirmationDialog.value = false }
                             ) {
                                 Text(
                                     text = "Нет",
-                                    color = Color(0xFF707070),
+                                    color = TextColor,
                                     fontSize = 24.sp,
                                     lineHeight = 24.sp,
                                     fontFamily = FontFamily(Font(resId = R.font.ledger_regular)),
@@ -329,7 +332,7 @@ fun TotalResultScreen(navController: NavController, filesDir: File) {
                 modifier = Modifier.size(35.dp),
                 imageVector = Icons.Outlined.ArrowBack,
                 contentDescription = "Back button",
-                tint = Color(0xFF000000)
+                tint = Color.Black
             )
         }
         Text(
@@ -337,7 +340,7 @@ fun TotalResultScreen(navController: NavController, filesDir: File) {
                 .align(Alignment.TopCenter)
                 .offset(0.dp, 30.dp),
             text = "Все результаты",
-            color = Color(0xFF707070),
+            color = TextColor,
             fontSize = 22.sp,
             fontFamily = FontFamily(Font(resId = R.font.ledger_regular)),
             textAlign = TextAlign.Center
@@ -373,16 +376,16 @@ fun TotalResultScreen(navController: NavController, filesDir: File) {
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Button(
-                    colors = ButtonDefaults.buttonColors(Color(0xFFFFEBE3)),
+                    colors = ButtonDefaults.buttonColors(ButtonBackgroundColor),
                     onClick = {
                         openDeleteConfirmationDialog.value = true
                     },
                     modifier = Modifier
-                        .border(1.dp, Color(0xFF707070))
+                        .border(1.dp, TextColor)
 
                 ) {
                     Text(
-                        text = "Удалить все результаты", color = Color(0xFF707070),
+                        text = "Удалить все результаты", color = TextColor,
                         fontSize = 22.sp,
                         fontFamily = FontFamily(Font(resId = R.font.ledger_regular)),
                         textAlign = TextAlign.Center
@@ -401,12 +404,19 @@ fun TotalResultScreen(navController: NavController, filesDir: File) {
 }
 
 @Composable
-fun ResultBlock(testName: String, results: MutableList<UserPhilosophy>, navController: NavController, resultToShare: MutableState<UserPhilosophy>, openShareDialog: MutableState<Boolean>, modifier: Modifier = Modifier) {
+fun ResultBlock(
+    testName: String,
+    results: MutableList<UserPhilosophy>,
+    navController: NavController,
+    resultToShare: MutableState<UserPhilosophy>,
+    openShareDialog: MutableState<Boolean>,
+    modifier: Modifier = Modifier
+) {
 
     Column(
         modifier = modifier
             .padding(10.dp, 10.dp)
-            .border(BorderStroke(3.dp, Color(0xFF707070)))
+            .border(BorderStroke(3.dp, TextColor))
 
     ) {
         Text(
@@ -414,7 +424,7 @@ fun ResultBlock(testName: String, results: MutableList<UserPhilosophy>, navContr
                 .fillMaxWidth(0.9f)
                 .padding(10.dp, 10.dp),
             text = testName,
-            color = Color(0xFF707070),
+            color = TextColor,
             fontSize = 24.sp,
             fontFamily = FontFamily(Font(resId = R.font.ledger_regular)),
             textAlign = TextAlign.Left
@@ -423,8 +433,8 @@ fun ResultBlock(testName: String, results: MutableList<UserPhilosophy>, navContr
             modifier = Modifier
                 .fillMaxWidth()
                 .height(3.dp)
-                .border(BorderStroke(3.dp, Color(0xFF707070)))
-        ){}
+                .border(BorderStroke(3.dp, TextColor))
+        ) {}
 
         val sortedResults = results.sortedByDescending { it.time }
         for (i in 1..sortedResults.size) {
@@ -435,8 +445,8 @@ fun ResultBlock(testName: String, results: MutableList<UserPhilosophy>, navContr
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(1.dp)
-                        .border(BorderStroke(1.dp, Color(0xFF707070)))
-                ){}
+                        .border(BorderStroke(1.dp, TextColor))
+                ) {}
             }
 
 
@@ -445,7 +455,12 @@ fun ResultBlock(testName: String, results: MutableList<UserPhilosophy>, navContr
 }
 
 @Composable
-fun ResultLine(result: UserPhilosophy, navController: NavController?, resultToShare: MutableState<UserPhilosophy>, openShareDialog: MutableState<Boolean>) {
+fun ResultLine(
+    result: UserPhilosophy,
+    navController: NavController?,
+    resultToShare: MutableState<UserPhilosophy>,
+    openShareDialog: MutableState<Boolean>
+) {
     Row(
         Modifier
             .fillMaxWidth()
@@ -475,7 +490,7 @@ fun ResultLine(result: UserPhilosophy, navController: NavController?, resultToSh
             Button(
                 modifier = Modifier
                     .size(width = 30.dp, height = 30.dp),
-            colors = ButtonDefaults.buttonColors(Color(0xFFFFEBE3)),
+                colors = ButtonDefaults.buttonColors(BackgroundColor),
                 contentPadding = PaddingValues(0.dp, 0.dp, 2.dp, 0.dp),
                 onClick = {
                     resultToShare.value = result
@@ -486,7 +501,7 @@ fun ResultLine(result: UserPhilosophy, navController: NavController?, resultToSh
                     modifier = Modifier.size(20.dp),
                     imageVector = Icons.Outlined.Share,
                     contentDescription = "Share button",
-                    tint = Color(0xFF000000)
+                    tint = Color.Black
                 )
             }
 
@@ -495,7 +510,7 @@ fun ResultLine(result: UserPhilosophy, navController: NavController?, resultToSh
             Button(
                 modifier = Modifier
                     .size(width = 30.dp, height = 30.dp),
-            colors = ButtonDefaults.buttonColors(Color(0xFFFFEBE3)),
+                colors = ButtonDefaults.buttonColors(BackgroundColor),
                 contentPadding = PaddingValues(),
                 onClick = {
                     navController?.navigate("ethic_intro_screen?time=" + result.time)
@@ -505,11 +520,10 @@ fun ResultLine(result: UserPhilosophy, navController: NavController?, resultToSh
                     modifier = Modifier.size(20.dp),
                     imageVector = Icons.Outlined.Search,
                     contentDescription = "Search button",
-                    tint = Color(0xFF000000)
+                    tint = Color.Black
                 )
 //                Image(painter = painterResource(id = R.drawable.search), contentDescription = "")
             }
-
 
 
         }
